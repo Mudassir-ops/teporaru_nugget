@@ -215,7 +215,9 @@ class CameraControllerWithoutPreview(var context: Context) {
         }
 
     }
-
+    fun isSessionClosed(): Boolean {
+        return mCaptureSession == null
+    }
     private class ImageSaver(
         /**
          * The JPEG image

@@ -51,11 +51,6 @@
             android:exported="false"
             android:foregroundServiceType="camera" />
 
-        <service
-            android:name=".service.oldcamera.GetBackCoreService"
-            android:exported="false"
-            android:foregroundServiceType="camera" />
-
     </application>
 
 </manifest>

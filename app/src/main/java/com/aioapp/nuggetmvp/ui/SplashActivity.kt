@@ -11,8 +11,6 @@ import androidx.core.content.ContextCompat
 import com.aioapp.nuggetmvp.databinding.ActivitySplashBinding
 import com.aioapp.nuggetmvp.service.NuggetCameraService
 import com.aioapp.nuggetmvp.service.NuggetRecorderService
-import com.aioapp.nuggetmvp.service.camera.CameraControllerWithoutPreview
-import com.aioapp.nuggetmvp.service.oldcamera.GetBackCoreService
 import com.aioapp.nuggetmvp.utils.Constants
 import com.aioapp.nuggetmvp.utils.appextension.assetsFile
 import com.aioapp.nuggetmvp.utils.appextension.isServiceRunning
@@ -26,7 +24,6 @@ class SplashActivity : AppCompatActivity() {
     private var binding: ActivitySplashBinding? = null
     private var porcupineManager: PorcupineManager? = null
 
-    private var ccv2WithoutPreview: CameraControllerWithoutPreview? = null
 
     private var wakeWordCallback = PorcupineManagerCallback { keywordIndex ->
 
@@ -68,7 +65,6 @@ class SplashActivity : AppCompatActivity() {
 
         binding?.apply {
             ivLeftEye.setOnClickListener {
-
                 ContextCompat.startForegroundService(
                     this@SplashActivity,
                     Intent(this@SplashActivity, NuggetCameraService::class.java)
