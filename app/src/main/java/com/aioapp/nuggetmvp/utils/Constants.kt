@@ -15,7 +15,4 @@ object Constants {
     const val smartFormat = true
     const val deepGrammodel = "nova-2"
     const val deepGramlanguage = "en-US"
-
-    var cartItemList: MutableList<Food>? = ArrayList()
-
 }

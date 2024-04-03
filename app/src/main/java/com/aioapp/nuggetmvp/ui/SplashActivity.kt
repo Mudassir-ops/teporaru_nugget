@@ -8,12 +8,12 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.aioapp.nuggetmvp.databinding.ActivitySplashBinding
+import com.aioapp.nuggetmvp.service.NuggetRecorderService
 import com.aioapp.nuggetmvp.utils.Constants
+import com.aioapp.nuggetmvp.utils.appextension.assetsFile
+import com.aioapp.nuggetmvp.utils.appextension.isServiceRunning
 import com.aioapp.nuggetmvp.utils.enum.ScreenState
 import com.aioapp.nuggetmvp.utils.wakeupCallBack
-import java.io.File
-import java.io.FileOutputStream
-import java.io.InputStream
 
 @SuppressLint("CustomSplashScreen")
 class SplashActivity : AppCompatActivity() {
@@ -21,14 +21,32 @@ class SplashActivity : AppCompatActivity() {
     private var binding: ActivitySplashBinding? = null
     private var porcupineManager: PorcupineManager? = null
     private var wakeWordCallback = PorcupineManagerCallback { keywordIndex ->
+
+        Log.e("SplashHiNuggetWakeUp--->", ": $keywordIndex---$currentScreenState")
+
         if (keywordIndex == 0) {
-            if (ScreenState.WAKE_UP == currentScreenState) {
-                currentScreenState = ScreenState.MAIN_MENU
-                val intent = Intent(this@SplashActivity, MainActivity::class.java)
-                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-                startActivity(intent)
+            if (isServiceRunning(NuggetRecorderService::class.java)) {
+                stopService(
+                    Intent(this@SplashActivity, NuggetRecorderService::class.java)
+                )
+                if (ScreenState.WAKE_UP == currentScreenState) {
+                    currentScreenState = ScreenState.MAIN_MENU
+                    val intent = Intent(this@SplashActivity, MainActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+                    startActivity(intent)
+                } else {
+                    wakeupCallBack?.invoke(true)
+                }
+
             } else {
-                wakeupCallBack?.invoke(true)
+                if (ScreenState.WAKE_UP == currentScreenState) {
+                    currentScreenState = ScreenState.MAIN_MENU
+                    val intent = Intent(this@SplashActivity, MainActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+                    startActivity(intent)
+                } else {
+                    wakeupCallBack?.invoke(true)
+                }
             }
         }
     }
@@ -47,31 +65,13 @@ class SplashActivity : AppCompatActivity() {
     }
 
     private fun initPorcupineManager() {
-        val datasetTempFile = getAssestFIle()
-        Log.e("asdsadass", "initPorcupineManager: $datasetTempFile ")
-        porcupineManager =
-            PorcupineManager.Builder().setAccessKey(Constants.ACCESS_KEY_PORCUPINE).setKeywordPath(
-                datasetTempFile
-            ).build(this@SplashActivity, wakeWordCallback)
-        porcupineManager?.start()
-    }
-
-    private fun getAssestFIle(): String {
-        try {
-            val file = File.createTempFile("temp", ".ppn")
-            val filePath = file.absolutePath
-            val inputStream: InputStream = assets.open("Hey-Nugget_en_android_v3_0_0.ppn")
-            val size = inputStream.available()
-            val buffer = ByteArray(size)
-            inputStream.read(buffer)
-            inputStream.close()
-            val out = FileOutputStream(filePath)
-            out.write(buffer)
-            out.close()
-            return filePath
-        } catch (e: Exception) {
-            e.printStackTrace()
-            return ""
+        assetsFile()?.let {
+            porcupineManager =
+                PorcupineManager.Builder().setAccessKey(Constants.ACCESS_KEY_PORCUPINE)
+                    .setKeywordPath(
+                        it
+                    ).build(this@SplashActivity, wakeWordCallback)
+            porcupineManager?.start()
         }
     }
 

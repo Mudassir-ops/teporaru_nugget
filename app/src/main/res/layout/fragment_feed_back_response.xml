@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.fragments.FeedBackResponseFragment">
+
+
+        <include
+            android:id="@+id/header_layout"
+            layout="@layout/header_layout"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_40sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_feedback"
+            style="@style/textPoppinsRegular"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_80sdp"
+            android:gravity="center"
+            android:text="@string/loved_it"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_17ssp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/header_layout" />
+
+        <ImageView
+            android:id="@+id/iv_feedback"
+            android:layout_width="@dimen/_90sdp"
+            android:layout_height="@dimen/_90sdp"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:contentDescription="@null"
+            android:src="@drawable/loved_it"
+            app:layout_constraintEnd_toEndOf="@+id/tv_feedback"
+            app:layout_constraintStart_toStartOf="@+id/tv_feedback"
+            app:layout_constraintTop_toBottomOf="@+id/tv_feedback" />
+
+        <TextView
+            android:id="@+id/tv_feedback_response"
+            style="@style/textPoppinsRegular"
+            android:layout_width="@dimen/_140sdp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_25sdp"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_10ssp"
+            app:layout_constraintEnd_toEndOf="@+id/iv_feedback"
+            app:layout_constraintStart_toStartOf="@+id/iv_feedback"
+            app:layout_constraintTop_toBottomOf="@+id/iv_feedback"
+            tools:text="We’re glad you enjoyed this experience." />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

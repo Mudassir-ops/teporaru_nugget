@@ -8,6 +8,16 @@
         android:layout_height="match_parent"
         tools:context=".ui.fragments.NuggetIntroFragment">
 
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/intro_animation_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:lottie_autoPlay="false"
+            app:lottie_loop="false"
+            app:lottie_rawRes="@raw/intro_animation" />
 
         <ImageView
             android:id="@+id/iv_left_eye"
@@ -17,6 +27,7 @@
             android:layout_marginEnd="@dimen/_15sdp"
             android:contentDescription="@null"
             android:src="@drawable/open_eye_nugget"
+            android:visibility="gone"
             app:layout_constraintBottom_toTopOf="@+id/guideline_top"
             app:layout_constraintEnd_toStartOf="@id/iv_right_eye"
             app:layout_constraintStart_toStartOf="@+id/guideline_left" />
@@ -29,6 +40,7 @@
             android:layout_marginStart="@dimen/_15sdp"
             android:contentDescription="@null"
             android:src="@drawable/open_eye_nugget"
+            android:visibility="gone"
             app:layout_constraintBottom_toTopOf="@+id/guideline_top"
             app:layout_constraintEnd_toStartOf="@+id/guideline_right"
             app:layout_constraintStart_toEndOf="@id/iv_left_eye" />
@@ -38,6 +50,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            android:visibility="gone"
             app:layout_constraintGuide_percent="0.440" />
 
         <androidx.constraintlayout.widget.Guideline
@@ -62,6 +75,7 @@
             android:layout_marginTop="59dp"
             android:contentDescription="@null"
             android:src="@drawable/im_nugget"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/guideline_top" />
@@ -76,6 +90,7 @@
             android:textColor="@color/orange"
             android:textSize="@dimen/_12ssp"
             android:textStyle="italic"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="@+id/iv_i_am_nugget"
             app:layout_constraintStart_toStartOf="@+id/iv_i_am_nugget"
             app:layout_constraintTop_toBottomOf="@+id/iv_i_am_nugget" />
@@ -88,10 +103,11 @@
             android:layout_marginHorizontal="@dimen/_45sdp"
             android:layout_marginBottom="@dimen/_50sdp"
             android:gravity="center"
-            android:textStyle="italic"
             android:text="@string/try_show_me_the_drinks_menu"
             android:textColor="@color/white"
             android:textSize="@dimen/_12ssp"
+            android:textStyle="italic"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />

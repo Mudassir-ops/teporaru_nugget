@@ -9,7 +9,7 @@ import javax.inject.Inject
 
 class TextToResponseRepositoryImp @Inject constructor(private val textToResponseApiService: TextToResponseApiService) :
     TextToResponseRepository {
-    override val textToResponse: TextToResponse = { query, body ->
+    override val textToResponse: TextToResponse = { body ->
         flow {
             val response = retryIO {
                 textToResponseApiService.textToResponse(

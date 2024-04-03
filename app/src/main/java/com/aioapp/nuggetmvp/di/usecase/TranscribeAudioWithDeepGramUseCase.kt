@@ -9,16 +9,11 @@ import okhttp3.RequestBody
 import javax.inject.Inject
 
 class TranscribeAudioWithDeepGramUseCase @Inject constructor(private val deepGramRepository: DeepGramRepository) {
-
     fun invokeTranscribeAudioUseCase(
-        model: String?,
-        smartFormat: Boolean?,
-        language: String?,
-        audio: RequestBody,
-        keywords: List<String>
+        model: String?, smartFormat: Boolean?, language: String?, audio: RequestBody
     ): Flow<Result<TranscriptionBaseResponse>?> {
         return deepGramRepository.transcribeAudio(
-            model, smartFormat, language, audio, keywords
+            model, smartFormat, language, audio
         )
     }
 }

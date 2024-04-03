@@ -79,15 +79,8 @@ class MainActivity : AppCompatActivity() {
                         0
                     )?.transcript ?: "").toString(), orderEntity = orderList, screenState = 3
                 )
-                val keywords = listOf(
-                    "drinks:3", "food:3", "caesar:3", "wedge:5", "caprese:5", "pork:3",
-                    "fish:3", "beef:3", "salmon:3", "steak:3", "chicken:3", "pina:3",
-                    "colada:3", "mojito:3", "margarita:3", "mile:3", "high:3", "coke:3",
-                    "maverick:3", "wingman:3", "martini:3", "iceman:3", "fudge:3",
-                    "brownie:3", "cheesecake:3"
-                )
                 viewModel.textToResponse(
-                    body = textToResponseRequestBody, keywords
+                    body = textToResponseRequestBody
                 )
 //                val imagePath = getImageAsset()
 //                val file = File(imagePath)
@@ -129,21 +122,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun translateVoice(path: String) {
-        val keywords = listOf(
-            "drinks:3", "food:3", "caesar:3", "wedge:3", "caprese:3", "pork:3",
-            "fish:3", "beef:3", "salmon:3", "steak:3", "chicken:3", "pina:3",
-            "colada:3", "mojito:3", "margarita:3", "mile:3", "high:3", "coke:3",
-            "maverick:3", "wingman:3", "martini:3", "iceman:3", "fudge:3",
-            "brownie:3", "cheesecake:3"
-        )
-
         val wavFile = File(path)
         val requestBody = wavFile.asRequestBody("audio/*".toMediaTypeOrNull())
         viewModel.transcribeAudio(
             model = deepGrammodel,
             smartFormat = smartFormat,
             language = deepGramlanguage,
-            audio = requestBody, keywords = keywords
+            audio = requestBody
         )
     }
 
@@ -172,7 +157,13 @@ class MainActivity : AppCompatActivity() {
      */
     private fun calculateThreshold(amplitudes: List<Int>): Int {
         val sum = amplitudes.sum()
-        return sum / amplitudes.size
+        val thresholdInner = sum / amplitudes.size
+        val result = if (thresholdInner < 2500) {
+            2800
+        } else {
+            sum / amplitudes.size
+        }
+        return result
     }
 
     private fun stopRecordingService() {

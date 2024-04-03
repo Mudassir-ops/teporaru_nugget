@@ -10,11 +10,10 @@ import javax.inject.Inject
 
 class TextToResponseUseCase @Inject constructor(private val textToResponseRepository: TextToResponseRepository) {
     fun invokeTextToResponseUseCase(
-        keywords: List<String>,
         body: TextToResponseRequestBody
     ): Flow<Result<TextToResponseEntity>?> {
         return textToResponseRepository.textToResponse(
-            keywords, body
+            body
         )
     }
 }

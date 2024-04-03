@@ -52,19 +52,11 @@ class NuggetMainViewModel @Inject constructor(
     }
 
     fun transcribeAudio(
-        model: String?,
-        smartFormat: Boolean?,
-        language: String?,
-        audio: RequestBody,
-        keywords: List<String>
+        model: String?, smartFormat: Boolean?, language: String?, audio: RequestBody
     ) {
         viewModelScope.launch {
             deepGramUseCase.invokeTranscribeAudioUseCase(
-                model = model,
-                smartFormat = smartFormat,
-                language = language,
-                audio = audio,
-                keywords = keywords
+                model = model, smartFormat = smartFormat, language = language, audio = audio
             ).onStart {
                 setLoading()
             }.catch { exception ->
@@ -88,11 +80,11 @@ class NuggetMainViewModel @Inject constructor(
 
 
     fun textToResponse(
-        body: TextToResponseRequestBody, keywords: List<String>
+        body: TextToResponseRequestBody
     ) {
         viewModelScope.launch {
             textToResponseUseCase.invokeTextToResponseUseCase(
-                body = body, keywords = keywords
+                body = body
             ).onStart {
                 setLoading()
             }.catch { exception ->

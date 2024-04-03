@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.fragments.PaymentFragment">
+
+        <include
+            android:id="@+id/header_layout"
+            layout="@layout/header_layout"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_40sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_60sdp"
+            android:background="@drawable/bg_cart_tax_total"
+            android:backgroundTint="@color/grey"
+            app:layout_constraintTop_toBottomOf="@id/header_layout"
+            tools:layout_editor_absoluteX="-26dp">
+
+            <TextView
+                android:id="@+id/tv_your_order"
+                style="@style/textPoppinsRegular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_10sdp"
+                android:text="@string/your_order"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_15ssp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_tax_amount"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textColor="@color/off_white"
+                android:textSize="@dimen/_13ssp"
+                app:layout_constraintEnd_toEndOf="@+id/tv_your_order"
+                app:layout_constraintStart_toStartOf="@+id/tv_your_order"
+                app:layout_constraintTop_toBottomOf="@+id/tv_your_order"
+                tools:text="Tax $10" />
+
+            <TextView
+                style="@style/textPoppinsMedium"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginEnd="@dimen/_20sdp"
+                android:gravity="center_vertical"
+                android:textColor="@color/orange"
+                android:textSize="@dimen/_30ssp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="$186.00" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <ImageView
+            android:id="@+id/iv_card_img"
+            android:layout_width="@dimen/_100sdp"
+            android:layout_height="@dimen/_90sdp"
+            android:contentDescription="@null"
+            android:src="@drawable/card"
+            app:layout_constraintBottom_toTopOf="@id/tv_tap_to_pay"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed" />
+
+        <TextView
+            android:id="@+id/tv_tap_to_pay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tap_to_pay"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_14ssp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/iv_card_img"
+            app:layout_constraintStart_toStartOf="@+id/iv_card_img"
+            app:layout_constraintTop_toBottomOf="@+id/iv_card_img" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

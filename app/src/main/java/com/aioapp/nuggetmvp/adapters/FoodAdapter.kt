@@ -7,6 +7,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.aioapp.nuggetmvp.databinding.FoodItemLayoutBinding
 import com.aioapp.nuggetmvp.models.Food
+import com.aioapp.nuggetmvp.ui.MainActivity
 import com.aioapp.nuggetmvp.utils.Constants
 
 
@@ -44,7 +45,7 @@ class FoodAdapter(
             )
             binding.tvItemName.text = food.name
             binding.clFoodItem.setOnClickListener {
-                Constants.cartItemList?.add(food)
+//                Constants.cartItemList?.add(food)
                 navigateToDetails.invoke(food)
             }
         }

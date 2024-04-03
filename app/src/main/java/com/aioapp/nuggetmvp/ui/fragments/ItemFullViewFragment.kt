@@ -1,16 +1,18 @@
 package com.aioapp.nuggetmvp.ui.fragments
 
 import android.os.Bundle
-import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.aioapp.nuggetmvp.R
 import com.aioapp.nuggetmvp.databinding.FragmentItemFullViewBinding
 import com.aioapp.nuggetmvp.models.Food
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 
 class ItemFullViewFragment : Fragment() {
@@ -39,8 +41,9 @@ class ItemFullViewFragment : Fragment() {
                 it.fullImg
             )
         })
-        Handler().postDelayed({
+        lifecycleScope.launch {
+            delay(5000)
             findNavController().navigate(R.id.action_itemFullViewFragment_to_cartFragment)
-        }, 10000)
+        }
     }
 }

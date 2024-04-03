@@ -53,14 +53,18 @@ class NuggetIntroFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setAnimationOnTextView()
+        binding.introAnimationView.playAnimation()
         nuggetSharedViewModel.mState.flowWithLifecycle(
             lifecycle, Lifecycle.State.STARTED
         ).onEach { states ->
             when (states) {
                 NuggetProcessingStatus.Init -> Log.e("NuggetMvp", "onViewCreated: Init")
 
-                is NuggetProcessingStatus.RecordingStarted -> binding.tvBottomPrompt.text =
-                    getString(R.string.listening)
+                is NuggetProcessingStatus.RecordingStarted -> {
+                    binding.tvBottomPrompt.visibility = View.VISIBLE
+                    binding.tvBottomPrompt.text =
+                        getString(R.string.listening)
+                }
 
                 is NuggetProcessingStatus.RecordingEnded -> Log.e(
                     "NuggetMvp", "onViewCreated: Init${states.isEnded}"
@@ -90,7 +94,10 @@ class NuggetIntroFragment : Fragment() {
                         }
 
                         else -> {
-                            "Invalid Response Case"
+                            if (findNavController().currentDestination?.id == R.id.nuggetIntroFragment) {
+                                //  screenStateUpdateCallback?.invoke(ScreenState.FOOD_MENU)
+                                findNavController().navigate(R.id.action_nuggetIntroFragment_to_foodMenuFragment)
+                            }
                         }
                     }
                 }

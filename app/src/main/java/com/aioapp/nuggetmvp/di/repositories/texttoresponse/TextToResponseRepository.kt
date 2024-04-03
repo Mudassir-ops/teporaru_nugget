@@ -6,7 +6,6 @@ import com.aioapp.nuggetmvp.utils.Result
 import kotlinx.coroutines.flow.Flow
 
 typealias TextToResponse = (
-    keywords: List<String>,
     body: TextToResponseRequestBody
 ) -> Flow<Result<TextToResponseEntity>?>
 

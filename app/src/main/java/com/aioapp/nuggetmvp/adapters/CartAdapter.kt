@@ -8,12 +8,10 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.aioapp.nuggetmvp.databinding.CartItemBinding
 import com.aioapp.nuggetmvp.models.Food
-import com.aioapp.nuggetmvp.utils.Constants
 
 class CartAdapter(
     private val context: Context, private var cartItemList: List<Food?>
 ) : RecyclerView.Adapter<CartAdapter.ViewHolder>() {
-
 
     @SuppressLint("NotifyDataSetChanged")
     fun updateCartItem(cartItemList: List<Food?>) {
@@ -32,12 +30,11 @@ class CartAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val cartItem = cartItemList[position]
-        holder.bind(cartItem ?: return)
+        holder.bind(cartItem!!)
     }
 
     inner class ViewHolder(val binding: CartItemBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(cartItem: Food) {
-            Constants.cartItemList?.add(cartItem)
             binding.ivItem.setImageDrawable(
                 ContextCompat.getDrawable(
                     context, cartItem.image

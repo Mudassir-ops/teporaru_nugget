@@ -1,4 +1,4 @@
-package com.aioapp.nuggetmvp.utils.all_extension
+package com.aioapp.nuggetmvp.utils.appextension
 
 import android.view.View
 

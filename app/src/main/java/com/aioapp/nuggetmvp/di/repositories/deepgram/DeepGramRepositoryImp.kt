@@ -9,34 +9,28 @@ import javax.inject.Inject
 
 class DeepGramRepositoryImp @Inject constructor(private val retrofitApiService: RetrofitApiService) :
     DeepGramRepository {
-    override val transcribeAudio: TranscribeAudioFunction =
-        { model, smartFormat, language, audio, keywords ->
-            flow {
-                val response = retryIO {
-                    retrofitApiService.transcribeAudio(
-                        model = model,
-                        smartFormat = smartFormat,
-                        language = language,
-                        audio = audio,
-                        keywords
+    override val transcribeAudio: TranscribeAudioFunction = { model, smartFormat, language, audio ->
+        flow {
+            val response = retryIO {
+                retrofitApiService.transcribeAudio(
+                    model = model,
+                    smartFormat = smartFormat,
+                    language = language,
+                    audio = audio
+                )
+            }
+            if (response.isSuccessful) {
+                val restaurantResponse = response.body()
+                emit(com.aioapp.nuggetmvp.utils.Result.Success(restaurantResponse ?: return@flow))
+            } else {
+                emit(
+                    com.aioapp.nuggetmvp.utils.Result.Error(
+                        ApiException(response.code(), response.message())
                     )
-                }
-                if (response.isSuccessful) {
-                    val restaurantResponse = response.body()
-                    emit(
-                        com.aioapp.nuggetmvp.utils.Result.Success(
-                            restaurantResponse ?: return@flow
-                        )
-                    )
-                } else {
-                    emit(
-                        com.aioapp.nuggetmvp.utils.Result.Error(
-                            ApiException(response.code(), response.message())
-                        )
-                    )
-                }
+                )
             }
         }
+    }
 
     private suspend fun <T : Any> retryIO(
         times: Int = Int.MAX_VALUE, initialDelay: Long = 1000,

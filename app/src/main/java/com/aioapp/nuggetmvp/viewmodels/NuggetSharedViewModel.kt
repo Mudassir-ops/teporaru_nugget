@@ -1,6 +1,7 @@
 package com.aioapp.nuggetmvp.viewmodels
 
 import androidx.lifecycle.ViewModel
+import com.aioapp.nuggetmvp.models.Food
 import com.aioapp.nuggetmvp.models.TextToResponseIntent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -12,7 +13,7 @@ class NuggetSharedViewModel @Inject constructor(
 ) : ViewModel() {
     private val state = MutableStateFlow<NuggetProcessingStatus>(NuggetProcessingStatus.Init)
     val mState: StateFlow<NuggetProcessingStatus> get() = state
-
+    var cartItemList: MutableList<Food>? = ArrayList()
     fun setRecordingStarted() {
         state.value = NuggetProcessingStatus.RecordingStarted(true)
     }

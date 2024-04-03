@@ -42,9 +42,9 @@
     </fragment>
     <fragment
         android:id="@+id/itemFullViewFragment"
+        tools:layout="@layout/fragment_item_full_view"
         android:name="com.aioapp.nuggetmvp.ui.fragments.ItemFullViewFragment"
-        android:label="ItemFullViewFragment"
-        tools:layout="@layout/fragment_item_full_view">
+        android:label="ItemFullViewFragment">
         <action
             android:id="@+id/action_itemFullViewFragment_to_cartFragment"
             app:destination="@id/cartFragment" />
@@ -55,16 +55,16 @@
     <fragment
         android:id="@+id/cartFragment"
         android:name="com.aioapp.nuggetmvp.ui.fragments.CartFragment"
-        android:label="CartFragment"
-        tools:layout="@layout/fragment_cart">
+        tools:layout="@layout/fragment_cart"
+        android:label="CartFragment">
         <action
             android:id="@+id/action_cartFragment_to_orderConfirmationFragment"
             app:destination="@id/orderConfirmationFragment" />
     </fragment>
     <fragment
         android:id="@+id/orderConfirmationFragment"
+        tools:layout="@layout/fragment_order_confirmation"
         android:name="com.aioapp.nuggetmvp.ui.fragments.OrderConfirmationFragment"
-        android:label="OrderConfirmationFragment"
-        tools:layout="@layout/fragment_order_confirmation" />
+        android:label="OrderConfirmationFragment" />
 
 </navigation>

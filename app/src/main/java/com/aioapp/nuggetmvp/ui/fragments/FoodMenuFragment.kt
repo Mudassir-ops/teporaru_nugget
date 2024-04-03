@@ -18,7 +18,7 @@ import com.aioapp.nuggetmvp.adapters.FoodAdapter
 import com.aioapp.nuggetmvp.databinding.FragmentFoodMenuBinding
 import com.aioapp.nuggetmvp.models.Food
 import com.aioapp.nuggetmvp.service.NuggetRecorderService
-import com.aioapp.nuggetmvp.utils.Constants
+import com.aioapp.nuggetmvp.utils.appextension.showToast
 import com.aioapp.nuggetmvp.utils.wakeupCallBack
 import com.aioapp.nuggetmvp.viewmodels.CartSharedViewModel
 import com.aioapp.nuggetmvp.viewmodels.NuggetProcessingStatus
@@ -55,8 +55,8 @@ class FoodMenuFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if (Constants.cartItemList?.size!! > 0) binding.headerLayout.tvCartCount.text =
-            Constants.cartItemList?.size.toString()
+        if (nuggetSharedViewModel.cartItemList?.size!! > 0) binding.headerLayout.tvCartCount.text =
+            nuggetSharedViewModel.cartItemList?.size.toString()
         val foodList = getFoodList()
         val foodAdapter = FoodAdapter(context ?: return, foodList) {
             val bundle = Bundle()
@@ -68,61 +68,100 @@ class FoodMenuFragment : Fragment() {
             }
         }
         binding.rvFood.adapter = foodAdapter
-
-        nuggetSharedViewModel.mState.flowWithLifecycle(
-            lifecycle, Lifecycle.State.STARTED
-        ).onEach { states ->
-            when (states) {
-                NuggetProcessingStatus.Init -> Log.e("NuggetMvp", "onViewCreated: Init")
-
-                is NuggetProcessingStatus.RecordingStarted -> binding.tvBottomPrompt.text =
-                    getString(R.string.listening)
-
-                is NuggetProcessingStatus.RecordingEnded -> Log.e(
-                    "NuggetMvp", "onViewCreated: Init${states.isEnded}"
-                )
-
-                is NuggetProcessingStatus.TranscriptStarted -> binding.tvBottomPrompt.text =
-                    getString(R.string.transcripitng)
-
-                is NuggetProcessingStatus.TranscriptEnd -> binding.tvBottomPrompt.text =
-                    states.value
-
-                is NuggetProcessingStatus.TextToResponseEnded -> {
-                    if (isFirstTime) {
-                        isFirstTime = false
-                        return@onEach
-                    }
-                    if (findNavController().currentDestination?.id == R.id.foodMenuFragment) {
-                        val foodItem =
-                            getFoodList().find { it?.name == states.value?.get(0)?.parametersEntity?.name }
-                        val bundle = Bundle()
-                        bundle.putParcelable("FoodItem", foodItem)
-                        if (findNavController().currentDestination?.id == R.id.foodMenuFragment) {
-                            if (foodItem != null) {
-                                cartSharedViewModel.addItemIntoCart(foodItem)
-                            }
-                            findNavController().navigate(
-                                R.id.action_foodMenuFragment_to_itemFullViewFragment, bundle
-                            )
-                        }
-                    }
-                }
-            }
-        }.launchIn(lifecycleScope)
+        observeStates()
     }
 
     private fun getFoodList(): List<Food?> {
         return listOf(
-            Food(R.drawable.caesar, R.drawable.ceasar_full_img, "Caesar", "$12"),
-            Food(R.drawable.wedge, R.drawable.wedge_full_img, "Wedge", "$14"),
-            Food(R.drawable.caprese, R.drawable.caprese_full_img, "Caprese", "$14"),
-            Food(R.drawable.pork, R.drawable.pork_full_img, "Pork", "$18"),
-            Food(R.drawable.fish, R.drawable.fish_full_img, "Fish", "$18"),
-            Food(R.drawable.beef, R.drawable.beef_full_img, "Beef", "$18"),
-            //Food(R.drawable.salmon, R.drawable.salmon_full_img, "Salmon", "$28"),
-            Food(R.drawable.steak, R.drawable.steak_full_img, "Steak", "$35"),
-            Food(R.drawable.chicken, R.drawable.chicken_full_img, "Chicken", "$25")
+            Food(R.drawable.caesar, R.drawable.ceasar_full_img, "Caesar", "12"),
+            Food(R.drawable.wedge, R.drawable.wedge_full_img, "Wedge", "14"),
+            Food(R.drawable.caprese, R.drawable.caprese_full_img, "Caprese", "14"),
+            Food(R.drawable.pork, R.drawable.pork_full_img, "Pork", "18"),
+            Food(R.drawable.fish, R.drawable.fish_full_img, "Fish", "18"),
+            Food(R.drawable.beef, R.drawable.beef_full_img, "Beef", "18"),
+            Food(R.drawable.salmon, R.drawable.salmon_full_img, "Salmon", "28"),
+            Food(R.drawable.steak, R.drawable.steak_full_img, "Steak", "35"),
+            Food(R.drawable.chicken, R.drawable.chicken_full_img, "Chicken", "25")
         )
+    }
+
+    private fun observeStates() {
+        nuggetSharedViewModel.mState.flowWithLifecycle(
+            lifecycle, Lifecycle.State.STARTED
+        ).onEach { states ->
+            handleNuggetProcessingStatus(states)
+        }.launchIn(lifecycleScope)
+    }
+
+    private fun handleNuggetProcessingStatus(states: NuggetProcessingStatus) {
+        when (states) {
+            NuggetProcessingStatus.Init -> handleInitState()
+            is NuggetProcessingStatus.RecordingStarted -> handleRecordingStartedState()
+            is NuggetProcessingStatus.RecordingEnded -> handleRecordingEndedState(states)
+            is NuggetProcessingStatus.TranscriptStarted -> handleTranscriptStartedState()
+            is NuggetProcessingStatus.TranscriptEnd -> handleTranscriptEndState(states)
+            is NuggetProcessingStatus.TextToResponseEnded -> handleTextToResponseEndedState(states)
+        }
+    }
+
+    private fun handleInitState() {
+        Log.e("NuggetMvp", "onViewCreated: Init")
+    }
+
+    private fun handleRecordingStartedState() {
+        binding.tvBottomPrompt.text = getString(R.string.listening)
+    }
+
+    private fun handleRecordingEndedState(states: NuggetProcessingStatus.RecordingEnded) {
+        Log.e("NuggetMvp", "onViewCreated: Init${states.isEnded}")
+    }
+
+    private fun handleTranscriptStartedState() {
+        binding.tvBottomPrompt.text = getString(R.string.transcripitng)
+    }
+
+    private fun handleTranscriptEndState(states: NuggetProcessingStatus.TranscriptEnd) {
+        binding.tvBottomPrompt.text = states.value
+    }
+
+    private fun handleTextToResponseEndedState(states: NuggetProcessingStatus.TextToResponseEnded) {
+        if (isFirstTime) {
+            isFirstTime = false
+            return
+        }
+        val foodItems = states.value?.mapNotNull { state ->
+            getFoodList().find { it?.name == state.parametersEntity?.name }
+        }
+        if (foodItems?.isNotEmpty() == true) {
+            if (foodItems.size > 1) {
+                handleMultipleItemsState(foodItems)
+            } else {
+                handleSingleItemState(foodItems[0])
+            }
+        } else {
+            context?.showToast("Item Not Available")
+        }
+    }
+
+    private fun handleMultipleItemsState(foodItems: List<Food>) {
+        if (findNavController().currentDestination?.id == R.id.foodMenuFragment) {
+            foodItems.forEach { food ->
+                cartSharedViewModel.addItemIntoCart(food)
+            }
+            findNavController().navigate(R.id.action_foodMenuFragment_to_cartFragment)
+        }
+    }
+
+    private fun handleSingleItemState(foodItem: Food) {
+        if (findNavController().currentDestination?.id == R.id.foodMenuFragment) {
+            cartSharedViewModel.addItemIntoCart(foodItem)
+            val bundle = Bundle()
+            bundle.putParcelable(
+                "FoodItem", foodItem
+            )
+            findNavController().navigate(
+                R.id.action_foodMenuFragment_to_itemFullViewFragment, bundle
+            )
+        }
     }
 }
