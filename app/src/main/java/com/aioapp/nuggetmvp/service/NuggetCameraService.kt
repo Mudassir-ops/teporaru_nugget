@@ -40,7 +40,6 @@ class NuggetCameraService : Service(), IFrontCaptureCallback {
     override fun onDestroy() {
         super.onDestroy()
         stopSelf()
-        ccv2WithoutPreview?.closeCamera()
     }
 
     override fun onBind(intent: Intent?): IBinder? {
@@ -49,23 +48,17 @@ class NuggetCameraService : Service(), IFrontCaptureCallback {
 
     private fun capturePhoto() {
         ccv2WithoutPreview?.openCamera()
-        try {
-            Thread.sleep(20)
-        } catch (e: InterruptedException) {
-            e.printStackTrace()
-        }
         ccv2WithoutPreview?.takePicture(this@NuggetCameraService)
     }
 
     override fun onPhotoCaptured(filePath: String?) {
         Log.wtf("OnPhotoCaptured--->", "onPhotoCaptured:$filePath ")
-        ccv2WithoutPreview?.closeCamera()
         captureCameraPhoto()
     }
 
     private fun captureCameraPhoto() {
         CoroutineScope(Dispatchers.Default).launch {
-            delay(3000)
+            delay(5000)
             withContext(Main) {
                 capturePhoto()
             }

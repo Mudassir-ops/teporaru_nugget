@@ -53,7 +53,7 @@ class CameraControllerWithoutPreview(var context: Context) {
         setUpCameraOutputs()
         val manager = context.getSystemService(Context.CAMERA_SERVICE) as CameraManager
         try {
-            if (!mCameraOpenCloseLock.tryAcquire(2500, TimeUnit.MILLISECONDS)) {
+            if (!mCameraOpenCloseLock.tryAcquire(200, TimeUnit.MILLISECONDS)) {
                 throw RuntimeException("Time out waiting to lock camera opening.")
             }
             startBackgroundThread()
