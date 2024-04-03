@@ -1,0 +1,35 @@
+
+ukotlin:S66193"7Remove this useless non-null check, it always succeeds.(ß¸éJ$a131216c-6540-45e2-ab71-b8c58a657bad
+–kotlin:S117›"SRename this local variable to match the regular expression ^`?[_a-z][a-zA-Z0-9]*`?$(³ÙÒüÿÿÿÿJ$2c268abc-fc19-451e-b6de-5ad8ccfd8e4b
+xkotlin:S1133)"5Do not forget to remove this deprecated code someday.(üƒĞ¤øÿÿÿÿJ$4de21b59-ea00-489b-8cf7-99dbdf0921a5
+xkotlin:S11331"5Do not forget to remove this deprecated code someday.(éşŠşÿÿÿÿJ$5c207359-1e06-42f8-a29a-138540f80763
+akotlin:S1874y"#Deprecated code should not be used.(¡Úµ‘J$8b0960f0-55f8-4490-bbc8-7fd188cefe0d
+fkotlin:S1874z"#Deprecated code should not be used.(Ş±î¼úÿÿÿÿJ$0117c2fd-3ff1-4002-a7ca-c712d1016d27
+akotlin:S1874{"#Deprecated code should not be used.(ÏÊ¥ÏJ$df6392d1-215e-4944-a07a-425c7d1cf935
+akotlin:S1874"#Deprecated code should not be used.(ôÏ–òJ$2ed5f743-8c72-4b28-9aaf-9499894bcd94
+gkotlin:S1874ˆ"#Deprecated code should not be used.(©öÍ‹üÿÿÿÿJ$31dc265d-8014-48c4-928f-31ac5648b23a
+bkotlin:S1874Š"#Deprecated code should not be used.(µ£§ÀJ$7b046e20-539b-410e-8177-877861d2b48b
+bkotlin:S1874"#Deprecated code should not be used.(şûàJ$447907b8-f358-4de1-94da-fa4e167407da
+bkotlin:S1874‘"#Deprecated code should not be used.(¼ÊÀJ$19b28773-6c25-4f5d-8363-b3576e5594c2
+gkotlin:S1874"#Deprecated code should not be used.(ÜÄĞıÿÿÿÿJ$70cd4311-53cd-4327-904e-93a4a200c9b9
+bkotlin:S1874­"#Deprecated code should not be used.(¹‡Á¶J$882c2fc1-e328-400b-85e6-5b8968cfd6d7
+bkotlin:S1874­"#Deprecated code should not be used.(¹‡Á¶J$067066a2-e344-4f29-81f7-199c029a19d9
+gkotlin:S1874°"#Deprecated code should not be used.(Ú›³»úÿÿÿÿJ$c6272785-f7fa-476f-9d38-f5df9fb28f2a
+gkotlin:S1874°"#Deprecated code should not be used.(Ú›³»úÿÿÿÿJ$f44298d6-d2ed-42be-9f46-d63dd1de4c71
+fkotlin:S1874	"#Deprecated code should not be used.(Åˆ­¨ùÿÿÿÿJ$97c4a6e6-9d67-4787-af01-71c9958bfc22
+akotlin:S1874
+"#Deprecated code should not be used.(ôä”ÙJ$f714bd41-21b9-42f0-9d9f-e2f1b58bf7bc
+akotlin:S1874
+"#Deprecated code should not be used.(ôä”ÙJ$96e9d666-f8b3-4a3c-a64f-4610788d0247
+fkotlin:S1874"#Deprecated code should not be used.(à©ÆäøÿÿÿÿJ$03b51e58-24e3-40a7-97ef-13bd5386005e
+fkotlin:S1874"#Deprecated code should not be used.(à©ÆäøÿÿÿÿJ$6e26dda9-3b74-4c80-a5e4-210d12ff6730
+fkotlin:S1874"#Deprecated code should not be used.(µõ³ûÿÿÿÿJ$ee7508a7-ed7e-4b3a-b2d9-ab28e8e364f1
+fkotlin:S1874"#Deprecated code should not be used.(µõ³ûÿÿÿÿJ$4ad4355c-9524-4bd0-bcb6-8070a524bcf7
+akotlin:S1874"#Deprecated code should not be used.(­âìõJ$37d7ca47-66d8-4e8a-985c-546554978f1c
+akotlin:S1874"#Deprecated code should not be used.(­âìõJ$10b8f962-ab09-45ca-ac12-0f1e460baf80
+fkotlin:S1874)"#Deprecated code should not be used.(üƒĞ¤øÿÿÿÿJ$a98c3e0d-f98c-49bc-bee9-aae749116c23
+fkotlin:S18741"#Deprecated code should not be used.(éşŠşÿÿÿÿJ$3b8cf65b-7155-44e0-8055-445923feb01e
+gkotlin:S1874°"#Deprecated code should not be used.(Ú›³»úÿÿÿÿJ$2a15f099-e08a-4708-8c4e-5e6647867539
+gkotlin:S1874°"#Deprecated code should not be used.(Ú›³»úÿÿÿÿJ$96a2e7d7-9f3d-4a8f-b895-be797d89ed8f
+gkotlin:S1874°"#Deprecated code should not be used.(Ú›³»úÿÿÿÿJ$1669b4e3-a17e-46a5-bc0d-d1634e9a6dfb
+akotlin:S1874´"#Deprecated code should not be used.(ÉéÙJ$e876ec9e-1110-4217-bd8e-96fc1443e35a

@@ -1,0 +1,27 @@
+
+v
+java:S1118	":Add a private constructor to hide the implicit public one.(¼ØûìJ$26149c7c-ea8f-4bd1-948e-b8928c98688e
+|	java:S125"<This block of commented-out lines of code should be removed.(øÁÕüøÿÿÿÿJ$4f22387b-cbe7-4c8f-a2ec-2671bfbbbef8
+j
+java:S1874".Remove this use of "Camera"; it is deprecated.(ÔßÒÎJ$d1715771-c158-4b95-9066-0921e2269c1a
+v
+java:S1874":Remove this use of "getNumberOfCameras"; it is deprecated.(ÔßÒÎJ$7fae71a7-f080-4656-bf38-0d02cee07297
+s
+java:S1874"2Remove this use of "CameraInfo"; it is deprecated.(Å‘§ÿúÿÿÿÿJ$48ddde4d-9f63-46b2-b553-ae5574ea8d09
+s
+java:S1874"2Remove this use of "CameraInfo"; it is deprecated.(Å‘§ÿúÿÿÿÿJ$e0bbeb92-3a17-495f-8ac0-181770379648
+j
+java:S1874".Remove this use of "Camera"; it is deprecated.(¯¤³‚J$46b9fd51-d5ed-4488-8c61-0506a6aa2c0f
+q
+java:S1874"5Remove this use of "getCameraInfo"; it is deprecated.(¯¤³‚J$2cd44bd7-9efd-446e-a5c0-b3856e35c275
+o
+java:S1874".Remove this use of "facing"; it is deprecated.(£¾¨éùÿÿÿÿJ$9328bfdc-9713-4194-97c8-a500e4cd4157
+s
+java:S1874"2Remove this use of "CameraInfo"; it is deprecated.(£¾¨éùÿÿÿÿJ$8dfd7775-0ca7-4488-a162-520ff5b69bc8
+|
+java:S1874";Remove this use of "CAMERA_FACING_FRONT"; it is deprecated.(£¾¨éùÿÿÿÿJ$0b830612-3922-4d10-8929-5e8c37e574db
+{
+java:S1118":Add a private constructor to hide the implicit public one.(ªğªÇüÿÿÿÿJ$a3ea69de-830d-4615-a0b1-057865cdb315
+	java:S100"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Úÿ³ŞøÿÿÿÿJ$c36e1264-d9b6-412a-8be0-afc8daa4c951
+	java:S100$"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(“Ç³úÿÿÿÿJ$d61f0a87-575d-4bd8-85b5-2985a2170b0b
+‰	java:S100)"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Şè€ŠJ$99625d6d-d172-43bd-a5b0-6c58ffda0ecc
