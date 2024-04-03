@@ -80,7 +80,7 @@ class CameraControllerWithoutPreview(var context: Context) {
                     listOf(*map.getOutputSizes(ImageFormat.JPEG)), CompareSizesByArea()
                 )
                 imageReader = ImageReader.newInstance(
-                    largest.width, largest.height, ImageFormat.JPEG,
+                    largest.width, largest.height, ImageFormat.JPEG,  /*maxImages*/
                     2
                 )
                 imageReader?.setOnImageAvailableListener(
@@ -94,6 +94,12 @@ class CameraControllerWithoutPreview(var context: Context) {
         } catch (e: NullPointerException) {
             e.printStackTrace()
         }
+    }
+
+    private fun startBackgroundThread() {
+        backgroundThread = HandlerThread("CameraBackground")
+        backgroundThread?.start()
+        backgroundHandler = backgroundThread?.looper?.let { Handler(it) }
     }
 
     private val mStateCallback: CameraDevice.StateCallback = object : CameraDevice.StateCallback() {
@@ -117,10 +123,7 @@ class CameraControllerWithoutPreview(var context: Context) {
     }
     private val mOnImageAvailableListener = OnImageAvailableListener { reader ->
         Log.d(TAG, "ImageAvailable")
-
-//        mCaptureSession?.capture(captureBuilder.build(), captureCallback, null)
-//
-//        backgroundHandler?.post(ImageSaver(reader.acquireNextImage(), file))
+        backgroundHandler?.post(ImageSaver(reader.acquireNextImage(), file))
     }
 
     fun closeCamera() {
@@ -146,11 +149,6 @@ class CameraControllerWithoutPreview(var context: Context) {
         }
     }
 
-    private fun startBackgroundThread() {
-        backgroundThread = HandlerThread("CameraBackground")
-        backgroundThread?.start()
-        backgroundHandler = backgroundThread?.getLooper()?.let { Handler(it) }
-    }
 
     private fun stopBackgroundThread() {
         backgroundThread?.quitSafely()
@@ -187,10 +185,6 @@ class CameraControllerWithoutPreview(var context: Context) {
         }
     }
 
-    fun isCaptureSessionActive(): Boolean {
-        return mCaptureSession != null
-    }
-
     fun takePicture(frontCaptureCb: IFrontCaptureCallback?) {
         callback = frontCaptureCb
 
@@ -210,6 +204,7 @@ class CameraControllerWithoutPreview(var context: Context) {
                     request: CaptureRequest,
                     result: TotalCaptureResult
                 ) {
+                    callback?.onPhotoCaptured(file?.absolutePath)
                     Log.d(TAG, file.toString())
                 }
             }

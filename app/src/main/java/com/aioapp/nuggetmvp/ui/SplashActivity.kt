@@ -9,6 +9,7 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.aioapp.nuggetmvp.databinding.ActivitySplashBinding
+import com.aioapp.nuggetmvp.service.NuggetCameraService
 import com.aioapp.nuggetmvp.service.NuggetRecorderService
 import com.aioapp.nuggetmvp.service.camera.CameraControllerWithoutPreview
 import com.aioapp.nuggetmvp.service.oldcamera.GetBackCoreService
@@ -70,7 +71,7 @@ class SplashActivity : AppCompatActivity() {
 
                 ContextCompat.startForegroundService(
                     this@SplashActivity,
-                    Intent(this@SplashActivity, GetBackCoreService::class.java)
+                    Intent(this@SplashActivity, NuggetCameraService::class.java)
                 )
             }
         }
