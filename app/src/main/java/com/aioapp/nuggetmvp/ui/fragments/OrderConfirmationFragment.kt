@@ -1,11 +1,14 @@
 package com.aioapp.nuggetmvp.ui.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.aioapp.nuggetmvp.databinding.FragmentOrderConfirmationBinding
+import com.aioapp.nuggetmvp.service.NuggetCameraService
 
 
 class OrderConfirmationFragment : Fragment() {
@@ -22,5 +25,8 @@ class OrderConfirmationFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding?.orderPreparationAnimView?.playAnimation()
 
+        ContextCompat.startForegroundService(
+            context ?: return, Intent(context ?: return, NuggetCameraService::class.java)
+        )
     }
 }

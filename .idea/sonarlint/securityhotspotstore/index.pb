@@ -3452,3 +3452,17 @@ Lapp/src/main/java/com/aioapp/nuggetmvp/ui/fragments/PaymentStatusFragment.kt,0
 Kapp/src/main/java/com/aioapp/nuggetmvp/ui/fragments/FoodOnTheWayFragment.kt,4/5/45f927443e73471b7976da2b2e03710198d49df4
 u
 Eapp/src/main/java/com/aioapp/nuggetmvp/ui/fragments/RefillFragment.kt,8/6/86ca335d47452a2affe21471921cf48d0d0e18d9
+„
+Tapp/src/main/java/com/aioapp/nuggetmvp/service/CameraControllerV2WithoutPreview.java,2/0/205279b0c099f10e48b30d99ec1a3f3a6c11671e
+‚
+Rapp/src/main/java/com/aioapp/nuggetmvp/service/CameraControllerV2WithoutPreview.kt,e/2/e21c6a96e8e71b34372c51b17afd0798e3412fea
+†
+Vapp/src/main/java/com/aioapp/nuggetmvp/service/camerapicture/IFrontCaptureCallback2.kt,d/4/d4ef0db6b3970d534e2b07110bc8599c0bca1787
+ƒ
+Sapp/src/main/java/com/aioapp/nuggetmvp/service/camerapicture/NuggetCameraService.kt,2/d/2d60b6d27a917610fa4e4c160ab91c98d0901619
+u
+Eapp/src/main/java/com/aioapp/nuggetmvp/service/NuggetCameraService.kt,5/9/59e8abf5d97c087a169a3be6e9a97bcf9b542d3d
+‡
+Wapp/src/main/java/com/aioapp/nuggetmvp/service/camera/CameraControllerWithoutPreview.kt,3/b/3b09de71230572f6e3f99e376a1d23428850c25f
+~
+Napp/src/main/java/com/aioapp/nuggetmvp/service/camera/IFrontCaptureCallback.kt,6/d/6dc711388ab0511f3340b4fcfb6f42ada4834e8f

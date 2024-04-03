@@ -7,19 +7,26 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import com.aioapp.nuggetmvp.databinding.ActivitySplashBinding
+import com.aioapp.nuggetmvp.service.camera.CameraControllerWithoutPreview
 import com.aioapp.nuggetmvp.service.NuggetRecorderService
+import com.aioapp.nuggetmvp.service.NuggetCameraService
 import com.aioapp.nuggetmvp.utils.Constants
 import com.aioapp.nuggetmvp.utils.appextension.assetsFile
 import com.aioapp.nuggetmvp.utils.appextension.isServiceRunning
 import com.aioapp.nuggetmvp.utils.enum.ScreenState
 import com.aioapp.nuggetmvp.utils.wakeupCallBack
 
+
 @SuppressLint("CustomSplashScreen")
 class SplashActivity : AppCompatActivity() {
     private var currentScreenState: ScreenState = ScreenState.WAKE_UP
     private var binding: ActivitySplashBinding? = null
     private var porcupineManager: PorcupineManager? = null
+
+    private var ccv2WithoutPreview: CameraControllerWithoutPreview? = null
+
     private var wakeWordCallback = PorcupineManagerCallback { keywordIndex ->
 
         Log.e("SplashHiNuggetWakeUp--->", ": $keywordIndex---$currentScreenState")
@@ -56,6 +63,26 @@ class SplashActivity : AppCompatActivity() {
         binding = ActivitySplashBinding.inflate(layoutInflater)
         setContentView(binding?.root)
         initPorcupineManager()
+
+
+        binding?.apply {
+            ivLeftEye.setOnClickListener {
+
+                ContextCompat.startForegroundService(
+                    this@SplashActivity,
+                    Intent(this@SplashActivity, NuggetCameraService::class.java)
+                )
+//                ccv2WithoutPreview = CameraControllerV2WithoutPreview(applicationContext)
+//                ccv2WithoutPreview?.openCamera()
+//                try {
+//                    Thread.sleep(20)
+//                } catch (e: InterruptedException) {
+//                    e.printStackTrace()
+//                }
+//                ccv2WithoutPreview?.takePicture()
+            }
+        }
+
         /**
          *@author Mudassir Satti This CallBack will update currentScreen State
          */

@@ -6,6 +6,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
@@ -13,6 +14,7 @@ import com.aioapp.nuggetmvp.databinding.ActivityMainBinding
 import com.aioapp.nuggetmvp.models.OrderEntity
 import com.aioapp.nuggetmvp.models.TextToResponseRequestBody
 import com.aioapp.nuggetmvp.service.NuggetRecorderService
+import com.aioapp.nuggetmvp.service.NuggetCameraService
 import com.aioapp.nuggetmvp.service.helper.Events
 import com.aioapp.nuggetmvp.utils.Constants.TAG_NUGET_MVP
 import com.aioapp.nuggetmvp.utils.Constants.deepGramlanguage
@@ -53,6 +55,10 @@ class MainActivity : AppCompatActivity() {
         bus?.register(this)
         observeDeepGram()
         observeDeepGramDataState()
+
+        ContextCompat.startForegroundService(
+            this@MainActivity, Intent(this@MainActivity, NuggetCameraService::class.java)
+        )
     }
 
     private fun observeDeepGramDataState() {
@@ -158,7 +164,7 @@ class MainActivity : AppCompatActivity() {
     private fun calculateThreshold(amplitudes: List<Int>): Int {
         val sum = amplitudes.sum()
         val thresholdInner = sum / amplitudes.size
-        val result = if (thresholdInner < 2500) {
+        val result = if (thresholdInner < 2600) {
             2800
         } else {
             sum / amplitudes.size

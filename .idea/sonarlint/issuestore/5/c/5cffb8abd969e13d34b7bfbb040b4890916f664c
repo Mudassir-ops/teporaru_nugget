@@ -1,11 +1,0 @@
-
-ckotlin:S6615" Remove this useless initializer.(Â÷ÖşÿÿÿÿJ$1be7e6ef-5cc3-4141-9d4f-5b16ab2f321a
-[kotlin:S125O"Remove this commented out code.(ˆº‡:J$a053a1c2-35c8-49e7-86a3-ea2c3d6b4f7c
-•kotlin:S117"SRename this local variable to match the regular expression ^`?[_a-z][a-zA-Z0-9]*`?$(¬Å¦üúÿÿÿÿJ$519760ea-3275-4051-b26c-80f358d9fe5e
-•kotlin:S117"SRename this local variable to match the regular expression ^`?[_a-z][a-zA-Z0-9]*`?$(†Ú©¥ûÿÿÿÿJ$6b475ccf-2425-4c9a-87c6-e8f0fa5c91bd
-ukotlin:S1144h"7Remove this unused private "sendDataToFragment" method.(òé°®J$f39da5fa-3c0f-4856-9d79-2c2bf4170f57
-¬kotlin:S1192."iDefine a constant instead of duplicating this literal "Capture picture using foreground service" 3 times.(¾€½šüÿÿÿÿJ$626889bb-fd98-42c8-b498-113571d51485
-fkotlin:S1874,"#Deprecated code should not be used.(‘‰½ÖıÿÿÿÿJ$ba1c85ed-8f6d-4c6f-a222-6f9f65db4995
-akotlin:S1874="#Deprecated code should not be used.(ÁÚã“J$8926d753-b46e-4a2c-8a8c-1d72bf8a14c8
-fkotlin:S1874x"#Deprecated code should not be used.(Ù„°ëûÿÿÿÿJ$f3a34ccd-62af-4e63-99a2-18f566e25a84
-˜kotlin:S1186p"ZAdd a nested comment explaining why this function is empty or complete the implementation.(™äÈ­J$b74f7804-b4a0-4792-8bd2-9caa2803986a

@@ -2,6 +2,9 @@ package com.aioapp.nuggetmvp.utils.appextension
 
 import android.app.ActivityManager
 import android.content.Context
+import android.hardware.Camera
+import android.hardware.camera2.CameraCharacteristics
+import android.hardware.camera2.CameraManager
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -73,4 +76,33 @@ fun Context.isServiceRunning(serviceClass: Class<*>): Boolean {
         }
     }
     return false
+}
+
+fun Context.checkCameraInfoOfHardware() {
+    val manager: CameraManager =
+        this@checkCameraInfoOfHardware.getSystemService(Context.CAMERA_SERVICE) as CameraManager
+    for (cameraId in manager.cameraIdList) {
+        val characteristics: CameraCharacteristics = manager.getCameraCharacteristics(cameraId)
+        Log.e("CameraInfo", "Camera $ type: $cameraId---->$characteristics")
+        val facing = characteristics.get(CameraCharacteristics.LENS_FACING)
+        if (facing != null && facing == CameraCharacteristics.LENS_FACING_BACK) {
+            continue
+        }
+        val map = characteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP)
+            ?: continue
+
+        return
+    }
+
+//    val numberOfCameras = Camera.getNumberOfCameras()
+//    for (i in 0 until numberOfCameras) {
+//        val cameraInfo = Camera.CameraInfo()
+//        Camera.getCameraInfo(i, cameraInfo)
+//        val cameraType = when (cameraInfo.facing) {
+//            Camera.CameraInfo.CAMERA_FACING_FRONT -> "Front Camera"
+//            Camera.CameraInfo.CAMERA_FACING_BACK -> "Back Camera"
+//            else -> "Unknown Camera"
+//        }
+//
+//    }
 }
