@@ -9,9 +9,9 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.aioapp.nuggetmvp.databinding.ActivitySplashBinding
-import com.aioapp.nuggetmvp.service.camera.CameraControllerWithoutPreview
 import com.aioapp.nuggetmvp.service.NuggetRecorderService
-import com.aioapp.nuggetmvp.service.NuggetCameraService
+import com.aioapp.nuggetmvp.service.camera.CameraControllerWithoutPreview
+import com.aioapp.nuggetmvp.service.oldcamera.GetBackCoreService
 import com.aioapp.nuggetmvp.utils.Constants
 import com.aioapp.nuggetmvp.utils.appextension.assetsFile
 import com.aioapp.nuggetmvp.utils.appextension.isServiceRunning
@@ -70,16 +70,8 @@ class SplashActivity : AppCompatActivity() {
 
                 ContextCompat.startForegroundService(
                     this@SplashActivity,
-                    Intent(this@SplashActivity, NuggetCameraService::class.java)
+                    Intent(this@SplashActivity, GetBackCoreService::class.java)
                 )
-//                ccv2WithoutPreview = CameraControllerV2WithoutPreview(applicationContext)
-//                ccv2WithoutPreview?.openCamera()
-//                try {
-//                    Thread.sleep(20)
-//                } catch (e: InterruptedException) {
-//                    e.printStackTrace()
-//                }
-//                ccv2WithoutPreview?.takePicture()
             }
         }
 

@@ -53,7 +53,7 @@ class CameraControllerWithoutPreview(var context: Context) {
         setUpCameraOutputs()
         val manager = context.getSystemService(Context.CAMERA_SERVICE) as CameraManager
         try {
-            if (!mCameraOpenCloseLock.tryAcquire(200, TimeUnit.MILLISECONDS)) {
+            if (!mCameraOpenCloseLock.tryAcquire(700, TimeUnit.MILLISECONDS)) {
                 throw RuntimeException("Time out waiting to lock camera opening.")
             }
             startBackgroundThread()
@@ -80,10 +80,10 @@ class CameraControllerWithoutPreview(var context: Context) {
                     listOf(*map.getOutputSizes(ImageFormat.JPEG)), CompareSizesByArea()
                 )
                 imageReader = ImageReader.newInstance(
-                    largest.width, largest.height, ImageFormat.JPEG,  /*maxImages*/
+                    largest.width, largest.height, ImageFormat.JPEG,
                     2
                 )
-                imageReader!!.setOnImageAvailableListener(
+                imageReader?.setOnImageAvailableListener(
                     mOnImageAvailableListener, backgroundHandler
                 )
                 mCameraId = cameraId
@@ -117,7 +117,10 @@ class CameraControllerWithoutPreview(var context: Context) {
     }
     private val mOnImageAvailableListener = OnImageAvailableListener { reader ->
         Log.d(TAG, "ImageAvailable")
-        backgroundHandler!!.post(ImageSaver(reader.acquireNextImage(), file))
+
+//        mCaptureSession?.capture(captureBuilder.build(), captureCallback, null)
+//
+//        backgroundHandler?.post(ImageSaver(reader.acquireNextImage(), file))
     }
 
     fun closeCamera() {
@@ -184,6 +187,10 @@ class CameraControllerWithoutPreview(var context: Context) {
         }
     }
 
+    fun isCaptureSessionActive(): Boolean {
+        return mCaptureSession != null
+    }
+
     fun takePicture(frontCaptureCb: IFrontCaptureCallback?) {
         callback = frontCaptureCb
 
@@ -211,7 +218,7 @@ class CameraControllerWithoutPreview(var context: Context) {
         } catch (e: CameraAccessException) {
             e.printStackTrace()
         }
-        callback?.onPhotoCaptured(file?.absolutePath)
+
     }
 
     private class ImageSaver(
