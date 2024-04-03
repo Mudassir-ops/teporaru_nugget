@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="textPoppinsLight">
+        <item name="fontFamily">@font/poppins_light_300</item>
+    </style>
+
+    <style name="textPoppinsLightItalic">
+        <item name="fontFamily">@font/poppins_light_italic_300</item>
+    </style>
+
+    <style name="textPoppinsMedium">
+        <item name="fontFamily">@font/poppins_medium_500</item>
+    </style>
+
+    <style name="textPoppinsMediumItalic">
+        <item name="fontFamily">@font/poppins_medium_italic_500</item>
+    </style>
+
+    <style name="textPoppinsRegular">
+        <item name="fontFamily">@font/poppins_regular_400</item>
+    </style>
+
+    <style name="textPoppinsRegularItalic">
+        <item name="fontFamily">@font/poppins_italic_regular_400</item>
+    </style>
+</resources>

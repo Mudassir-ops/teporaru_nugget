@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.fragments.NuggetIntroFragment">
+
+
+        <ImageView
+            android:id="@+id/iv_left_eye"
+            android:layout_width="75dp"
+            android:layout_height="58dp"
+            android:layout_marginVertical="@dimen/_15sdp"
+            android:layout_marginEnd="@dimen/_15sdp"
+            android:contentDescription="@null"
+            android:src="@drawable/open_eye_nugget"
+            app:layout_constraintBottom_toTopOf="@+id/guideline_top"
+            app:layout_constraintEnd_toStartOf="@id/iv_right_eye"
+            app:layout_constraintStart_toStartOf="@+id/guideline_left" />
+
+        <ImageView
+            android:id="@+id/iv_right_eye"
+            android:layout_width="75dp"
+            android:layout_height="58dp"
+            android:layout_marginVertical="@dimen/_15sdp"
+            android:layout_marginStart="@dimen/_15sdp"
+            android:contentDescription="@null"
+            android:src="@drawable/open_eye_nugget"
+            app:layout_constraintBottom_toTopOf="@+id/guideline_top"
+            app:layout_constraintEnd_toStartOf="@+id/guideline_right"
+            app:layout_constraintStart_toEndOf="@id/iv_left_eye" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_top"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.440" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.224" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintGuide_percent="0.776" />
+
+        <ImageView
+            android:id="@+id/iv_i_am_nugget"
+            android:layout_width="330dp"
+            android:layout_height="66dp"
+            android:layout_marginTop="59dp"
+            android:contentDescription="@null"
+            android:src="@drawable/im_nugget"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/guideline_top" />
+
+        <TextView
+            android:id="@+id/tv_your_server_for_the_day"
+            style="@style/textPoppinsRegularItalic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:text="@string/your_server_for_the_day"
+            android:textColor="@color/orange"
+            android:textSize="@dimen/_12ssp"
+            android:textStyle="italic"
+            app:layout_constraintEnd_toEndOf="@+id/iv_i_am_nugget"
+            app:layout_constraintStart_toStartOf="@+id/iv_i_am_nugget"
+            app:layout_constraintTop_toBottomOf="@+id/iv_i_am_nugget" />
+
+        <TextView
+            android:id="@+id/tv_bottom_prompt"
+            style="@style/textPoppinsLightItalic"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_45sdp"
+            android:layout_marginBottom="@dimen/_50sdp"
+            android:gravity="center"
+            android:textStyle="italic"
+            android:text="@string/try_show_me_the_drinks_menu"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_12ssp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

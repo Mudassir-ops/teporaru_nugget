@@ -1,0 +1,38 @@
+<resources>
+    <string name="app_name">Nugget MVP</string>
+    <string name="hey_nugget_text"><font color="#FFFFFFFF">Say “</font> <font color="#EF8549">Hey Nugget</font><font color="#FFFFFFFF">
+        ” to wake me up
+    </font></string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="your_server_for_the_day">Your server for the day</string>
+    <string name="try_show_me_the_drinks_menu"><font color="#FFFFFFFF">Try “Show me the</font> <font color="#EF8549">&#160;drinks menu</font><font color="#FFFFFFFF">
+        ”
+    </font></string>
+    <string name="try_add_martini_to_my_order"><font color="#FFFFFFFF">Try “Nugget, add</font> <font color="#EF8549">&#160;Martini</font><font color="#FFFFFFFF">
+        &#160;to my order”
+    </font></string>
+    <string name="guest_michael_j_i_table_12">Guest: Michael J. I Table # 12</string>
+    <string name="added_to_your_order">&#160;added to your order</string>
+    <string name="your_order">Your Order</string>
+    <string name="say_nugget_confirm_my_order"><font color="#FFFFFFFF">Say “Nugget,</font> <font color="#EF8549">&#160;confirm</font><font color="#FFFFFFFF">
+        &#160;my order”
+    </font></string>
+    <string name="try_add_coke_to_my_order"><font color="#FFFFFFFF">  Try “Add</font> <font color="#EF8549">&#160;Coke</font><font color="#FFFFFFFF">
+        &#160;to my order”
+    </font></string>
+
+    <string name="try_loved_it"><font color="#FFFFFFFF"> Try “</font> <font color="#EF8549">Loved it</font><font color="#FFFFFFFF">
+        ”
+    </font></string>
+    <string name="confirmation_message">Order Confirmed!\n\n\nYour food is\nbeing prepared</string>
+    <string name="rate_your_experience_with_nugget">Rate your experience\nwith Nugget</string>
+    <string name="loved_it">Loved it</string>
+    <string name="liked_it">Liked it</string>
+    <string name="okay">Okay</string>
+    <string name="meh">Meh</string>
+    <string name="hated_it">Hated it</string>
+    <string name="transcripitng">Transcripitng...</string>
+    <string name="listening">Listening</string>
+
+</resources>

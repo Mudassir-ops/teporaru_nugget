@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_food_item"
+        android:layout_width="match_parent"
+        android:background="@color/black"
+        android:paddingTop="@dimen/_2sdp"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/roundedImageView"
+            android:layout_width="@dimen/_96sdp"
+            android:layout_height="@dimen/_80sdp"
+            android:contentDescription="@null"
+            android:scaleType="fitXY"
+            android:paddingHorizontal="@dimen/_2sdp"
+            android:src="@drawable/pina_colada"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_item_name"
+            style="@style/textPoppinsMedium"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingVertical="5dp"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_12ssp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/roundedImageView"
+            app:layout_constraintStart_toStartOf="@+id/roundedImageView"
+            app:layout_constraintTop_toBottomOf="@+id/roundedImageView"
+            tools:text="Martini" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

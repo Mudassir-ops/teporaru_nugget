@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/app_navigation"
+    app:startDestination="@id/nuggetIntroFragment">
+    <fragment
+        android:id="@+id/nuggetIntroFragment"
+        android:name="com.aioapp.nuggetmvp.ui.fragments.NuggetIntroFragment"
+        android:label="NuggetIntroFragment"
+        tools:layout="@layout/fragment_nugget_intro">
+        <action
+            android:id="@+id/action_nuggetIntroFragment_to_drinkMenuFragment"
+            app:destination="@id/drinkMenuFragment" />
+        <action
+            android:id="@+id/action_nuggetIntroFragment_to_foodMenuFragment"
+            app:destination="@id/foodMenuFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/foodMenuFragment"
+        android:name="com.aioapp.nuggetmvp.ui.fragments.FoodMenuFragment"
+        android:label="FoodMenuFragment"
+        tools:layout="@layout/fragment_food_menu">
+        <action
+            android:id="@+id/action_foodMenuFragment_to_itemFullViewFragment"
+            app:destination="@id/itemFullViewFragment" />
+        <action
+            android:id="@+id/action_foodMenuFragment_to_cartFragment"
+            app:destination="@id/cartFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/drinkMenuFragment"
+        android:name="com.aioapp.nuggetmvp.ui.fragments.DrinkMenuFragment"
+        android:label="DrinkMenuFragment"
+        tools:layout="@layout/fragment_drink_menu">
+        <action
+            android:id="@+id/action_drinkMenuFragment_to_itemFullViewFragment"
+            app:destination="@id/itemFullViewFragment" />
+        <action
+            android:id="@+id/action_drinkMenuFragment_to_cartFragment"
+            app:destination="@id/cartFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/itemFullViewFragment"
+        android:name="com.aioapp.nuggetmvp.ui.fragments.ItemFullViewFragment"
+        android:label="ItemFullViewFragment"
+        tools:layout="@layout/fragment_item_full_view">
+        <action
+            android:id="@+id/action_itemFullViewFragment_to_cartFragment"
+            app:destination="@id/cartFragment" />
+        <argument
+            android:name="FoodItem"
+            app:argType="com.aioapp.nuggetmvp.models.Food" />
+    </fragment>
+    <fragment
+        android:id="@+id/cartFragment"
+        android:name="com.aioapp.nuggetmvp.ui.fragments.CartFragment"
+        android:label="CartFragment"
+        tools:layout="@layout/fragment_cart">
+        <action
+            android:id="@+id/action_cartFragment_to_orderConfirmationFragment"
+            app:destination="@id/orderConfirmationFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/orderConfirmationFragment"
+        android:name="com.aioapp.nuggetmvp.ui.fragments.OrderConfirmationFragment"
+        android:label="OrderConfirmationFragment"
+        tools:layout="@layout/fragment_order_confirmation" />
+
+</navigation>

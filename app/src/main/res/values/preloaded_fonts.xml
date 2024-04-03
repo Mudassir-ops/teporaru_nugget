@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="preloaded_fonts" translatable="false">
+        <item>@font/poppins_italic_regular_400</item>
+        <item>@font/poppins_light_italic_300</item>
+        <item>@font/poppins_medium_500</item>
+        <item>@font/poppins_medium_italic_500</item>
+        <item>@font/poppins_regular_400</item>
+        <item>@font/poppins_light_300</item>
+    </array>
+</resources>

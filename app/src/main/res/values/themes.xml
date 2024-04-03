@@ -1,0 +1,12 @@
+<resources>
+    <!-- Base application theme. -->
+    <style name="Base.Theme.NuggetMVP" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Customize your light theme here. -->
+        <item name="colorPrimary">@color/black</item>
+        <item name="colorPrimaryDark">@color/black</item>
+        <item name="colorAccent">@color/orange</item>
+        <item name="android:windowBackground">@color/black</item>
+    </style>
+
+    <style name="Theme.NuggetMVP" parent="Base.Theme.NuggetMVP" />
+</resources>
