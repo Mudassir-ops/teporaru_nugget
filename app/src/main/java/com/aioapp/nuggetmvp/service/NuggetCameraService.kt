@@ -41,6 +41,8 @@ class NuggetCameraService : Service(), IFrontCaptureCallback {
 
     override fun onDestroy() {
         super.onDestroy()
+        ccv2WithoutPreview?.closeCamera()
+        ccv2WithoutPreview = null
         stopSelf()
     }
 

@@ -57,7 +57,7 @@ class CameraControllerWithoutPreview(var context: Context) {
                 throw RuntimeException("Time out waiting to lock camera opening.")
             }
             startBackgroundThread()
-            manager.openCamera(mCameraId!!, mStateCallback, backgroundHandler)
+            manager.openCamera(mCameraId ?: return, mStateCallback, backgroundHandler)
         } catch (e: CameraAccessException) {
             e.printStackTrace()
         } catch (e: InterruptedException) {
@@ -134,7 +134,7 @@ class CameraControllerWithoutPreview(var context: Context) {
                 mCaptureSession = null
             }
             if (null != mCameraDevice) {
-                mCameraDevice!!.close()
+                mCameraDevice?.close()
                 mCameraDevice = null
             }
             if (null != imageReader) {
@@ -194,10 +194,11 @@ class CameraControllerWithoutPreview(var context: Context) {
                 return
             }
             val captureBuilder =
-                mCameraDevice!!.createCaptureRequest(CameraDevice.TEMPLATE_STILL_CAPTURE)
-            imageReader?.surface?.let { captureBuilder.addTarget(it) }
-            captureBuilder[CaptureRequest.CONTROL_AF_MODE] =
-                CameraMetadata.CONTROL_AF_MODE_CONTINUOUS_PICTURE
+                mCameraDevice?.createCaptureRequest(CameraDevice.TEMPLATE_STILL_CAPTURE)
+            imageReader?.surface?.let { captureBuilder?.addTarget(it) }
+            captureBuilder?.set(
+                CaptureRequest.CONTROL_AF_MODE, CameraMetadata.CONTROL_AF_MODE_CONTINUOUS_PICTURE
+            )
             val captureCallback: CaptureCallback = object : CaptureCallback() {
                 override fun onCaptureCompleted(
                     session: CameraCaptureSession,
@@ -209,15 +210,17 @@ class CameraControllerWithoutPreview(var context: Context) {
                 }
             }
             mCaptureSession?.stopRepeating()
-            mCaptureSession?.capture(captureBuilder.build(), captureCallback, null)
+            captureBuilder?.build()?.let { mCaptureSession?.capture(it, captureCallback, null) }
         } catch (e: CameraAccessException) {
             e.printStackTrace()
         }
 
     }
+
     fun isSessionClosed(): Boolean {
         return mCaptureSession == null
     }
+
     private class ImageSaver(
         /**
          * The JPEG image
@@ -256,7 +259,6 @@ class CameraControllerWithoutPreview(var context: Context) {
             return java.lang.Long.signum(lhs.width.toLong() * lhs.height - rhs.width.toLong() * rhs.height)
         }
     }
-
     private val outputMediaFile: File?
         get() {
             val mediaStorageDir = File(
