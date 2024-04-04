@@ -55,8 +55,8 @@ class FoodMenuFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if (nuggetSharedViewModel.cartItemList?.size!! > 0) binding.headerLayout.tvCartCount.text =
-            nuggetSharedViewModel.cartItemList?.size.toString()
+        if (cartSharedViewModel.itemList.value?.isNotEmpty() == true) binding.headerLayout.tvCartCount.text =
+            cartSharedViewModel.itemList.value?.size.toString()
         val foodList = getFoodList()
         val foodAdapter = FoodAdapter(context ?: return, foodList) {
             val bundle = Bundle()

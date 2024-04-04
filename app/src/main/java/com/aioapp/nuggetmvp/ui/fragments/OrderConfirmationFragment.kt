@@ -2,11 +2,14 @@ package com.aioapp.nuggetmvp.ui.fragments
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
+import com.aioapp.nuggetmvp.R
 import com.aioapp.nuggetmvp.databinding.FragmentOrderConfirmationBinding
 import com.aioapp.nuggetmvp.service.NuggetCameraService
 
@@ -24,9 +27,11 @@ class OrderConfirmationFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding?.orderPreparationAnimView?.playAnimation()
+        Handler().postDelayed({
+            if (findNavController().currentDestination?.id == R.id.orderConfirmationFragment) {
+                findNavController().navigate(R.id.action_orderConfirmationFragment_to_foodOnTheWayFragment)
+            }
+        }, 2000)
 
-        ContextCompat.startForegroundService(
-            context ?: return, Intent(context ?: return, NuggetCameraService::class.java)
-        )
     }
 }

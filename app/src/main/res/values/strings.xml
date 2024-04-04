@@ -21,7 +21,10 @@
     <string name="try_add_coke_to_my_order"><font color="#FFFFFFFF">Try “Add</font> <font color="#EF8549">&#160;Coke</font><font color="#FFFFFFFF">
         &#160;to my order”
     </font></string>
-    <string name="try_add_mojito_to_my_order"><font color="#FFFFFFFF">Try “Nugget, add a</font> <font color="#EF8549">&#160;mojito</font><font color="#FFFFFFFF">
+    <string name="try_add_mojito_to_my_order"><font color="#FFFFFFFF">Try “Nugget, add</font> <font color="#EF8549">&#160;Mojito</font><font color="#FFFFFFFF">
+        &#160;to my order”
+    </font></string>
+    <string name="try_add_chicken_to_my_order"><font color="#FFFFFFFF">Try “Nugget, add</font> <font color="#EF8549">&#160;Chicken</font><font color="#FFFFFFFF">
         &#160;to my order”
     </font></string>
     <string name="say_nugget_refill_my_drink"><font color="#FFFFFFFF">Say “Nugget,</font> <font color="#EF8549">&#160;refill</font><font color="#FFFFFFFF">
@@ -50,5 +53,12 @@
     <string name="checking_in_ndo_you_need_anything">Checking in\nDo you need anything?</string>
     <string name="let_me_know_if_you_need_anything">Let me know if you need anything</string>
     <string name="do_you_need_a_refill">Do you need a refill?</string>
+
+    <string name="try_i_want_a_fudge_brownie"><font color="#FFFFFFFF">Try “I want a</font> <font color="#EF8549">&#160;Fudge Brownie</font><font color="#FFFFFFFF">
+        ” or\n “I’m ready to</font><font color="#EF8549">&#160;Pay”</font></string>
+    <string name="tax">Tax $</string>
+    <string name="is_there_anything_else_i_can_get_you">Is there anything else I\ncan get you?</string>
+    <string name="is_there_anything_else">Is there anything else I can get you?</string>
+    <string name="sure_your">Sure! Your</string>
 
 </resources>

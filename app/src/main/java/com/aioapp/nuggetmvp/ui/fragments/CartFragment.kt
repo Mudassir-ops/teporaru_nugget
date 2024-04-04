@@ -17,7 +17,11 @@ import androidx.navigation.fragment.findNavController
 import com.aioapp.nuggetmvp.R
 import com.aioapp.nuggetmvp.adapters.CartAdapter
 import com.aioapp.nuggetmvp.databinding.FragmentCartBinding
+import com.aioapp.nuggetmvp.models.ParametersEntity
 import com.aioapp.nuggetmvp.service.NuggetRecorderService
+import com.aioapp.nuggetmvp.utils.appextension.showToast
+import com.aioapp.nuggetmvp.utils.enum.IntentTypes
+import com.aioapp.nuggetmvp.utils.enum.MenuType
 import com.aioapp.nuggetmvp.utils.wakeupCallBack
 import com.aioapp.nuggetmvp.viewmodels.CartSharedViewModel
 import com.aioapp.nuggetmvp.viewmodels.NuggetProcessingStatus
@@ -62,13 +66,38 @@ class CartFragment : Fragment() {
         setUpAdapter()
     }
 
+    private fun setPrices() {
+        val totalPrice = calculatePrice()
+        if (totalPrice != 0.0) {
+            binding?.tvTotalPrice?.text = "$".plus(String.format("%.2f", totalPrice))
+            val taxAmount = 0.1 * totalPrice
+            binding?.tvTaxAmount?.text =
+                getString(R.string.tax).plus(String.format("%.2f", taxAmount))
+        }
+
+    }
+
     private fun observeCartItems() {
-        cartSharedViewModel.itemList.flowWithLifecycle(
-            lifecycle, Lifecycle.State.STARTED
-        ).onEach { cartItemList ->
+        cartSharedViewModel.itemList.observe(viewLifecycleOwner) { cartItemList ->
+            Log.e("Observer_Remove--->", "observeState:$cartItemList ")
             binding?.headerLayout?.tvCartCount?.text = cartItemList.size.toString()
             cartAdapter?.updateCartItem(cartItemList = cartItemList)
-        }.launchIn(lifecycleScope)
+            setPrices()
+            if (cartItemList.isEmpty()) {
+                if (findNavController().currentDestination?.id == R.id.cartFragment) {
+                    findNavController().navigate(R.id.action_cartFragment_to_foodMenuFragment)
+                }
+            } else {
+                binding?.tvBottomPrompt?.text = getString(R.string.say_nugget_confirm_my_order)
+            }
+
+        }
+
+//        cartSharedViewModel.itemList.flowWithLifecycle(
+//            lifecycle, Lifecycle.State.STARTED
+//        ).onEach { cartItemList ->
+//
+//        }.launchIn(lifecycleScope)
     }
 
     private fun observeState() {
@@ -93,16 +122,7 @@ class CartFragment : Fragment() {
                 }
 
                 is NuggetProcessingStatus.TextToResponseEnded -> {
-                    if (isFirstTime) {
-                        isFirstTime = false
-                        return@onEach
-                    }
-                    states.value?.map { state ->
-                        Log.e("HiNugget--->", "observeState:$state ")
-                    }
-                    if (findNavController().currentDestination?.id == R.id.cartFragment) {
-                        findNavController().navigate(R.id.action_cartFragment_to_orderConfirmationFragment)
-                    }
+                    handleTextToResponseEndedState(states)
                 }
             }
         }.launchIn(lifecycleScope)
@@ -113,5 +133,92 @@ class CartFragment : Fragment() {
             adapter = cartAdapter
             hasFixedSize()
         }
+    }
+
+    private fun handleTextToResponseEndedState(states: NuggetProcessingStatus.TextToResponseEnded) {
+        if (isFirstTime) {
+            isFirstTime = false
+            return
+        }
+        states.value?.forEach { state ->
+            Log.e("HiNugget--->", "observeState:$state ")
+            when (state.intent) {
+                IntentTypes.ADD.label -> {
+                    handleAddIntoCartIntent(state.parametersEntity)
+                }
+
+                IntentTypes.REMOVE.label -> {
+                    handleRemoveFromCartIntent(state.parametersEntity)
+                }
+
+                IntentTypes.PLACE_ORDER.label -> {
+                    if (findNavController().currentDestination?.id == R.id.cartFragment) {
+                        findNavController().navigate(R.id.action_cartFragment_to_orderConfirmationFragment)
+                    }
+                }
+
+                IntentTypes.SHOW_MENU.label -> {
+                    handleShowMenuIntent(state.parametersEntity)
+                }
+            }
+        }
+
+    }
+
+    private fun handleShowMenuIntent(parametersEntity: ParametersEntity?) {
+        when (parametersEntity?.menuType) {
+            MenuType.FOOD.name.lowercase() -> {
+                if (findNavController().currentDestination?.id == R.id.cartFragment) {
+                    findNavController().navigate(R.id.action_cartFragment_to_foodMenuFragment)
+                }
+            }
+
+            MenuType.DRINKS.name.lowercase() -> {
+                if (findNavController().currentDestination?.id == R.id.cartFragment) {
+                    findNavController().navigate(R.id.action_cartFragment_to_drinkMenuFragment)
+                }
+            }
+
+            else -> {
+                if (findNavController().currentDestination?.id == R.id.cartFragment) {
+                    findNavController().navigate(R.id.action_nuggetIntroFragment_to_foodMenuFragment)
+                }
+            }
+        }
+    }
+
+    private fun handleRemoveFromCartIntent(parametersEntity: ParametersEntity?) {
+        Log.e("remove Item--->", "item:$parametersEntity ")
+        val cartItem =
+            cartSharedViewModel.itemList.value?.find { it.name == parametersEntity?.name }
+        if (cartItem != null) {
+            cartSharedViewModel.removeItemFromCart(cartItem)
+        } else {
+            context?.showToast("Item Not Available")
+        }
+        Log.e("remove Item--->", "item:$cartItem")
+    }
+
+    private fun handleAddIntoCartIntent(parametersEntity: ParametersEntity?) {
+        val cartItem =
+            nuggetSharedViewModel.allMenuItemList.find { it.name == parametersEntity?.name }
+        if (cartItem != null) {
+            cartSharedViewModel.addItemIntoCart(cartItem)
+        } else {
+            context?.showToast("Item Not Available")
+        }
+    }
+
+
+    private fun calculatePrice(): Double {
+        var amount = 0.0
+        if (!cartSharedViewModel.itemList.value.isNullOrEmpty()) {
+            cartSharedViewModel.itemList.value?.let { list ->
+                for (item in list) {
+                    amount += item.price!!.toInt()
+                }
+            }
+        }
+        return amount
     }
 }

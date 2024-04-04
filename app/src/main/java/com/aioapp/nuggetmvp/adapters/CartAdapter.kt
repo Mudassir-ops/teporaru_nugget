@@ -41,7 +41,7 @@ class CartAdapter(
                 )
             )
             binding.tvItemName.text = cartItem.name
-            binding.tvPrice.text = cartItem.price
+            binding.tvPrice.text = "$".plus(cartItem.price)
         }
     }
 }
