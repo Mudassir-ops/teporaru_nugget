@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 
 data class ParametersEntity(
     @SerializedName("name") var name: String? = null,
-    @SerializedName("quantity") var quantity: Int? = null,
+    @SerializedName("quantity") var quantity: Int? = 1,
     @SerializedName("menu_type") var menuType: String? = null,
     @SerializedName("required_thing") var requiredThing: String? = null
 )

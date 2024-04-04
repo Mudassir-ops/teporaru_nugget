@@ -6,7 +6,6 @@ import android.util.Log
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
@@ -14,7 +13,6 @@ import com.aioapp.nuggetmvp.databinding.ActivityMainBinding
 import com.aioapp.nuggetmvp.models.OrderEntity
 import com.aioapp.nuggetmvp.models.TextToResponseRequestBody
 import com.aioapp.nuggetmvp.service.NuggetRecorderService
-import com.aioapp.nuggetmvp.service.NuggetCameraService
 import com.aioapp.nuggetmvp.service.helper.Events
 import com.aioapp.nuggetmvp.utils.Constants.TAG_NUGET_MVP
 import com.aioapp.nuggetmvp.utils.Constants.deepGramlanguage
@@ -55,10 +53,6 @@ class MainActivity : AppCompatActivity() {
         bus?.register(this)
         observeDeepGram()
         observeDeepGramDataState()
-
-        ContextCompat.startForegroundService(
-            this@MainActivity, Intent(this@MainActivity, NuggetCameraService::class.java)
-        )
     }
 
     private fun observeDeepGramDataState() {
@@ -121,20 +115,26 @@ class MainActivity : AppCompatActivity() {
     private fun handleLoading(isLoading: Boolean) {
         if (isLoading) {
 
-
         } else {
 
         }
     }
 
     private fun translateVoice(path: String) {
+        val keywordsList = listOf(
+            "drinks", "food", "caesar", "wedge", "caprese",
+            "pork", "fish", "beef", "salmon", "steak",
+            "chicken", "pina", "colada", "mojito", "margarita",
+            "mile", "high", "coke", "maverick", "wingman",
+            "martini", "iceman", "fudge", "brownie", "cheesecake"
+        )
         val wavFile = File(path)
         val requestBody = wavFile.asRequestBody("audio/*".toMediaTypeOrNull())
         viewModel.transcribeAudio(
             model = deepGrammodel,
             smartFormat = smartFormat,
             language = deepGramlanguage,
-            audio = requestBody
+            audio = requestBody, keywords = keywordsList
         )
     }
 

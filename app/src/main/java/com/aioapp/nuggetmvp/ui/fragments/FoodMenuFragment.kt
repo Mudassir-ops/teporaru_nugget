@@ -17,8 +17,11 @@ import com.aioapp.nuggetmvp.R
 import com.aioapp.nuggetmvp.adapters.FoodAdapter
 import com.aioapp.nuggetmvp.databinding.FragmentFoodMenuBinding
 import com.aioapp.nuggetmvp.models.Food
+import com.aioapp.nuggetmvp.models.ParametersEntity
 import com.aioapp.nuggetmvp.service.NuggetRecorderService
 import com.aioapp.nuggetmvp.utils.appextension.showToast
+import com.aioapp.nuggetmvp.utils.enum.IntentTypes
+import com.aioapp.nuggetmvp.utils.enum.MenuType
 import com.aioapp.nuggetmvp.utils.wakeupCallBack
 import com.aioapp.nuggetmvp.viewmodels.CartSharedViewModel
 import com.aioapp.nuggetmvp.viewmodels.NuggetProcessingStatus
@@ -129,8 +132,43 @@ class FoodMenuFragment : Fragment() {
             isFirstTime = false
             return
         }
+        val state = states.value?.firstOrNull()
+        if (state != null) {
+            if (state.intent == IntentTypes.ADD.label) {
+                addIntentHandling(states)
+            } else {
+                handleShowMenuIntent(state.parametersEntity)
+            }
+        }
+    }
+
+    private fun handleShowMenuIntent(parametersEntity: ParametersEntity?) {
+        when (parametersEntity?.menuType) {
+            MenuType.FOOD.name.lowercase() -> {
+                if (findNavController().currentDestination?.id == R.id.foodMenuFragment) {
+                    return
+                }
+            }
+
+            MenuType.DRINKS.name.lowercase() -> {
+                if (findNavController().currentDestination?.id == R.id.foodMenuFragment) {
+                    findNavController().navigate(R.id.action_foodMenuFragment_to_drinkMenuFragment)
+                }
+            }
+
+            else -> {
+                if (findNavController().currentDestination?.id == R.id.foodMenuFragment) {
+                    findNavController().navigate(R.id.action_foodMenuFragment_to_drinkMenuFragment)
+                }
+            }
+        }
+    }
+
+
+    private fun addIntentHandling(states: NuggetProcessingStatus.TextToResponseEnded) {
+        val allMenuItems: List<Food?> = nuggetSharedViewModel.allMenuItemsResponse.value
         val foodItems = states.value?.mapNotNull { state ->
-            getFoodList().find { it?.name == state.parametersEntity?.name }
+            allMenuItems.find { it?.logicalName == state.parametersEntity?.name }
         }
         if (foodItems?.isNotEmpty() == true) {
             if (foodItems.size > 1) {

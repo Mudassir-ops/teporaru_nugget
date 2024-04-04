@@ -34,7 +34,7 @@ class ItemFullViewFragment : Fragment() {
             foodItem = this.arguments?.get("FoodItem") as Food
         }
 
-        binding?.tvItemName?.text = foodItem?.name
+        binding?.tvItemName?.text = foodItem?.logicalName
         binding?.ivItem?.setImageDrawable(foodItem?.let {
             ContextCompat.getDrawable(
                 requireActivity(),

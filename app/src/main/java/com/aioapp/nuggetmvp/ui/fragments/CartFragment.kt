@@ -17,6 +17,7 @@ import androidx.navigation.fragment.findNavController
 import com.aioapp.nuggetmvp.R
 import com.aioapp.nuggetmvp.adapters.CartAdapter
 import com.aioapp.nuggetmvp.databinding.FragmentCartBinding
+import com.aioapp.nuggetmvp.models.Food
 import com.aioapp.nuggetmvp.models.ParametersEntity
 import com.aioapp.nuggetmvp.service.NuggetRecorderService
 import com.aioapp.nuggetmvp.utils.appextension.showToast
@@ -40,7 +41,7 @@ class CartFragment : Fragment() {
     private var isFirstTime = true
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        cartAdapter = CartAdapter(context = context ?: return, cartItemList = listOf())
+        cartAdapter = CartAdapter(context = context ?: return, cartItemList = arrayListOf())
         wakeupCallBack = {
             context?.let { it1 ->
                 ContextCompat.startForegroundService(
@@ -74,13 +75,16 @@ class CartFragment : Fragment() {
             binding?.tvTaxAmount?.text =
                 getString(R.string.tax).plus(String.format("%.2f", taxAmount))
         }
-
     }
 
     private fun observeCartItems() {
         cartSharedViewModel.itemList.observe(viewLifecycleOwner) { cartItemList ->
+            var totalCartItemCount = 0
+            cartItemList.forEach { item ->
+                totalCartItemCount += item.itemQuantity
+            }
             Log.e("Observer_Remove--->", "observeState:$cartItemList ")
-            binding?.headerLayout?.tvCartCount?.text = cartItemList.size.toString()
+            binding?.headerLayout?.tvCartCount?.text = totalCartItemCount.toString()
             cartAdapter?.updateCartItem(cartItemList = cartItemList)
             setPrices()
             if (cartItemList.isEmpty()) {
@@ -92,12 +96,6 @@ class CartFragment : Fragment() {
             }
 
         }
-
-//        cartSharedViewModel.itemList.flowWithLifecycle(
-//            lifecycle, Lifecycle.State.STARTED
-//        ).onEach { cartItemList ->
-//
-//        }.launchIn(lifecycleScope)
     }
 
     private fun observeState() {
@@ -152,6 +150,7 @@ class CartFragment : Fragment() {
                 }
 
                 IntentTypes.PLACE_ORDER.label -> {
+                    // TODO("Check In Case oF Confirm Order Intent Navigate")
                     if (findNavController().currentDestination?.id == R.id.cartFragment) {
                         findNavController().navigate(R.id.action_cartFragment_to_orderConfirmationFragment)
                     }
@@ -181,7 +180,7 @@ class CartFragment : Fragment() {
 
             else -> {
                 if (findNavController().currentDestination?.id == R.id.cartFragment) {
-                    findNavController().navigate(R.id.action_nuggetIntroFragment_to_foodMenuFragment)
+                    findNavController().navigate(R.id.action_cartFragment_to_foodMenuFragment)
                 }
             }
         }
@@ -189,8 +188,11 @@ class CartFragment : Fragment() {
 
     private fun handleRemoveFromCartIntent(parametersEntity: ParametersEntity?) {
         Log.e("remove Item--->", "item:$parametersEntity ")
-        val cartItem =
-            cartSharedViewModel.itemList.value?.find { it.name == parametersEntity?.name }
+        val allMenuItems: List<Food?> = nuggetSharedViewModel.allMenuItemsResponse.value
+        val cartItem = allMenuItems.find { it?.logicalName == parametersEntity?.name }?.apply {
+            val newQuantity = parametersEntity?.quantity ?: 0
+            this@apply.itemQuantity = newQuantity
+        }
         if (cartItem != null) {
             cartSharedViewModel.removeItemFromCart(cartItem)
         } else {
@@ -200,8 +202,11 @@ class CartFragment : Fragment() {
     }
 
     private fun handleAddIntoCartIntent(parametersEntity: ParametersEntity?) {
-        val cartItem =
-            nuggetSharedViewModel.allMenuItemList.find { it.name == parametersEntity?.name }
+        val allMenuItems: List<Food?> = nuggetSharedViewModel.allMenuItemsResponse.value
+        val cartItem = allMenuItems.find { it?.logicalName == parametersEntity?.name }?.apply {
+            val newQuantity = parametersEntity?.quantity ?: 0
+            this@apply.itemQuantity = newQuantity
+        }
         if (cartItem != null) {
             cartSharedViewModel.addItemIntoCart(cartItem)
         } else {
@@ -209,13 +214,16 @@ class CartFragment : Fragment() {
         }
     }
 
-
     private fun calculatePrice(): Double {
         var amount = 0.0
         if (!cartSharedViewModel.itemList.value.isNullOrEmpty()) {
             cartSharedViewModel.itemList.value?.let { list ->
                 for (item in list) {
-                    amount += item.price!!.toInt()
+                    amount += if (item.count != 0) {
+                        (item.price?.toInt() ?: 0) * (item.count)
+                    } else {
+                        item.price?.toInt() ?: 0
+                    }
                 }
             }
         }

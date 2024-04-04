@@ -15,6 +15,7 @@ interface RetrofitApiService {
         @Query("model") model: String?,
         @Query("smart_format") smartFormat: Boolean?,
         @Query("language") language: String?,
-        @Body audio: RequestBody
+        @Body audio: RequestBody,
+        @Query("keywords") keywords: List<String>
     ): TranscribeResponse
 }

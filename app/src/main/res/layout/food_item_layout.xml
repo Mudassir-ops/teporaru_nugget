@@ -6,17 +6,17 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_food_item"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:background="@color/black"
-        android:paddingTop="@dimen/_2sdp"
-        android:layout_height="wrap_content">
+        android:paddingTop="@dimen/_2sdp">
 
         <ImageView
             android:id="@+id/roundedImageView"
             android:layout_width="@dimen/_96sdp"
             android:layout_height="@dimen/_80sdp"
             android:contentDescription="@null"
-            android:scaleType="fitXY"
             android:paddingHorizontal="@dimen/_2sdp"
+            android:scaleType="fitXY"
             android:src="@drawable/pina_colada"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

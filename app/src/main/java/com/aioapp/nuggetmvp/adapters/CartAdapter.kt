@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.aioapp.nuggetmvp.R
 import com.aioapp.nuggetmvp.databinding.CartItemBinding
 import com.aioapp.nuggetmvp.models.Food
 
@@ -34,13 +35,16 @@ class CartAdapter(
     }
 
     inner class ViewHolder(val binding: CartItemBinding) : RecyclerView.ViewHolder(binding.root) {
+        @SuppressLint("SetTextI18n")
         fun bind(cartItem: Food) {
             binding.ivItem.setImageDrawable(
                 ContextCompat.getDrawable(
                     context, cartItem.image
                 )
             )
-            binding.tvItemName.text = cartItem.name
+            binding.tvItemName.text = String.format(
+                context.getString(R.string.cart_item_format), cartItem.count, cartItem.logicalName
+            )
             binding.tvPrice.text = "$".plus(cartItem.price)
         }
     }

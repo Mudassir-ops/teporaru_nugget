@@ -37,10 +37,10 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/cl_bottom_view"
             android:layout_width="0dp"
-            android:paddingVertical="@dimen/_5sdp"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/black_off"
             android:layout_marginBottom="@dimen/_20sdp"
+            android:backgroundTint="@color/black_off"
+            android:paddingVertical="@dimen/_5sdp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/rv_drinks"
             app:layout_constraintStart_toStartOf="@+id/rv_drinks"

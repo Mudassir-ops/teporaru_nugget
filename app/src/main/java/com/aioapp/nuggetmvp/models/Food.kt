@@ -8,21 +8,21 @@ import android.os.Parcelable
 data class Food(
     var image: Int,
     var fullImg: Int,
-    var name: String? = "",
-    var price: String? = ""
+    var logicalName: String? = "",
+    var price: String? = "",
+    var displayName: String? = "",
+    var itemQuantity: Int = 1,
+    var count: Int = 0
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
-        parcel.readInt(),
-        parcel.readInt(),
-        parcel.readString(),
-        parcel.readString()
+        parcel.readInt(), parcel.readInt(), parcel.readString(), parcel.readString()
     ) {
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeInt(image)
         parcel.writeInt(fullImg)
-        parcel.writeString(name)
+        parcel.writeString(logicalName)
         parcel.writeString(price)
     }
 

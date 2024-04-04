@@ -35,9 +35,9 @@
             android:id="@+id/iv_loved_it"
             android:layout_width="@dimen/_20sdp"
             android:layout_height="@dimen/_20sdp"
+            android:layout_marginTop="@dimen/_20sdp"
             android:contentDescription="@null"
             android:src="@drawable/loved_it"
-            android:layout_marginTop="@dimen/_20sdp"
             app:layout_constraintEnd_toStartOf="@id/tv_loved_it"
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="@+id/tv_rate_your_experience"
@@ -63,9 +63,9 @@
             android:id="@+id/iv_liked_it"
             android:layout_width="@dimen/_25sdp"
             android:layout_height="@dimen/_25sdp"
+            android:layout_marginTop="@dimen/_5sdp"
             android:contentDescription="@null"
             android:src="@drawable/liked_it"
-            android:layout_marginTop="@dimen/_5sdp"
             app:layout_constraintEnd_toEndOf="@+id/iv_loved_it"
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="@+id/iv_loved_it"
@@ -91,13 +91,13 @@
             android:id="@+id/iv_okay"
             android:layout_width="@dimen/_25sdp"
             android:layout_height="@dimen/_25sdp"
+            android:layout_marginTop="@dimen/_5sdp"
             android:contentDescription="@null"
             android:src="@drawable/okay"
-            android:layout_marginTop="@dimen/_5sdp"
             app:layout_constraintEnd_toEndOf="@+id/iv_loved_it"
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="@+id/iv_loved_it"
-            app:layout_constraintTop_toBottomOf="@id/iv_liked_it"/>
+            app:layout_constraintTop_toBottomOf="@id/iv_liked_it" />
 
         <TextView
             android:id="@+id/tv_okay"
@@ -118,13 +118,13 @@
             android:id="@+id/iv_meh"
             android:layout_width="@dimen/_25sdp"
             android:layout_height="@dimen/_25sdp"
+            android:layout_marginTop="@dimen/_5sdp"
             android:contentDescription="@null"
             android:src="@drawable/meh"
-            android:layout_marginTop="@dimen/_5sdp"
             app:layout_constraintEnd_toEndOf="@+id/iv_loved_it"
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="@+id/iv_loved_it"
-            app:layout_constraintTop_toBottomOf="@+id/iv_okay"/>
+            app:layout_constraintTop_toBottomOf="@+id/iv_okay" />
 
         <TextView
             android:id="@+id/tv_meh"
@@ -145,13 +145,13 @@
             android:id="@+id/iv_hated_it"
             android:layout_width="@dimen/_25sdp"
             android:layout_height="@dimen/_25sdp"
+            android:layout_marginTop="@dimen/_5sdp"
             android:contentDescription="@null"
             android:src="@drawable/meh"
-            android:layout_marginTop="@dimen/_5sdp"
             app:layout_constraintEnd_toEndOf="@+id/iv_loved_it"
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="@+id/iv_loved_it"
-            app:layout_constraintTop_toBottomOf="@+id/iv_meh"/>
+            app:layout_constraintTop_toBottomOf="@+id/iv_meh" />
 
         <TextView
             android:id="@+id/tv_hated_it"

@@ -52,11 +52,19 @@ class NuggetMainViewModel @Inject constructor(
     }
 
     fun transcribeAudio(
-        model: String?, smartFormat: Boolean?, language: String?, audio: RequestBody
+        model: String?,
+        smartFormat: Boolean?,
+        language: String?,
+        audio: RequestBody,
+        keywords: List<String>
     ) {
         viewModelScope.launch {
             deepGramUseCase.invokeTranscribeAudioUseCase(
-                model = model, smartFormat = smartFormat, language = language, audio = audio
+                model = model,
+                smartFormat = smartFormat,
+                language = language,
+                audio = audio,
+                keywords = keywords
             ).onStart {
                 setLoading()
             }.catch { exception ->

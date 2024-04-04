@@ -10,10 +10,14 @@ import javax.inject.Inject
 
 class TranscribeAudioWithDeepGramUseCase @Inject constructor(private val deepGramRepository: DeepGramRepository) {
     fun invokeTranscribeAudioUseCase(
-        model: String?, smartFormat: Boolean?, language: String?, audio: RequestBody
+        model: String?,
+        smartFormat: Boolean?,
+        language: String?,
+        audio: RequestBody,
+        keywords: List<String>
     ): Flow<Result<TranscriptionBaseResponse>?> {
         return deepGramRepository.transcribeAudio(
-            model, smartFormat, language, audio
+            model, smartFormat, language, audio, keywords
         )
     }
 }

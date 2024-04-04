@@ -11,8 +11,8 @@
             android:id="@+id/iv_item"
             android:layout_width="@dimen/_50sdp"
             android:layout_height="@dimen/_50sdp"
-            android:contentDescription="@null"
             android:layout_margin="@dimen/_5sdp"
+            android:contentDescription="@null"
             android:src="@drawable/beef"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -20,18 +20,18 @@
 
         <TextView
             android:id="@+id/tv_item_name"
+            style="@style/textPoppinsRegular"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            style="@style/textPoppinsRegular"
-            android:textColor="@color/white"
-            tools:text="Martini"
-            android:textSize="@dimen/_15ssp"
             android:layout_marginHorizontal="@dimen/_10sdp"
-            app:layout_constraintVertical_chainStyle="packed"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_15ssp"
             app:layout_constraintBottom_toTopOf="@id/tv_price"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/iv_item"
-            app:layout_constraintTop_toTopOf="@+id/iv_item" />
+            app:layout_constraintTop_toTopOf="@+id/iv_item"
+            app:layout_constraintVertical_chainStyle="packed"
+            tools:text="Martini" />
 
         <TextView
             android:id="@+id/tv_price"

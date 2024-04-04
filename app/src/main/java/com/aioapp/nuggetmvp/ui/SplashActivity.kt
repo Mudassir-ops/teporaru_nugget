@@ -7,7 +7,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import com.aioapp.nuggetmvp.databinding.ActivitySplashBinding
 import com.aioapp.nuggetmvp.service.NuggetCameraService
 import com.aioapp.nuggetmvp.service.NuggetRecorderService
@@ -31,9 +30,10 @@ class SplashActivity : AppCompatActivity() {
 
         if (keywordIndex == 0) {
             if (isServiceRunning(NuggetRecorderService::class.java)) {
-                stopService(
-                    Intent(this@SplashActivity, NuggetRecorderService::class.java)
-                )
+                stopService(Intent(this@SplashActivity, NuggetRecorderService::class.java))
+//                if (isServiceRunning(NuggetCameraService::class.java)) {
+//                    stopService(Intent(this@SplashActivity, NuggetCameraService::class.java))
+//                }
                 if (ScreenState.WAKE_UP == currentScreenState) {
                     currentScreenState = ScreenState.MAIN_MENU
                     val intent = Intent(this@SplashActivity, MainActivity::class.java)
@@ -64,12 +64,7 @@ class SplashActivity : AppCompatActivity() {
 
 
         binding?.apply {
-            ivLeftEye.setOnClickListener {
-                ContextCompat.startForegroundService(
-                    this@SplashActivity,
-                    Intent(this@SplashActivity, NuggetCameraService::class.java)
-                )
-            }
+
         }
 
         /**

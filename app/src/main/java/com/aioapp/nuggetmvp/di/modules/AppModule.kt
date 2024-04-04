@@ -4,6 +4,8 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.aioapp.nuggetmvp.di.repositories.deepgram.DeepGramRepository
 import com.aioapp.nuggetmvp.di.repositories.deepgram.DeepGramRepositoryImp
+import com.aioapp.nuggetmvp.di.repositories.menu.MenuRepository
+import com.aioapp.nuggetmvp.di.repositories.menu.MenuRepositoryImp
 import com.aioapp.nuggetmvp.di.repositories.notification.NotificationRepository
 import com.aioapp.nuggetmvp.di.repositories.notification.NotificationRepositoryImp
 import com.aioapp.nuggetmvp.di.repositories.refill.RefillRepository
@@ -57,6 +59,13 @@ object AppModule {
         refillApiService: RefillApiService
     ): RefillRepository {
         return RefillRepositoryImp(refillApiService = refillApiService)
+    }
+
+    @Provides
+    @Singleton
+    fun provideAllMenuRepository(
+    ): MenuRepository {
+        return MenuRepositoryImp()
     }
 
 }

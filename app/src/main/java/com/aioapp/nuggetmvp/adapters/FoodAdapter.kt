@@ -7,8 +7,6 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.aioapp.nuggetmvp.databinding.FoodItemLayoutBinding
 import com.aioapp.nuggetmvp.models.Food
-import com.aioapp.nuggetmvp.ui.MainActivity
-import com.aioapp.nuggetmvp.utils.Constants
 
 
 class FoodAdapter(
@@ -30,7 +28,7 @@ class FoodAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val foodItem = foodList[position]
-        holder.bind(foodItem!!)
+        holder.bind(foodItem ?: return)
     }
 
     inner class ViewHolder(val binding: FoodItemLayoutBinding) :
@@ -43,9 +41,8 @@ class FoodAdapter(
                     food.image
                 )
             )
-            binding.tvItemName.text = food.name
+            binding.tvItemName.text = food.logicalName
             binding.clFoodItem.setOnClickListener {
-//                Constants.cartItemList?.add(food)
                 navigateToDetails.invoke(food)
             }
         }

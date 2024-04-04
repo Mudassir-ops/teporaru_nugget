@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.Flow
 import okhttp3.RequestBody
 
 typealias TranscribeAudioFunction = (
-    model: String?, smartFormat: Boolean?, language: String?, audio: RequestBody
+    model: String?, smartFormat: Boolean?, language: String?, audio: RequestBody, keywords: List<String>
 ) -> Flow<Result<TranscriptionBaseResponse>?>
 
 interface DeepGramRepository {

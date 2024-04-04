@@ -27,6 +27,10 @@
         <action
             android:id="@+id/action_foodMenuFragment_to_cartFragment"
             app:destination="@id/cartFragment" />
+        <action
+            android:id="@+id/action_foodMenuFragment_to_drinkMenuFragment"
+            app:destination="@id/drinkMenuFragment" />
+
     </fragment>
     <fragment
         android:id="@+id/drinkMenuFragment"
@@ -39,12 +43,15 @@
         <action
             android:id="@+id/action_drinkMenuFragment_to_cartFragment"
             app:destination="@id/cartFragment" />
+        <action
+            android:id="@+id/action_drinkMenuFragment_to_foodMenuFragment"
+            app:destination="@id/foodMenuFragment" />
     </fragment>
     <fragment
         android:id="@+id/itemFullViewFragment"
-        tools:layout="@layout/fragment_item_full_view"
         android:name="com.aioapp.nuggetmvp.ui.fragments.ItemFullViewFragment"
-        android:label="ItemFullViewFragment">
+        android:label="ItemFullViewFragment"
+        tools:layout="@layout/fragment_item_full_view">
         <action
             android:id="@+id/action_itemFullViewFragment_to_cartFragment"
             app:destination="@id/cartFragment" />
@@ -55,8 +62,8 @@
     <fragment
         android:id="@+id/cartFragment"
         android:name="com.aioapp.nuggetmvp.ui.fragments.CartFragment"
-        tools:layout="@layout/fragment_cart"
-        android:label="CartFragment">
+        android:label="CartFragment"
+        tools:layout="@layout/fragment_cart">
         <action
             android:id="@+id/action_cartFragment_to_orderConfirmationFragment"
             app:destination="@id/orderConfirmationFragment" />
@@ -69,35 +76,62 @@
     </fragment>
     <fragment
         android:id="@+id/orderConfirmationFragment"
-        tools:layout="@layout/fragment_order_confirmation"
         android:name="com.aioapp.nuggetmvp.ui.fragments.OrderConfirmationFragment"
-        android:label="OrderConfirmationFragment" >
+        android:label="OrderConfirmationFragment"
+        tools:layout="@layout/fragment_order_confirmation">
         <action
             android:id="@+id/action_orderConfirmationFragment_to_foodOnTheWayFragment"
             app:destination="@id/foodOnTheWayFragment" />
     </fragment>
     <fragment
         android:id="@+id/foodOnTheWayFragment"
-        tools:layout="@layout/fragment_food_on_the_way"
         android:name="com.aioapp.nuggetmvp.ui.fragments.FoodOnTheWayFragment"
-        android:label="FoodOnTheWayFragment" >
+        android:label="FoodOnTheWayFragment"
+        tools:layout="@layout/fragment_food_on_the_way">
         <action
             android:id="@+id/action_foodOnTheWayFragment_to_questionsFragment"
             app:destination="@id/questionsFragment" />
     </fragment>
     <fragment
         android:id="@+id/questionsFragment"
-        tools:layout="@layout/fragment_questions"
         android:name="com.aioapp.nuggetmvp.ui.fragments.QuestionsFragment"
-        android:label="QuestionsFragment" >
+        android:label="QuestionsFragment"
+        tools:layout="@layout/fragment_questions">
         <action
             android:id="@+id/action_questionsFragment_to_questionForwardFragment"
             app:destination="@id/questionForwardFragment" />
+        <action
+            android:id="@+id/action_questionsFragment_to_refillFragment"
+            app:destination="@id/refillFragment" />
     </fragment>
     <fragment
         android:id="@+id/questionForwardFragment"
-        tools:layout="@layout/fragment_question_forward"
         android:name="com.aioapp.nuggetmvp.ui.fragments.QuestionForwardFragment"
-        android:label="QuestionForwardFragment" />
+        android:label="QuestionForwardFragment"
+        tools:layout="@layout/fragment_question_forward">
+        <action
+            android:id="@+id/action_questionForwardFragment_to_paymentFragment"
+            app:destination="@id/paymentFragment" />
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/paymentFragment"
+        android:name="com.aioapp.nuggetmvp.ui.fragments.PaymentFragment"
+        android:label="PaymentFragment"
+        tools:layout="@layout/fragment_payment" />
+
+    <fragment
+        android:id="@+id/paymentStatusFragment"
+        android:name="com.aioapp.nuggetmvp.ui.fragments.PaymentStatusFragment"
+        android:label="PaymentStatusFragment"
+        tools:layout="@layout/fragment_payment_status" />
+
+    <fragment
+        android:id="@+id/refillFragment"
+        android:name="com.aioapp.nuggetmvp.ui.fragments.RefillFragment"
+        android:label="RefillFragment"
+        tools:layout="@layout/fragment_refill" />
+
 
 </navigation>

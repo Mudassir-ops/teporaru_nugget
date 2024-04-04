@@ -259,6 +259,7 @@ class CameraControllerWithoutPreview(var context: Context) {
             return java.lang.Long.signum(lhs.width.toLong() * lhs.height - rhs.width.toLong() * rhs.height)
         }
     }
+
     private val outputMediaFile: File?
         get() {
             val mediaStorageDir = File(
@@ -273,7 +274,7 @@ class CameraControllerWithoutPreview(var context: Context) {
                 Log.e(TAG, ": ")
             }
             val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(Date())
-            return File(mediaStorageDir.path + File.separator + "IMG_" + timeStamp + ".jpg")
+            return File(mediaStorageDir.path + File.separator + "IMG_refill.jpg")
         }
 
     companion object {
