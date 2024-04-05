@@ -25,7 +25,8 @@ class CartSharedViewModel @Inject constructor(
         if (existingItem != null) {
             existingItem.count += food.itemQuantity
         } else {
-            cartItemList.add(food)
+            val foodCopy = food.copy(count = food.itemQuantity)
+            cartItemList.add(foodCopy)
         }
         _itemList.value = ArrayList(cartItemList)
         state.value = CartProcessingStatus.AddItemIntoCart(food)

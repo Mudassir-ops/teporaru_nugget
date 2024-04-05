@@ -42,14 +42,17 @@ class CartAdapter(
                     context, cartItem.image
                 )
             )
-            if(cartItem.count == 1){
+            if (cartItem.count == 1) {
                 binding.tvItemName.text = cartItem.logicalName
-            }else{
+            } else {
                 binding.tvItemName.text = String.format(
-                    context.getString(R.string.cart_item_format), cartItem.count, "x ".plus(cartItem.logicalName)
+                    context.getString(R.string.cart_item_format),
+                    cartItem.count,
+                    "x ".plus(cartItem.logicalName)
                 )
             }
-            binding.tvPrice.text = "$".plus(cartItem.price)
+            val totalPrice = (cartItem.price?.toInt())?.times((cartItem.count))
+            binding.tvPrice.text = "$".plus(totalPrice)
         }
     }
 }

@@ -70,8 +70,9 @@ class CartFragment : Fragment() {
     private fun setPrices() {
         val totalPrice = calculatePrice()
         if (totalPrice != 0.0) {
-            binding?.tvTotalPrice?.text = "$".plus(String.format("%.2f", totalPrice))
             val taxAmount = 0.1 * totalPrice
+            binding?.tvTotalPrice?.text =
+                "$".plus(String.format("%.2f", totalPrice.plus(taxAmount)))
             binding?.tvTaxAmount?.text =
                 getString(R.string.tax).plus(String.format("%.2f", taxAmount))
         }

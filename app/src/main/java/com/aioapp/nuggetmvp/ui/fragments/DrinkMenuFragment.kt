@@ -199,7 +199,7 @@ class DrinkMenuFragment : Fragment() {
 
     private fun handleSingleItemState(foodItem: Food) {
         if (findNavController().currentDestination?.id == R.id.drinkMenuFragment) {
-
+            Log.e("FoodItems_Here--_>", "handleSingleItemState: $foodItem")
             cartSharedViewModel.addItemIntoCart(foodItem)
             val bundle = Bundle().apply {
                 putParcelable("FoodItem", foodItem)

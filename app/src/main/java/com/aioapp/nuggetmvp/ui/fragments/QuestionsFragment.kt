@@ -17,6 +17,7 @@ import com.aioapp.nuggetmvp.R
 import com.aioapp.nuggetmvp.databinding.FragmentQuestionsBinding
 import com.aioapp.nuggetmvp.service.NuggetCameraService
 import com.aioapp.nuggetmvp.service.NuggetRecorderService
+import com.aioapp.nuggetmvp.utils.appextension.isServiceRunning
 import com.aioapp.nuggetmvp.utils.enum.IntentTypes
 import com.aioapp.nuggetmvp.utils.imageSavedToGalleryCallBack
 import com.aioapp.nuggetmvp.utils.wakeupCallBack
@@ -144,11 +145,14 @@ class QuestionsFragment : Fragment() {
                     binding?.tvBottomText?.text =
                         getString(R.string.sure_your).plus(" ").plus(requiredIem)
                             .plus(" will be here shortly")
-                    ContextCompat.startForegroundService(
-                        context ?: return,
-                        Intent(context ?: return, NuggetCameraService::class.java)
-                    )
 
+
+                    if (context?.isServiceRunning(NuggetCameraService::class.java) != true) {
+                        ContextCompat.startForegroundService(
+                            context ?: return,
+                            Intent(context ?: return, NuggetCameraService::class.java)
+                        )
+                    }
                 }
             }
         }

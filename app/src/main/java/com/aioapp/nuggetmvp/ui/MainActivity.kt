@@ -30,9 +30,6 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import java.io.File
-import java.io.FileOutputStream
-import java.io.IOException
-import java.io.InputStream
 
 
 @AndroidEntryPoint
@@ -82,13 +79,6 @@ class MainActivity : AppCompatActivity() {
                 viewModel.textToResponse(
                     body = textToResponseRequestBody
                 )
-//                val imagePath = getImageAsset()
-//                val file = File(imagePath)
-//                val requestFile = file.asRequestBody("image/jpeg".toMediaTypeOrNull())
-//                val imagePart = MultipartBody.Part.createFormData("files", file.name, requestFile)
-//                viewModel.refill(
-//                    image = imagePart
-//                )
             }
         }.launchIn(lifecycleScope)
 
@@ -103,7 +93,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun handleState(state: AudioTranscriptionState) {
         when (state) {
-            is AudioTranscriptionState.IsLoading -> handleLoading(state.isLoading)
+            is AudioTranscriptionState.IsLoading -> handleLoading()
             is AudioTranscriptionState.ShowToast -> Toast.makeText(
                 this@MainActivity, state.message, Toast.LENGTH_SHORT
             ).show()
@@ -112,21 +102,35 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun handleLoading(isLoading: Boolean) {
-        if (isLoading) {
-
-        } else {
-
-        }
-    }
+    private fun handleLoading() {}
 
     private fun translateVoice(path: String) {
         val keywordsList = listOf(
-            "drinks", "food", "caesar", "wedge", "caprese",
-            "pork", "fish", "beef", "salmon", "steak",
-            "chicken", "pina", "colada", "mojito", "margarita",
-            "mile", "high", "coke", "maverick", "wingman",
-            "martini", "iceman", "fudge", "brownie", "cheesecake"
+            "drinks",
+            "food",
+            "caesar",
+            "wedge",
+            "caprese",
+            "pork",
+            "fish",
+            "beef",
+            "salmon",
+            "steak",
+            "chicken",
+            "pina",
+            "colada",
+            "mojito",
+            "margarita",
+            "mile",
+            "high",
+            "coke",
+            "maverick",
+            "wingman",
+            "martini",
+            "iceman",
+            "fudge",
+            "brownie",
+            "cheesecake"
         )
         val wavFile = File(path)
         val requestBody = wavFile.asRequestBody("audio/*".toMediaTypeOrNull())
@@ -134,7 +138,8 @@ class MainActivity : AppCompatActivity() {
             model = deepGrammodel,
             smartFormat = smartFormat,
             language = deepGramlanguage,
-            audio = requestBody, keywords = keywordsList
+            audio = requestBody,
+            keywords = keywordsList
         )
     }
 
@@ -197,22 +202,4 @@ class MainActivity : AppCompatActivity() {
         threshold = 0
         initialAmplitudes.clear()
     }
-
-    //----Handle if already path exists no need to write temp file
-    @Throws(IOException::class)
-    fun getImageAsset(): String {
-        val file = File.createTempFile("tempImage", ".png")
-        val filePath = file.absolutePath
-        val inputStream: InputStream = assets.open("test_glass.jpeg")
-        val size = inputStream.available()
-        val buffer = ByteArray(size)
-        inputStream.read(buffer)
-        inputStream.close()
-        val out = FileOutputStream(filePath)
-        out.write(buffer)
-        out.close()
-        return filePath
-    }
-
-
 }

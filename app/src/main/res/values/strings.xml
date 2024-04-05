@@ -60,6 +60,6 @@
     <string name="is_there_anything_else_i_can_get_you">Is there anything else I\ncan get you?</string>
     <string name="is_there_anything_else">Is there anything else I can get you?</string>
     <string name="sure_your">Sure! Your</string>
-
     <string name="cart_item_format">%d %s</string>
+
 </resources>
