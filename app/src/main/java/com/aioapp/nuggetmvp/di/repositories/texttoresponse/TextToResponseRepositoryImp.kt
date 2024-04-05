@@ -1,14 +1,31 @@
 package com.aioapp.nuggetmvp.di.repositories.texttoresponse
 
+import com.aioapp.nuggetmvp.models.TextToResponseRequestBody
 import com.aioapp.nuggetmvp.network.TextToResponseApiService
 import com.aioapp.nuggetmvp.utils.ApiException
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import okhttp3.ResponseBody
 import java.io.IOException
 import javax.inject.Inject
 
 class TextToResponseRepositoryImp @Inject constructor(private val textToResponseApiService: TextToResponseApiService) :
     TextToResponseRepository {
+
+    override fun getStreamingResponse(body: TextToResponseRequestBody): Flow<String> = flow {
+        try {
+            val responseBody: ResponseBody = textToResponseApiService.getStreamingResponse(body)
+            responseBody.byteStream().bufferedReader().useLines { lines ->
+                lines.forEach { line ->
+                    emit(line)
+                }
+            }
+        } catch (e: Exception) {
+            emit("Error: ${e.message}")
+        }
+    }
+
     override val textToResponse: TextToResponse = { body ->
         flow {
             val response = retryIO {

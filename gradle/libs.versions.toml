@@ -1,6 +1,7 @@
 [versions]
 activityKtx = "1.8.2"
 agp = "8.3.0"
+assemblyaiJava = "1.0.10"
 converterGson = "2.9.0"
 converterScalars = "2.9.0"
 eventbus = "3.3.1"
@@ -34,6 +35,7 @@ androidx-activity-ktx = { module = "androidx.activity:activity-ktx", version.ref
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-lifecycle-extensions = { module = "androidx.lifecycle:lifecycle-extensions", version.ref = "lifecycleExtensions" }
 androidx-lifecycle-runtime-ktx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
+assemblyai-java = { module = "com.assemblyai:assemblyai-java", version.ref = "assemblyaiJava" }
 converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "converterGson" }
 converter-scalars = { module = "com.squareup.retrofit2:converter-scalars", version.ref = "converterScalars" }
 androidx-navigation-fragment-ktx = { module = "androidx.navigation:navigation-fragment-ktx", version.ref = "navigationFragmentKtx" }

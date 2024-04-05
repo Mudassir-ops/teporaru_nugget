@@ -9,11 +9,16 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class TextToResponseUseCase @Inject constructor(private val textToResponseRepository: TextToResponseRepository) {
+
     fun invokeTextToResponseUseCase(
         body: TextToResponseRequestBody
     ): Flow<Result<TextToResponseEntity>?> {
         return textToResponseRepository.textToResponse(
             body
         )
+    }
+
+    fun invokeStreamingResponse(body: TextToResponseRequestBody): Flow<String> {
+        return textToResponseRepository.getStreamingResponse(body)
     }
 }

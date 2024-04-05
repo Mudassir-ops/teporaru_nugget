@@ -1,12 +1,10 @@
 package com.aioapp.nuggetmvp.ui.fragments
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
@@ -17,12 +15,9 @@ import com.aioapp.nuggetmvp.R
 import com.aioapp.nuggetmvp.adapters.FoodAdapter
 import com.aioapp.nuggetmvp.databinding.FragmentFoodMenuBinding
 import com.aioapp.nuggetmvp.models.Food
-import com.aioapp.nuggetmvp.models.ParametersEntity
-import com.aioapp.nuggetmvp.service.NuggetRecorderService
-import com.aioapp.nuggetmvp.utils.appextension.showToast
+import com.aioapp.nuggetmvp.models.TextToResponseIntent
 import com.aioapp.nuggetmvp.utils.enum.IntentTypes
 import com.aioapp.nuggetmvp.utils.enum.MenuType
-import com.aioapp.nuggetmvp.utils.wakeupCallBack
 import com.aioapp.nuggetmvp.viewmodels.CartSharedViewModel
 import com.aioapp.nuggetmvp.viewmodels.NuggetProcessingStatus
 import com.aioapp.nuggetmvp.viewmodels.NuggetSharedViewModel
@@ -37,18 +32,7 @@ class FoodMenuFragment : Fragment() {
     private val nuggetSharedViewModel: NuggetSharedViewModel by activityViewModels()
     private val cartSharedViewModel: CartSharedViewModel by activityViewModels()
     private var isFirstTime = true
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        wakeupCallBack = {
-            context?.let { it1 ->
-                ContextCompat.startForegroundService(
-                    it1, Intent(it1, NuggetRecorderService::class.java)
-                )
-            }
-            nuggetSharedViewModel.setRecordingStarted()
-        }
-    }
-
+    private var checkTotalItemCount = 0
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
@@ -103,7 +87,7 @@ class FoodMenuFragment : Fragment() {
             is NuggetProcessingStatus.RecordingStarted -> handleRecordingStartedState()
             is NuggetProcessingStatus.RecordingEnded -> handleRecordingEndedState(states)
             is NuggetProcessingStatus.TranscriptStarted -> handleTranscriptStartedState()
-            is NuggetProcessingStatus.TranscriptEnd -> handleTranscriptEndState(states)
+            is NuggetProcessingStatus.ParitialTranscriptionState -> handleTranscriptEndState(states)
             is NuggetProcessingStatus.TextToResponseEnded -> handleTextToResponseEndedState(states)
         }
     }
@@ -124,7 +108,7 @@ class FoodMenuFragment : Fragment() {
         binding.tvBottomPrompt.text = getString(R.string.transcripitng)
     }
 
-    private fun handleTranscriptEndState(states: NuggetProcessingStatus.TranscriptEnd) {
+    private fun handleTranscriptEndState(states: NuggetProcessingStatus.ParitialTranscriptionState) {
         binding.tvBottomPrompt.text = states.value
     }
 
@@ -133,75 +117,61 @@ class FoodMenuFragment : Fragment() {
             isFirstTime = false
             return
         }
-        val state = states.value?.firstOrNull()
-        if (state != null) {
-            if (state.intent == IntentTypes.ADD.label) {
-                addIntentHandling(states)
-            } else {
-                handleShowMenuIntent(state.parametersEntity)
-            }
-        }
-    }
-
-    private fun handleShowMenuIntent(parametersEntity: ParametersEntity?) {
-        when (parametersEntity?.menuType) {
-            MenuType.FOOD.name.lowercase() -> {
-                if (findNavController().currentDestination?.id == R.id.foodMenuFragment) {
-                    return
-                }
-            }
-
-            MenuType.DRINKS.name.lowercase() -> {
-                if (findNavController().currentDestination?.id == R.id.foodMenuFragment) {
-                    findNavController().navigate(R.id.action_foodMenuFragment_to_drinkMenuFragment)
-                }
-            }
-
-            else -> {
-                if (findNavController().currentDestination?.id == R.id.foodMenuFragment) {
-                    findNavController().navigate(R.id.action_foodMenuFragment_to_drinkMenuFragment)
+        if (states.value?.intent == IntentTypes.SHOW_MENU.label) {
+            handleShowMenuIntent(states.value)
+        } else if (states.value?.intent == IntentTypes.ADD.label) {
+            val allMenuItems: List<Food?> = nuggetSharedViewModel.allMenuItemsResponse.value
+            val foodItems =
+                allMenuItems.find { it?.logicalName == states.value.parametersEntity?.name }
+                    ?.apply {
+                        val newQuantity = states.value.parametersEntity?.quantity ?: 0
+                        this@apply.itemQuantity = newQuantity
+                    }
+            if (foodItems != null) {
+                checkTotalItemCount++
+                if (states.value.last != true) {
+                    cartSharedViewModel.addItemIntoCart(foodItems)
+                } else {
+                    cartSharedViewModel.addItemIntoCart(foodItems)
+                    if (checkTotalItemCount > 1) {
+                        navToCart()
+                    } else {
+                        navToSingle(foodItems)
+                    }
                 }
             }
         }
     }
 
+    private fun handleShowMenuIntent(parametersEntity: TextToResponseIntent?) {
+        if (parametersEntity?.last == true) {
+            when (parametersEntity.parametersEntity?.menuType) {
+                MenuType.FOOD.name.lowercase() -> {
+                    if (findNavController().currentDestination?.id == R.id.foodMenuFragment) {
+                        return
+                    }
+                }
 
-    private fun addIntentHandling(states: NuggetProcessingStatus.TextToResponseEnded) {
-        val allMenuItems: List<Food?> = nuggetSharedViewModel.allMenuItemsResponse.value
-        val foodItems = states.value?.mapNotNull { state ->
-            allMenuItems.find { it?.logicalName == state.parametersEntity?.name }?.apply {
-                val newQuantity = state.parametersEntity?.quantity ?: 0
-                this@apply.itemQuantity = newQuantity
+                MenuType.DRINKS.name.lowercase() -> {
+                    if (findNavController().currentDestination?.id == R.id.foodMenuFragment) {
+                        findNavController().navigate(R.id.action_foodMenuFragment_to_drinkMenuFragment)
+                    }
+                }
             }
-        }
-
-        if (foodItems?.isNotEmpty() == true) {
-            if (foodItems.size > 1) {
-                handleMultipleItemsState(foodItems)
-            } else {
-                handleSingleItemState(foodItems[0])
-            }
-        } else {
-            context?.showToast("Item Not Available")
         }
     }
 
-    private fun handleMultipleItemsState(foodItems: List<Food>) {
+    private fun navToCart() {
         if (findNavController().currentDestination?.id == R.id.foodMenuFragment) {
-            foodItems.forEach { food ->
-                cartSharedViewModel.addItemIntoCart(food)
-            }
             findNavController().navigate(R.id.action_foodMenuFragment_to_cartFragment)
         }
     }
 
-    private fun handleSingleItemState(foodItem: Food) {
+    private fun navToSingle(foodItem: Food) {
         if (findNavController().currentDestination?.id == R.id.foodMenuFragment) {
-            cartSharedViewModel.addItemIntoCart(foodItem)
-            val bundle = Bundle()
-            bundle.putParcelable(
-                "FoodItem", foodItem
-            )
+            val bundle = Bundle().apply {
+                putParcelable("FoodItem", foodItem)
+            }
             findNavController().navigate(
                 R.id.action_foodMenuFragment_to_itemFullViewFragment, bundle
             )

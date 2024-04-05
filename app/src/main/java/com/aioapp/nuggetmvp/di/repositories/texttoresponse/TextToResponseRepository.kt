@@ -11,4 +11,5 @@ typealias TextToResponse = (
 
 interface TextToResponseRepository {
     val textToResponse: TextToResponse
+    fun getStreamingResponse(body: TextToResponseRequestBody): Flow<String>
 }

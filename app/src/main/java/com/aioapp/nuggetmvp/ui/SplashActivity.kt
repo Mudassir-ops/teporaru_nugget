@@ -8,11 +8,8 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.aioapp.nuggetmvp.databinding.ActivitySplashBinding
-import com.aioapp.nuggetmvp.service.NuggetCameraService
-import com.aioapp.nuggetmvp.service.NuggetRecorderService
 import com.aioapp.nuggetmvp.utils.Constants
 import com.aioapp.nuggetmvp.utils.appextension.assetsFile
-import com.aioapp.nuggetmvp.utils.appextension.isServiceRunning
 import com.aioapp.nuggetmvp.utils.enum.ScreenState
 import com.aioapp.nuggetmvp.utils.wakeupCallBack
 
@@ -22,36 +19,16 @@ class SplashActivity : AppCompatActivity() {
     private var currentScreenState: ScreenState = ScreenState.WAKE_UP
     private var binding: ActivitySplashBinding? = null
     private var porcupineManager: PorcupineManager? = null
-
-
     private var wakeWordCallback = PorcupineManagerCallback { keywordIndex ->
-
         Log.e("SplashHiNuggetWakeUp--->", ": $keywordIndex---$currentScreenState")
-
         if (keywordIndex == 0) {
-            if (isServiceRunning(NuggetRecorderService::class.java)) {
-                stopService(Intent(this@SplashActivity, NuggetRecorderService::class.java))
-                if (isServiceRunning(NuggetCameraService::class.java)) {
-                    stopService(Intent(this@SplashActivity, NuggetCameraService::class.java))
-                }
-                if (ScreenState.WAKE_UP == currentScreenState) {
-                    currentScreenState = ScreenState.MAIN_MENU
-                    val intent = Intent(this@SplashActivity, MainActivity::class.java)
-                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-                    startActivity(intent)
-                } else {
-                    wakeupCallBack?.invoke(true)
-                }
-
+            if (ScreenState.WAKE_UP == currentScreenState) {
+                currentScreenState = ScreenState.MAIN_MENU
+                val intent = Intent(this@SplashActivity, MainActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+                startActivity(intent)
             } else {
-                if (ScreenState.WAKE_UP == currentScreenState) {
-                    currentScreenState = ScreenState.MAIN_MENU
-                    val intent = Intent(this@SplashActivity, MainActivity::class.java)
-                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-                    startActivity(intent)
-                } else {
-                    wakeupCallBack?.invoke(true)
-                }
+                wakeupCallBack?.invoke(true)
             }
         }
     }

@@ -80,7 +80,7 @@ class QuestionForwardFragment : Fragment() {
             is NuggetProcessingStatus.RecordingStarted -> handleRecordingStartedState()
             is NuggetProcessingStatus.RecordingEnded -> handleRecordingEndedState(states)
             is NuggetProcessingStatus.TranscriptStarted -> handleTranscriptStartedState()
-            is NuggetProcessingStatus.TranscriptEnd -> handleTranscriptEndState(states)
+            is NuggetProcessingStatus.ParitialTranscriptionState -> handleTranscriptEndState(states)
             is NuggetProcessingStatus.TextToResponseEnded -> handleTextToResponseEndedState(states)
         }
     }
@@ -101,7 +101,7 @@ class QuestionForwardFragment : Fragment() {
         binding?.tvBottomPrompt?.text = getString(R.string.transcripitng)
     }
 
-    private fun handleTranscriptEndState(states: NuggetProcessingStatus.TranscriptEnd) {
+    private fun handleTranscriptEndState(states: NuggetProcessingStatus.ParitialTranscriptionState) {
         binding?.tvBottomPrompt?.text = states.value
     }
 

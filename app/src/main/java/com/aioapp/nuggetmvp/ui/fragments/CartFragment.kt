@@ -21,7 +21,6 @@ import com.aioapp.nuggetmvp.models.Food
 import com.aioapp.nuggetmvp.models.ParametersEntity
 import com.aioapp.nuggetmvp.service.NuggetRecorderService
 import com.aioapp.nuggetmvp.utils.appextension.showToast
-import com.aioapp.nuggetmvp.utils.enum.IntentTypes
 import com.aioapp.nuggetmvp.utils.enum.MenuType
 import com.aioapp.nuggetmvp.utils.wakeupCallBack
 import com.aioapp.nuggetmvp.viewmodels.CartSharedViewModel
@@ -116,7 +115,7 @@ class CartFragment : Fragment() {
                 is NuggetProcessingStatus.TranscriptStarted -> binding?.tvBottomPrompt?.text =
                     getString(R.string.transcripitng)
 
-                is NuggetProcessingStatus.TranscriptEnd -> {
+                is NuggetProcessingStatus.ParitialTranscriptionState -> {
                     binding?.tvBottomPrompt?.text = states.value
                 }
 
@@ -139,29 +138,29 @@ class CartFragment : Fragment() {
             isFirstTime = false
             return
         }
-        states.value?.forEach { state ->
-            Log.e("HiNugget--->", "observeState:$state ")
-            when (state.intent) {
-                IntentTypes.ADD.label -> {
-                    handleAddIntoCartIntent(state.parametersEntity)
-                }
-
-                IntentTypes.REMOVE.label -> {
-                    handleRemoveFromCartIntent(state.parametersEntity)
-                }
-
-                IntentTypes.PLACE_ORDER.label -> {
-                    // TODO("Check In Case oF Confirm Order Intent Navigate")
-                    if (findNavController().currentDestination?.id == R.id.cartFragment) {
-                        findNavController().navigate(R.id.action_cartFragment_to_orderConfirmationFragment)
-                    }
-                }
-
-                IntentTypes.SHOW_MENU.label -> {
-                    handleShowMenuIntent(state.parametersEntity)
-                }
-            }
-        }
+//        states.value?.forEach { state ->
+//            Log.e("HiNugget--->", "observeState:$state ")
+//            when (state.intent) {
+//                IntentTypes.ADD.label -> {
+//                    handleAddIntoCartIntent(state.parametersEntity)
+//                }
+//
+//                IntentTypes.REMOVE.label -> {
+//                    handleRemoveFromCartIntent(state.parametersEntity)
+//                }
+//
+//                IntentTypes.PLACE_ORDER.label -> {
+//                    // TODO("Check In Case oF Confirm Order Intent Navigate")
+//                    if (findNavController().currentDestination?.id == R.id.cartFragment) {
+//                        findNavController().navigate(R.id.action_cartFragment_to_orderConfirmationFragment)
+//                    }
+//                }
+//
+//                IntentTypes.SHOW_MENU.label -> {
+//                    handleShowMenuIntent(state.parametersEntity)
+//                }
+//            }
+//        }
 
     }
 

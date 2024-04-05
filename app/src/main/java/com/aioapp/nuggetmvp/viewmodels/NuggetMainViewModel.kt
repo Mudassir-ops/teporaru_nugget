@@ -33,6 +33,11 @@ class NuggetMainViewModel @Inject constructor(
     private val _textToResponse = MutableStateFlow<TextToResponseEntity?>(null)
     val textToResponse: StateFlow<TextToResponseEntity?> get() = _textToResponse
 
+
+    private val _textToResponseStream = MutableStateFlow<String?>(null)
+    val textToResponseStream: StateFlow<String?> get() = _textToResponseStream
+
+
     private val _refillResponse = MutableStateFlow<RefillResponseEntity?>(null)
     val refillResponse: StateFlow<RefillResponseEntity?> get() = _refillResponse
 
@@ -91,7 +96,7 @@ class NuggetMainViewModel @Inject constructor(
         body: TextToResponseRequestBody
     ) {
         viewModelScope.launch {
-            textToResponseUseCase.invokeTextToResponseUseCase(
+            textToResponseUseCase.invokeStreamingResponse(
                 body = body
             ).onStart {
                 setLoading()
@@ -101,17 +106,41 @@ class NuggetMainViewModel @Inject constructor(
                 exception.printStackTrace()
             }.collect { result ->
                 hideLoading()
-                when (result) {
-                    is Result.Success -> {
-                        _textToResponse.value = result.data
-                    }
-
-                    else -> {
-                        showToast("result.Some thing went Wrong")
-                    }
-                }
+                _textToResponseStream.value = result
+//                when (result) {
+//                    is Result.Success -> {
+//                        _textToResponse.value = result.data
+//                    }
+//
+//                    else -> {
+//                        showToast("result.Some thing went Wrong")
+//                    }
+//                }
             }
         }
+
+//        viewModelScope.launch {
+//            textToResponseUseCase.invokeTextToResponseUseCase(
+//                body = body
+//            ).onStart {
+//                setLoading()
+//            }.catch { exception ->
+//                hideLoading()
+//                showToast(exception.message.toString())
+//                exception.printStackTrace()
+//            }.collect { result ->
+//                hideLoading()
+//                when (result) {
+//                    is Result.Success -> {
+//                        _textToResponse.value = result.data
+//                    }
+//
+//                    else -> {
+//                        showToast("result.Some thing went Wrong")
+//                    }
+//                }
+//            }
+//        }
     }
 
     fun refill(

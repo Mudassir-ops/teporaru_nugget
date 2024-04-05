@@ -88,4 +88,6 @@ dependencies {
     implementation(libs.eventbus)
     implementation(libs.glide)
     implementation(libs.lottie)
+
+    implementation(libs.assemblyai.java)
 }

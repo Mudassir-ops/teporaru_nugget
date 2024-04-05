@@ -37,10 +37,10 @@ class NuggetSharedViewModel @Inject constructor(
     }
 
     fun setTranscriptionEnded(transcriptionValue: String) {
-        state.value = NuggetProcessingStatus.TranscriptEnd(transcriptionValue)
+        state.value = NuggetProcessingStatus.ParitialTranscriptionState(transcriptionValue)
     }
 
-    fun setTextToResponseEnded(intentEntity: ArrayList<TextToResponseIntent>?) {
+    fun setTextToResponseEnded(intentEntity: TextToResponseIntent?) {
         state.value = NuggetProcessingStatus.TextToResponseEnded(intentEntity)
     }
 
@@ -76,7 +76,7 @@ sealed class NuggetProcessingStatus {
     data class RecordingStarted(val isStarted: Boolean) : NuggetProcessingStatus()
     data class RecordingEnded(val isEnded: String) : NuggetProcessingStatus()
     data class TranscriptStarted(val isStarted: Boolean) : NuggetProcessingStatus()
-    data class TranscriptEnd(val value: String) : NuggetProcessingStatus()
-    data class TextToResponseEnded(val value: ArrayList<TextToResponseIntent>?) :
+    data class ParitialTranscriptionState(val value: String) : NuggetProcessingStatus()
+    data class TextToResponseEnded(val value: TextToResponseIntent?) :
         NuggetProcessingStatus()
 }
