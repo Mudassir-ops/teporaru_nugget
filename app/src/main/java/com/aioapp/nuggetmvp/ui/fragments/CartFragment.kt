@@ -1,13 +1,11 @@
 package com.aioapp.nuggetmvp.ui.fragments
 
 import android.annotation.SuppressLint
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
@@ -19,10 +17,10 @@ import com.aioapp.nuggetmvp.adapters.CartAdapter
 import com.aioapp.nuggetmvp.databinding.FragmentCartBinding
 import com.aioapp.nuggetmvp.models.Food
 import com.aioapp.nuggetmvp.models.ParametersEntity
-import com.aioapp.nuggetmvp.service.NuggetRecorderService
+import com.aioapp.nuggetmvp.models.TextToResponseIntent
 import com.aioapp.nuggetmvp.utils.appextension.showToast
+import com.aioapp.nuggetmvp.utils.enum.IntentTypes
 import com.aioapp.nuggetmvp.utils.enum.MenuType
-import com.aioapp.nuggetmvp.utils.wakeupCallBack
 import com.aioapp.nuggetmvp.viewmodels.CartSharedViewModel
 import com.aioapp.nuggetmvp.viewmodels.NuggetProcessingStatus
 import com.aioapp.nuggetmvp.viewmodels.NuggetSharedViewModel
@@ -41,14 +39,6 @@ class CartFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         cartAdapter = CartAdapter(context = context ?: return, cartItemList = arrayListOf())
-        wakeupCallBack = {
-            context?.let { it1 ->
-                ContextCompat.startForegroundService(
-                    it1, Intent(it1, NuggetRecorderService::class.java)
-                )
-            }
-            nuggetSharedViewModel.setRecordingStarted()
-        }
     }
 
     override fun onCreateView(
@@ -138,53 +128,51 @@ class CartFragment : Fragment() {
             isFirstTime = false
             return
         }
-//        states.value?.forEach { state ->
-//            Log.e("HiNugget--->", "observeState:$state ")
-//            when (state.intent) {
-//                IntentTypes.ADD.label -> {
-//                    handleAddIntoCartIntent(state.parametersEntity)
-//                }
-//
-//                IntentTypes.REMOVE.label -> {
-//                    handleRemoveFromCartIntent(state.parametersEntity)
-//                }
-//
-//                IntentTypes.PLACE_ORDER.label -> {
-//                    // TODO("Check In Case oF Confirm Order Intent Navigate")
-//                    if (findNavController().currentDestination?.id == R.id.cartFragment) {
-//                        findNavController().navigate(R.id.action_cartFragment_to_orderConfirmationFragment)
-//                    }
-//                }
-//
-//                IntentTypes.SHOW_MENU.label -> {
-//                    handleShowMenuIntent(state.parametersEntity)
-//                }
-//            }
-//        }
-
-    }
-
-    private fun handleShowMenuIntent(parametersEntity: ParametersEntity?) {
-        when (parametersEntity?.menuType) {
-            MenuType.FOOD.name.lowercase() -> {
-                if (findNavController().currentDestination?.id == R.id.cartFragment) {
-                    findNavController().navigate(R.id.action_cartFragment_to_foodMenuFragment)
-                }
+        when (states.value?.intent) {
+            IntentTypes.SHOW_MENU.label -> {
+                handleShowMenuIntent(states.value)
             }
 
-            MenuType.DRINKS.name.lowercase() -> {
-                if (findNavController().currentDestination?.id == R.id.cartFragment) {
-                    findNavController().navigate(R.id.action_cartFragment_to_drinkMenuFragment)
-                }
+            IntentTypes.ADD.label -> {
+                handleAddIntoCartIntent(states.value.parametersEntity)
             }
 
-            else -> {
+            IntentTypes.REMOVE.label -> {
+                handleRemoveFromCartIntent(states.value.parametersEntity)
+            }
+
+            IntentTypes.PLACE_ORDER.label -> {
                 if (findNavController().currentDestination?.id == R.id.cartFragment) {
-                    findNavController().navigate(R.id.action_cartFragment_to_foodMenuFragment)
+                    findNavController().navigate(R.id.action_cartFragment_to_orderConfirmationFragment)
                 }
             }
         }
     }
+
+    private fun handleShowMenuIntent(parametersEntity: TextToResponseIntent?) {
+        if (parametersEntity?.last == true) {
+            when (parametersEntity.parametersEntity?.menuType) {
+                MenuType.FOOD.name.lowercase() -> {
+                    if (findNavController().currentDestination?.id == R.id.cartFragment) {
+                        findNavController().navigate(R.id.action_cartFragment_to_foodMenuFragment)
+                    }
+                }
+
+                MenuType.DRINKS.name.lowercase() -> {
+                    if (findNavController().currentDestination?.id == R.id.cartFragment) {
+                        findNavController().navigate(R.id.action_cartFragment_to_drinkMenuFragment)
+                    }
+                }
+
+                else -> {
+                    if (findNavController().currentDestination?.id == R.id.cartFragment) {
+                        findNavController().navigate(R.id.action_cartFragment_to_foodMenuFragment)
+                    }
+                }
+            }
+        }
+    }
+
 
     private fun handleRemoveFromCartIntent(parametersEntity: ParametersEntity?) {
         Log.e("remove Item--->", "item:$parametersEntity ")
