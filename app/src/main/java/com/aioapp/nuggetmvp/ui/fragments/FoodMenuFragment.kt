@@ -71,6 +71,7 @@ class FoodMenuFragment : Fragment() {
             }
         }
         binding.rvFood.adapter = foodAdapter
+        binding.bottomEyeAnim.playAnimation()
         observeStates()
     }
 

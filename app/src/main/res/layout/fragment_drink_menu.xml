@@ -25,7 +25,7 @@
             android:layout_marginTop="@dimen/_5sdp"
             android:layout_marginBottom="@dimen/_15sdp"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-            app:layout_constraintBottom_toTopOf="@id/cl_bottom_view"
+            app:layout_constraintBottom_toTopOf="@id/tv_bottom_prompt"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/header_layout"
@@ -34,45 +34,30 @@
             tools:itemCount="9"
             tools:listitem="@layout/food_item_layout" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/cl_bottom_view"
+        <TextView
+            android:id="@+id/tv_bottom_prompt"
+            style="@style/textPoppinsLight"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/_20sdp"
-            android:backgroundTint="@color/black_off"
-            android:paddingVertical="@dimen/_5sdp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginHorizontal="@dimen/_20sdp"
+            android:gravity="center"
+            android:text="@string/try_add_coke_to_my_order"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_12ssp"
+            app:layout_constraintBottom_toTopOf="@+id/bottom_eye_anim"
             app:layout_constraintEnd_toEndOf="@+id/rv_drinks"
-            app:layout_constraintStart_toStartOf="@+id/rv_drinks"
-            app:layout_constraintTop_toBottomOf="@+id/rv_drinks">
+            app:layout_constraintStart_toStartOf="@+id/rv_drinks" />
 
-            <TextView
-                android:id="@+id/tv_bottom_prompt"
-                style="@style/textPoppinsLight"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/_20sdp"
-                android:layout_marginBottom="@dimen/_10sdp"
-                android:gravity="center"
-                android:text="@string/try_add_coke_to_my_order"
-                android:textColor="@color/white"
-                android:textSize="@dimen/_12ssp"
-                app:layout_constraintBottom_toTopOf="@+id/iv_bottom_eyes"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <ImageView
-                android:id="@+id/iv_bottom_eyes"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:contentDescription="@null"
-                android:src="@drawable/bottom_close_eyes"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/tv_bottom_prompt"
-                app:layout_constraintStart_toStartOf="@+id/tv_bottom_prompt" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/bottom_eye_anim"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_marginBottom="@dimen/_10sdp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/tv_bottom_prompt"
+            app:layout_constraintStart_toStartOf="@+id/tv_bottom_prompt"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/eye_blinking" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

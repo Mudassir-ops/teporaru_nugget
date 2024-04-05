@@ -31,6 +31,7 @@ class FoodOnTheWayFragment : Fragment() {
         binding?.orderIsOnTheWayAnim?.playAnimation()
         binding?.headerLayout?.tvCartCount?.text =
             cartSharedViewModel.itemList.value?.size.toString()
+        binding?.bottomEyeAnim?.playAnimation()
         Handler(Looper.getMainLooper()).postDelayed({
             if (findNavController().currentDestination?.id == R.id.foodOnTheWayFragment) {
                 findNavController().navigate(R.id.action_foodOnTheWayFragment_to_questionsFragment)

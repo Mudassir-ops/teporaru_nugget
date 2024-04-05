@@ -79,6 +79,7 @@ class QuestionsFragment : Fragment() {
         binding?.questionAnimation?.playAnimation()
         binding?.headerLayout?.tvCartCount?.text =
             cartSharedViewModel.itemList.value?.size.toString()
+        binding?.bottomEyeAnim?.playAnimation()
         observeState()
         observeRefillResponse()
     }
@@ -145,7 +146,7 @@ class QuestionsFragment : Fragment() {
                     binding?.tvBottomText?.text =
                         getString(R.string.sure_your).plus(" ").plus(requiredIem)
                             .plus(" will be here shortly")
-
+                      binding?.bottomEyeAnim2?.playAnimation()
 
                     if (context?.isServiceRunning(NuggetCameraService::class.java) != true) {
                         ContextCompat.startForegroundService(

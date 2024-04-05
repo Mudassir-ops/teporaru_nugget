@@ -70,6 +70,7 @@ class DrinkMenuFragment : Fragment() {
             }
         }
         binding.rvDrinks.adapter = foodAdapter
+        binding.bottomEyeAnim.playAnimation()
         observeStates()
     }
 

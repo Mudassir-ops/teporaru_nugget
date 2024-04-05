@@ -65,6 +65,7 @@ class CartFragment : Fragment() {
         observeCartItems()
         observeState()
         setUpAdapter()
+        binding?.bottomEyeAnim?.playAnimation()
     }
 
     private fun setPrices() {
