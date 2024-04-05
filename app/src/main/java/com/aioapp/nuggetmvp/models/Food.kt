@@ -12,7 +12,7 @@ data class Food(
     var price: String? = "",
     var displayName: String? = "",
     var itemQuantity: Int = 1,
-    var count: Int = 0
+    var count: Int = 1
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readInt(), parcel.readInt(), parcel.readString(), parcel.readString()

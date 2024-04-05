@@ -31,9 +31,9 @@ class SplashActivity : AppCompatActivity() {
         if (keywordIndex == 0) {
             if (isServiceRunning(NuggetRecorderService::class.java)) {
                 stopService(Intent(this@SplashActivity, NuggetRecorderService::class.java))
-//                if (isServiceRunning(NuggetCameraService::class.java)) {
-//                    stopService(Intent(this@SplashActivity, NuggetCameraService::class.java))
-//                }
+                if (isServiceRunning(NuggetCameraService::class.java)) {
+                    stopService(Intent(this@SplashActivity, NuggetCameraService::class.java))
+                }
                 if (ScreenState.WAKE_UP == currentScreenState) {
                     currentScreenState = ScreenState.MAIN_MENU
                     val intent = Intent(this@SplashActivity, MainActivity::class.java)

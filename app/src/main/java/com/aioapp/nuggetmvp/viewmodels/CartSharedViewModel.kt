@@ -23,7 +23,7 @@ class CartSharedViewModel @Inject constructor(
     fun addItemIntoCart(food: Food) {
         val existingItem = cartItemList.find { it.logicalName == food.logicalName }
         if (existingItem != null) {
-            existingItem.count += food.itemQuantity ?: 0
+            existingItem.count += food.itemQuantity
         } else {
             cartItemList.add(food)
         }

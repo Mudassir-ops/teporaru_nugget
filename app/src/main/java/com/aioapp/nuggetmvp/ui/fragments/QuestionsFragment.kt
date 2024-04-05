@@ -82,7 +82,7 @@ class QuestionsFragment : Fragment() {
         nuggetMainViewModel.refillResponse.flowWithLifecycle(
             lifecycle, Lifecycle.State.STARTED
         ).onEach { states ->
-            if (states?.prediction?.lowercase() == "refill") {
+            if (states?.prediction?.lowercase() == "Refill".lowercase()) {
                 if (findNavController().currentDestination?.id == R.id.questionsFragment) {
                     context?.stopService(
                         Intent(
