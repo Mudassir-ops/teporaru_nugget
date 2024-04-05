@@ -37,6 +37,7 @@ class QuestionsFragment : Fragment() {
     private val nuggetMainViewModel: NuggetMainViewModel by activityViewModels()
     private val nuggetSharedViewModel: NuggetSharedViewModel by activityViewModels()
     private var isFirstTime = true
+    private var requiredIem: String? = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         wakeupCallBack = {
@@ -134,18 +135,16 @@ class QuestionsFragment : Fragment() {
             Log.e("HiNugget--->", "observeState:$state ")
             when (state.intent) {
                 IntentTypes.NEEDS_EXTRA.label -> {
-                    val bundle = Bundle()
-                    bundle.putString("RequiredItem", state.parametersEntity?.requiredThing)
-                    Log.e(
-                        "RequiredItem--->",
-                        "observeState:${state.parametersEntity?.requiredThing} "
+                    requiredIem = state.parametersEntity?.requiredThing
+                    binding?.viewFlipper?.showNext()
+                    binding?.tvBottomText?.text =
+                        getString(R.string.sure_your).plus(" ").plus(requiredIem)
+                            .plus(" will be here shortly")
+                    ContextCompat.startForegroundService(
+                        context ?: return,
+                        Intent(context ?: return, NuggetCameraService::class.java)
                     )
-                    if (findNavController().currentDestination?.id == R.id.questionsFragment) {
-                        findNavController().navigate(
-                            R.id.action_questionsFragment_to_questionForwardFragment,
-                            bundle
-                        )
-                    }
+
                 }
             }
         }
