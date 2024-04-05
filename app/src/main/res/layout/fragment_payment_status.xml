@@ -40,8 +40,8 @@
             app:layout_constraintEnd_toEndOf="@+id/tv_status_of_order"
             app:layout_constraintStart_toStartOf="@+id/tv_status_of_order"
             app:layout_constraintTop_toBottomOf="@+id/tv_status_of_order"
-            app:lottie_autoPlay="true"
-            app:lottie_loop="true"
+            app:lottie_autoPlay="false"
+            app:lottie_loop="false"
             app:lottie_rawRes="@raw/payment_successful" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

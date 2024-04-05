@@ -119,19 +119,41 @@
         android:id="@+id/paymentFragment"
         android:name="com.aioapp.nuggetmvp.ui.fragments.PaymentFragment"
         android:label="PaymentFragment"
-        tools:layout="@layout/fragment_payment" />
+        tools:layout="@layout/fragment_payment">
+        <action
+            android:id="@+id/action_paymentFragment_to_paymentStatusFragment"
+            app:destination="@id/paymentStatusFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/paymentStatusFragment"
         android:name="com.aioapp.nuggetmvp.ui.fragments.PaymentStatusFragment"
         android:label="PaymentStatusFragment"
-        tools:layout="@layout/fragment_payment_status" />
+        tools:layout="@layout/fragment_payment_status">
+        <action
+            android:id="@+id/action_paymentStatusFragment_to_feedBackFragment"
+            app:destination="@id/feedBackFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/refillFragment"
         android:name="com.aioapp.nuggetmvp.ui.fragments.RefillFragment"
         android:label="RefillFragment"
         tools:layout="@layout/fragment_refill" />
+    <fragment
+        android:id="@+id/feedBackFragment"
+        android:name="com.aioapp.nuggetmvp.ui.fragments.FeedBackFragment"
+        android:label="FeedBackFragment"
+        tools:layout="@layout/fragment_feed_back">
+        <action
+            android:id="@+id/action_feedBackFragment_to_feedBackResponseFragment"
+            app:destination="@id/feedBackResponseFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/feedBackResponseFragment"
+        android:name="com.aioapp.nuggetmvp.ui.fragments.FeedBackResponseFragment"
+        android:label="FeedBackResponseFragment"
+        tools:layout="@layout/fragment_feed_back_response" />
 
 
 </navigation>

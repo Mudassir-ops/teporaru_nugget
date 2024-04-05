@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.aioapp.nuggetmvp.R
 import com.aioapp.nuggetmvp.databinding.FragmentPaymentStatusBinding
 
@@ -29,6 +30,11 @@ class PaymentStatusFragment : Fragment() {
             binding?.tvStatusOfOrder?.text = getString(R.string.payment_successful)
             binding?.paymentSuccessfulAnim?.visibility = View.VISIBLE
             binding?.paymentSuccessfulAnim?.playAnimation()
-        }, 3000)
+            Handler(Looper.getMainLooper()).postDelayed({
+                if (findNavController().currentDestination?.id == R.id.paymentStatusFragment) {
+                    findNavController().navigate(R.id.action_paymentStatusFragment_to_feedBackFragment)
+                }
+            }, 1000)
+        }, 2000)
     }
 }
