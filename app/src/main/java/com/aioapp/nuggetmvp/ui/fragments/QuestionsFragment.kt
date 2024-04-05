@@ -136,10 +136,6 @@ class QuestionsFragment : Fragment() {
                 IntentTypes.NEEDS_EXTRA.label -> {
                     val bundle = Bundle()
                     bundle.putString("RequiredItem", state.parametersEntity?.requiredThing)
-                    Log.e(
-                        "RequiredItem--->",
-                        "observeState:${state.parametersEntity?.requiredThing} "
-                    )
                     if (findNavController().currentDestination?.id == R.id.questionsFragment) {
                         findNavController().navigate(
                             R.id.action_questionsFragment_to_questionForwardFragment,

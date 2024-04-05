@@ -143,13 +143,17 @@ class DrinkMenuFragment : Fragment() {
 
     private fun addIntentHandling(states: NuggetProcessingStatus.TextToResponseEnded) {
         val allMenuItems: List<Food?> = nuggetSharedViewModel.allMenuItemsResponse.value
+
         val foodItems = states.value?.mapNotNull { state ->
             allMenuItems.find { it?.logicalName == state.parametersEntity?.name }?.apply {
                 val newQuantity = state.parametersEntity?.quantity ?: 0
                 this@apply.itemQuantity = newQuantity
             }
         }
+
         if (foodItems?.isNotEmpty() == true) {
+
+
             if (foodItems.size > 1) {
                 handleMultipleItemsState(foodItems)
             } else {
@@ -195,6 +199,7 @@ class DrinkMenuFragment : Fragment() {
 
     private fun handleSingleItemState(foodItem: Food) {
         if (findNavController().currentDestination?.id == R.id.drinkMenuFragment) {
+
             cartSharedViewModel.addItemIntoCart(foodItem)
             val bundle = Bundle().apply {
                 putParcelable("FoodItem", foodItem)
