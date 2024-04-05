@@ -13,10 +13,10 @@
         <ImageView
             android:id="@+id/roundedImageView"
             android:layout_width="@dimen/_96sdp"
-            android:layout_height="@dimen/_80sdp"
+            android:layout_height="@dimen/_90sdp"
             android:contentDescription="@null"
             android:paddingHorizontal="@dimen/_2sdp"
-            android:scaleType="fitXY"
+            android:scaleType="fitCenter"
             android:src="@drawable/pina_colada"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

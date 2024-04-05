@@ -26,7 +26,7 @@
             app:layout_constraintBottom_toTopOf="@+id/tv_bottom_prompt"
             app:layout_constraintTop_toBottomOf="@id/header_layout"
             tools:itemCount="2"
-            tools:layout_editor_absoluteX="17dp"
+            tools:layout_editor_absoluteX="0dp"
             tools:listitem="@layout/carousel_item" />
 
         <TextView

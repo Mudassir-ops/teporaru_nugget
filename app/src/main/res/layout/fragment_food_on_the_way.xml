@@ -34,8 +34,8 @@
 
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/order_is_on_the_way_anim"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_width="300dp"
+            android:layout_height="300dp"
             android:layout_marginBottom="@dimen/_10sdp"
             app:layout_constraintBottom_toTopOf="@+id/tv_bottom_prompt"
             app:layout_constraintEnd_toEndOf="@+id/textView"
