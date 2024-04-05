@@ -42,9 +42,13 @@ class CartAdapter(
                     context, cartItem.image
                 )
             )
-            binding.tvItemName.text = String.format(
-                context.getString(R.string.cart_item_format), cartItem.count, cartItem.logicalName
-            )
+            if(cartItem.count == 1){
+                binding.tvItemName.text = cartItem.logicalName
+            }else{
+                binding.tvItemName.text = String.format(
+                    context.getString(R.string.cart_item_format), cartItem.count, "x ".plus(cartItem.logicalName)
+                )
+            }
             binding.tvPrice.text = "$".plus(cartItem.price)
         }
     }

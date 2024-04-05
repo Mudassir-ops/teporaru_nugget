@@ -20,6 +20,7 @@ import com.aioapp.nuggetmvp.service.NuggetRecorderService
 import com.aioapp.nuggetmvp.utils.enum.IntentTypes
 import com.aioapp.nuggetmvp.utils.imageSavedToGalleryCallBack
 import com.aioapp.nuggetmvp.utils.wakeupCallBack
+import com.aioapp.nuggetmvp.viewmodels.CartSharedViewModel
 import com.aioapp.nuggetmvp.viewmodels.NuggetMainViewModel
 import com.aioapp.nuggetmvp.viewmodels.NuggetProcessingStatus
 import com.aioapp.nuggetmvp.viewmodels.NuggetSharedViewModel
@@ -36,6 +37,7 @@ class QuestionsFragment : Fragment() {
     private var binding: FragmentQuestionsBinding? = null
     private val nuggetMainViewModel: NuggetMainViewModel by activityViewModels()
     private val nuggetSharedViewModel: NuggetSharedViewModel by activityViewModels()
+    private val cartSharedViewModel: CartSharedViewModel by activityViewModels()
     private var isFirstTime = true
     private var requiredIem: String? = ""
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -74,6 +76,8 @@ class QuestionsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding?.questionAnimation?.playAnimation()
+        binding?.headerLayout?.tvCartCount?.text =
+            cartSharedViewModel.itemList.value?.size.toString()
         observeState()
         observeRefillResponse()
     }

@@ -65,29 +65,40 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <ImageView
-            android:id="@+id/iv_card_img"
-            android:layout_width="@dimen/_100sdp"
-            android:layout_height="@dimen/_90sdp"
-            android:contentDescription="@null"
-            android:src="@drawable/card"
-            app:layout_constraintBottom_toTopOf="@id/tv_tap_to_pay"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_card"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_chainStyle="packed" />
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
 
-        <TextView
-            android:id="@+id/tv_tap_to_pay"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/tap_to_pay"
-            android:textColor="@color/white"
-            android:textSize="@dimen/_14ssp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/iv_card_img"
-            app:layout_constraintStart_toStartOf="@+id/iv_card_img"
-            app:layout_constraintTop_toBottomOf="@+id/iv_card_img" />
+            <ImageView
+                android:id="@+id/iv_card_img"
+                android:layout_width="@dimen/_100sdp"
+                android:layout_height="@dimen/_90sdp"
+                android:contentDescription="@null"
+                android:src="@drawable/card"
+                android:layout_marginTop="@dimen/_90sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_chainStyle="packed" />
+
+            <TextView
+                android:id="@+id/tv_tap_to_pay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/tap_to_pay"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_14ssp"
+                app:layout_constraintEnd_toEndOf="@+id/iv_card_img"
+                app:layout_constraintStart_toStartOf="@+id/iv_card_img"
+                app:layout_constraintTop_toBottomOf="@+id/iv_card_img" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -5,12 +5,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import com.aioapp.nuggetmvp.databinding.FragmentRefillBinding
+import com.aioapp.nuggetmvp.viewmodels.CartSharedViewModel
 
 
 class RefillFragment : Fragment() {
 
     private var binding: FragmentRefillBinding? = null
+    private val cartSharedViewModel: CartSharedViewModel by activityViewModels()
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -23,6 +27,8 @@ class RefillFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding?.refillAnimation?.playAnimation()
+        binding?.headerLayout?.tvCartCount?.text =
+            cartSharedViewModel.itemList.value?.size.toString()
     }
 
 }

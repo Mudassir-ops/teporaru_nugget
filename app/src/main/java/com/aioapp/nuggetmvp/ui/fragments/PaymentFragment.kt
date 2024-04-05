@@ -1,7 +1,9 @@
 package com.aioapp.nuggetmvp.ui.fragments
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
@@ -25,15 +27,17 @@ class PaymentFragment : Fragment() {
         return binding?.root
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding?.headerLayout?.tvCartCount?.text =
             cartSharedViewModel.itemList.value?.size.toString()
         setPrices()
-        binding?.ivCardImg?.setOnClickListener {
+        binding?.clCard?.setOnTouchListener { _, _ ->
             if (findNavController().currentDestination?.id == R.id.paymentFragment) {
                 findNavController().navigate(R.id.action_paymentFragment_to_paymentStatusFragment)
             }
+            true
         }
     }
 

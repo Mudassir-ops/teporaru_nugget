@@ -47,7 +47,7 @@ fun Context?.assetsFile(): String? {
     try {
         val file = File.createTempFile("temp", ".ppn")
         val filePath = file.absolutePath
-        val inputStream: InputStream? = this?.assets?.open("Hey-Nugget_en_android_v3_0_0.ppn")
+        val inputStream: InputStream? = this?.assets?.open("Nugget_en_android_v3_0_0.ppn")
         val size = inputStream?.available()
         val buffer = ByteArray(size ?: return "")
         inputStream.read(buffer)
