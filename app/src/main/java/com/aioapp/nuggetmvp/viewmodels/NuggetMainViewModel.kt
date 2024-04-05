@@ -79,7 +79,7 @@ class NuggetMainViewModel @Inject constructor(
                     }
 
                     else -> {
-                        showToast("result.Some thing went Wrong")
+                     //   showToast("result.Some thing went Wrong")
                     }
                 }
             }

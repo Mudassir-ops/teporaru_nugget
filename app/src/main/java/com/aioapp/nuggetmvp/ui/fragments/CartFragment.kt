@@ -81,7 +81,7 @@ class CartFragment : Fragment() {
         cartSharedViewModel.itemList.observe(viewLifecycleOwner) { cartItemList ->
             var totalCartItemCount = 0
             cartItemList.forEach { item ->
-                totalCartItemCount += item.itemQuantity
+                totalCartItemCount += item.count
             }
             Log.e("Observer_Remove--->", "observeState:$cartItemList ")
             binding?.headerLayout?.tvCartCount?.text = totalCartItemCount.toString()
@@ -94,7 +94,6 @@ class CartFragment : Fragment() {
             } else {
                 binding?.tvBottomPrompt?.text = getString(R.string.say_nugget_confirm_my_order)
             }
-
         }
     }
 

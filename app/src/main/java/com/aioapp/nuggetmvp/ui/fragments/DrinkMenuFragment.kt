@@ -163,6 +163,7 @@ class DrinkMenuFragment : Fragment() {
     private fun handleMultipleItemsState(foodItems: List<Food>) {
         if (findNavController().currentDestination?.id == R.id.drinkMenuFragment) {
             foodItems.forEach { food ->
+                Log.e("FoodItem--->", "handleMultipleItemsState: $food")
                 cartSharedViewModel.addItemIntoCart(food)
             }
             findNavController().navigate(R.id.action_drinkMenuFragment_to_cartFragment)
