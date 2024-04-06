@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.aioapp.nuggetmvp.databinding.FragmentFeedBackResponseBinding
+import com.aioapp.nuggetmvp.di.datastore.SharedPreferenceUtil
 import com.aioapp.nuggetmvp.viewmodels.CartSharedViewModel
 
 class FeedBackResponseFragment : Fragment() {
@@ -23,7 +24,6 @@ class FeedBackResponseFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding?.headerLayout?.tvCartCount?.text =
-            cartSharedViewModel.itemList.value?.size.toString()
+       binding?.headerLayout?.tvCartCount?.text = SharedPreferenceUtil.savedCartItemsCount
     }
 }

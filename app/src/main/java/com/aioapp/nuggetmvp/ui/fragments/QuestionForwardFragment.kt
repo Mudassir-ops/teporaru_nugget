@@ -15,6 +15,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.aioapp.nuggetmvp.R
 import com.aioapp.nuggetmvp.databinding.FragmentQuestionForwardBinding
+import com.aioapp.nuggetmvp.di.datastore.SharedPreferenceUtil
 import com.aioapp.nuggetmvp.models.Food
 import com.aioapp.nuggetmvp.service.NuggetRecorderService
 import com.aioapp.nuggetmvp.utils.wakeupCallBack
@@ -58,6 +59,7 @@ class QuestionForwardFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         if (arguments != null) {
+            binding?.headerLayout?.tvCartCount?.text = SharedPreferenceUtil.savedCartItemsCount
             requiredItem = this.arguments?.getString("RequiredItem") as String
             binding?.tvBottomPrompt?.text =
                 getString(R.string.sure_your).plus(" ").plus(requiredItem)

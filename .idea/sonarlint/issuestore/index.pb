@@ -3176,3 +3176,7 @@ t
 Dapp/src/main/java/com/aioapp/nuggetmvp/utils/EachFragmentListener.kt,a/3/a39caf86df9f3db35978faf157f271d17faccc95
 x
 Happ/src/main/java/com/aioapp/nuggetmvp/utils/FragmentCallbackListener.kt,6/a/6a1d4ac21b2b07da4a96bbde063a9ec8994d72ed
+x
+Happ/src/main/java/com/aioapp/nuggetmvp/di/datastore/PreferenceStorage.kt,8/0/8018af2cc21d54f5dc75efb5e4a7a238f5c949cb
+{
+Kapp/src/main/java/com/aioapp/nuggetmvp/di/datastore/SharedPreferenceUtil.kt,b/b/bbfd09cb8afff5aedd4ce6f8cbeb78fed498befc
