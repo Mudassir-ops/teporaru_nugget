@@ -17,6 +17,8 @@ import com.aioapp.nuggetmvp.R
 import com.aioapp.nuggetmvp.databinding.FragmentQuestionsBinding
 import com.aioapp.nuggetmvp.service.NuggetCameraService
 import com.aioapp.nuggetmvp.service.NuggetRecorderService
+import com.aioapp.nuggetmvp.utils.appextension.isServiceRunning
+import com.aioapp.nuggetmvp.utils.enum.IntentTypes
 import com.aioapp.nuggetmvp.utils.imageSavedToGalleryCallBack
 import com.aioapp.nuggetmvp.utils.wakeupCallBack
 import com.aioapp.nuggetmvp.viewmodels.CartSharedViewModel
@@ -41,15 +43,6 @@ class QuestionsFragment : Fragment() {
     private var requiredIem: String? = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        wakeupCallBack = {
-            context?.let { it1 ->
-                ContextCompat.startForegroundService(
-                    it1, Intent(it1, NuggetRecorderService::class.java)
-                )
-
-            }
-            nuggetSharedViewModel.setRecordingStarted()
-        }
         ContextCompat.startForegroundService(
             context ?: return,
             Intent(context ?: return, NuggetCameraService::class.java)
@@ -83,6 +76,7 @@ class QuestionsFragment : Fragment() {
     }
 
     private fun observeRefillResponse() {
+        Log.e("ObserverWorkingHere--->", "observeRefillResponse: $" )
         nuggetMainViewModel.refillResponse.flowWithLifecycle(
             lifecycle, Lifecycle.State.STARTED
         ).onEach { states ->
@@ -135,26 +129,34 @@ class QuestionsFragment : Fragment() {
             isFirstTime = false
             return
         }
-//        states.value?.forEach { state ->
-//            Log.e("HiNugget--->", "observeState:$state ")
-//            when (state.intent) {
-//                IntentTypes.NEEDS_EXTRA.label -> {
-//                    requiredIem = state.parametersEntity?.requiredThing
-//                    binding?.viewFlipper?.showNext()
-//                    binding?.tvBottomText?.text =
-//                        getString(R.string.sure_your).plus(" ").plus(requiredIem)
-//                            .plus(" will be here shortly")
-//                      binding?.bottomEyeAnim2?.playAnimation()
-//
-//                    if (context?.isServiceRunning(NuggetCameraService::class.java) != true) {
-//                        ContextCompat.startForegroundService(
-//                            context ?: return,
-//                            Intent(context ?: return, NuggetCameraService::class.java)
-//                        )
-//                    }
-//                }
-//            }
-//        }
+        when (states.value?.intent) {
+            IntentTypes.NEEDS_EXTRA.label -> {
+                requiredIem = states.value.parametersEntity?.requiredThing
+                if (binding?.viewFlipper?.displayedChild == 0) {
+                    binding?.viewFlipper?.showNext()
+                    binding?.tvBottomText?.text =
+                        getString(R.string.sure_your).plus(" ").plus(requiredIem)
+                            .plus(" will be here shortly")
+                    binding?.bottomEyeAnim2?.playAnimation()
+                } else {
+                    binding?.tvBottomText?.text =
+                        getString(R.string.sure_your).plus(" ").plus(requiredIem)
+                            .plus(" will be here shortly")
+                }
+                if (context?.isServiceRunning(NuggetCameraService::class.java) != true) {
+                    ContextCompat.startForegroundService(
+                        context ?: return,
+                        Intent(context ?: return, NuggetCameraService::class.java)
+                    )
+                }
+            }
+            IntentTypes.PAYMENT.label -> {
+                if (findNavController().currentDestination?.id == R.id.questionsFragment) {
+                    findNavController().navigate(R.id.action_questionsFragment_to_desertCarouselFragment)
+                }
+
+            }
+        }
     }
 
 }

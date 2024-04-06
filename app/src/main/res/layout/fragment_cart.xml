@@ -88,7 +88,6 @@
             android:layout_marginHorizontal="@dimen/_45sdp"
             android:gravity="center"
             android:text="@string/say_nugget_confirm_my_order"
-            android:textColor="@color/white"
             android:textSize="@dimen/_12ssp"
             app:layout_constraintBottom_toTopOf="@+id/bottom_eye_anim"
             app:layout_constraintEnd_toEndOf="parent"

@@ -33,7 +33,7 @@ class OrderConfirmationFragment : Fragment() {
             if (findNavController().currentDestination?.id == R.id.orderConfirmationFragment) {
                 findNavController().navigate(R.id.action_orderConfirmationFragment_to_foodOnTheWayFragment)
             }
-        }, 2000)
+        }, 10000)
 
     }
 }

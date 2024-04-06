@@ -39,7 +39,7 @@ class PaymentStatusFragment : Fragment() {
                 if (findNavController().currentDestination?.id == R.id.paymentStatusFragment) {
                     findNavController().navigate(R.id.action_paymentStatusFragment_to_feedBackFragment)
                 }
-            }, 1000)
-        }, 2000)
+            }, 10000)
+        }, 5000)
     }
 }

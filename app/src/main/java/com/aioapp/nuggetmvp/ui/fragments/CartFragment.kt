@@ -18,6 +18,7 @@ import com.aioapp.nuggetmvp.databinding.FragmentCartBinding
 import com.aioapp.nuggetmvp.models.Food
 import com.aioapp.nuggetmvp.models.ParametersEntity
 import com.aioapp.nuggetmvp.models.TextToResponseIntent
+import com.aioapp.nuggetmvp.utils.appextension.colorizeWordInSentence
 import com.aioapp.nuggetmvp.utils.appextension.showToast
 import com.aioapp.nuggetmvp.utils.enum.IntentTypes
 import com.aioapp.nuggetmvp.utils.enum.MenuType
@@ -27,6 +28,7 @@ import com.aioapp.nuggetmvp.viewmodels.NuggetSharedViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+
 
 @AndroidEntryPoint
 class CartFragment : Fragment() {
@@ -83,7 +85,10 @@ class CartFragment : Fragment() {
                     findNavController().navigate(R.id.action_cartFragment_to_foodMenuFragment)
                 }
             } else {
-                binding?.tvBottomPrompt?.text = getString(R.string.say_nugget_confirm_my_order)
+                binding?.tvBottomPrompt?.text = getString(R.string.say_nugget_confirm_my_order).colorizeWordInSentence(
+                    "confirm"
+                )
+
             }
         }
     }

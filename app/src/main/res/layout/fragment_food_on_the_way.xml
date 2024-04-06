@@ -55,6 +55,7 @@
             android:text="@string/try_add_mojito_to_my_order"
             android:textColor="@color/white"
             android:textSize="@dimen/_12ssp"
+            android:visibility="gone"
             app:layout_constraintBottom_toTopOf="@+id/bottom_eye_anim"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
@@ -68,6 +69,7 @@
             app:layout_constraintEnd_toEndOf="@+id/tv_bottom_prompt"
             app:layout_constraintStart_toStartOf="@+id/tv_bottom_prompt"
             app:lottie_autoPlay="true"
+            android:visibility="gone"
             app:lottie_loop="true"
             app:lottie_rawRes="@raw/eye_blinking" />
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -111,11 +111,11 @@ class QuestionForwardFragment : Fragment() {
             return
         }
         Log.wtf("States--->Here", "handleTextToResponseEndedState: $states")
-        if (findNavController().currentDestination?.id == R.id.questionForwardFragment) {
-            findNavController().navigate(
-                R.id.action_questionForwardFragment_to_paymentFragment
-            )
-        }
+//        if (findNavController().currentDestination?.id == R.id.questionForwardFragment) {
+//            findNavController().navigate(
+//                R.id.action_questionForwardFragment_to_paymentFragment
+//            )
+//        }
         //---For now we are just navigating to payment Screen
 
         /*   val foodItems = states.value?.mapNotNull { state ->

@@ -36,7 +36,7 @@ class FoodOnTheWayFragment : Fragment() {
             if (findNavController().currentDestination?.id == R.id.foodOnTheWayFragment) {
                 findNavController().navigate(R.id.action_foodOnTheWayFragment_to_questionsFragment)
             }
-        }, 2000)
+        }, 10000)
 
     }
 
