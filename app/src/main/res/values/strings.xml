@@ -6,7 +6,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="your_server_for_the_day">Your server for the day</string>
-    <string name="try_show_me_the_drinks_menu"><font color="#FFFFFFFF">Try “Show me the</font> <font color="#EF8549">&#160;drinks menu</font><font color="#FFFFFFFF">
+    <string name="try_show_me_the_drinks_menu"><font color="#FFFFFFFF">Try “Nugget, Show me the</font> <font color="#EF8549">&#160;drinks menu</font><font color="#FFFFFFFF">
         ”
     </font></string>
     <string name="try_add_martini_to_my_order"><font color="#FFFFFFFF">Try “Nugget, add</font> <font color="#EF8549">&#160;Martini</font><font color="#FFFFFFFF">
@@ -16,7 +16,7 @@
     <string name="added_to_your_order">&#160;added to your order</string>
     <string name="your_order">Your Order</string>
     <string name="say_nugget_confirm_my_order">Say “Nugget, confirm my order”</string>
-    <string name="try_add_coke_to_my_order"><font color="#FFFFFFFF">Try “Add</font> <font color="#EF8549">&#160;Coke</font><font color="#FFFFFFFF">
+    <string name="try_add_coke_to_my_order"><font color="#FFFFFFFF">Try “Nugget, Add</font> <font color="#EF8549">&#160;Coke</font><font color="#FFFFFFFF">
         &#160;to my order”
     </font></string>
     <string name="try_add_mojito_to_my_order"><font color="#FFFFFFFF">Try “Nugget, add</font> <font color="#EF8549">&#160;Mojito</font><font color="#FFFFFFFF">
@@ -32,7 +32,7 @@
         ”
     </font></string>
     <string name="i_need_napkins"><font color="#FFFFFFFF">Can I get some</font> <font color="#EF8549">&#160;napkins</font></string>
-    <string name="try_loved_it"><font color="#FFFFFFFF"> Try “</font> <font color="#EF8549">Loved it</font><font color="#FFFFFFFF">
+    <string name="try_loved_it"><font color="#FFFFFFFF"> Try “Nugget, </font> <font color="#EF8549">Loved it</font><font color="#FFFFFFFF">
         ”
     </font></string>
     <string name="confirmation_message">Order Confirmed!\n\n\nYour food is\nbeing prepared</string>
@@ -53,14 +53,14 @@
     <string name="do_you_need_a_refill">Looks like you’re almost\n done with your drink\n\n\nNeed a refill?
 </string>
 
-    <string name="try_i_want_a_fudge_brownie">Try “I want a Fudge Brownie” or\n“I’m ready to Pay”</string>
+    <string name="try_i_want_a_fudge_brownie">Try “Nugget, I want a Fudge Brownie” or\n“I’m ready to Pay”</string>
     <string name="is_there_anything_else_i_can_get_you">Is there anything else I\ncan get you?</string>
     <string name="is_there_anything_else">Is there anything else I can get you?</string>
     <string name="sure_your">Sure! Your</string>
     <string name="cart_item_format">%d %s</string>
     <string name="your_drink_will_be_served_at_the_table">Your drink will be served at the table</string>
     <string name="enjoy_your_food">Alright, enjoy your food!</string>
-    <string name="try_i_want_a_cheese_cake">Try “I want a Cheesecake” or\n“I’m ready to Pay”</string>
+    <string name="try_i_want_a_cheese_cake">Try “Nugget, I want a Cheesecake” or\n“I’m ready to Pay”</string>
     <string name="tax">Tax $</string>
     <string name="hope_you_will_enjoy_our_desert">Hope you will enjoy our desert!</string>
     <string name="none_statement">hmm.. not sure I understand that.\nCan you say that again?</string>

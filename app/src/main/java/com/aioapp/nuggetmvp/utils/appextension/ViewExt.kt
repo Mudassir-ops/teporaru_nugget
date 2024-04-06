@@ -4,6 +4,8 @@ import android.graphics.Color
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import android.content.Context
+import android.graphics.Typeface
+import android.text.style.StyleSpan
 import android.view.View
 import android.widget.TextView
 import androidx.core.content.ContextCompat
@@ -53,6 +55,12 @@ fun String.colorizeWordInSentence(wordToColor: String): CharSequence {
             endIndex,
             SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE
         )
+        spannableString.setSpan(
+            StyleSpan(Typeface.ITALIC),
+            startIndex,
+            endIndex,
+            SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
     }
     return spannableString
 }
@@ -76,12 +84,24 @@ fun String.colorizeTwoWordsInSentence(wordToColor: String,secondWordToColor: Str
             endIndex,
             SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE
         )
+        spannableString.setSpan(
+            StyleSpan(Typeface.ITALIC),
+            startIndex,
+            endIndex,
+            SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
     }
     val startIndexForSecond = this.indexOf(secondWordToColor)
     if (startIndexForSecond != -1) {
         val endIndex = startIndexForSecond + secondWordToColor.length
         spannableString.setSpan(
             ForegroundColorSpan(colorOrange),
+            startIndexForSecond,
+            endIndex,
+            SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+        spannableString.setSpan(
+            StyleSpan(android.graphics.Typeface.ITALIC),
             startIndexForSecond,
             endIndex,
             SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE

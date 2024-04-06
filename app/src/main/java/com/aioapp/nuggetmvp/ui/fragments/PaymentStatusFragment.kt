@@ -1,5 +1,6 @@
 package com.aioapp.nuggetmvp.ui.fragments
 
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -19,6 +20,7 @@ class PaymentStatusFragment : Fragment() {
 
     private var binding: FragmentPaymentStatusBinding? = null
     private val cartSharedViewModel: CartSharedViewModel by activityViewModels()
+    private val mediaPlayer = MediaPlayer()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,12 +38,26 @@ class PaymentStatusFragment : Fragment() {
         Handler(Looper.getMainLooper()).postDelayed({
             binding?.tvStatusOfOrder?.text = getString(R.string.payment_successful)
             binding?.paymentSuccessfulAnim?.visibility = View.VISIBLE
+            paymentSuccessfulSound()
+            mediaPlayer.start()
             binding?.paymentSuccessfulAnim?.playAnimation()
+            Handler(Looper.getMainLooper()).postDelayed({
+                if (mediaPlayer.isPlaying)
+                    mediaPlayer.stop()
+                mediaPlayer.release()
+            }, 1000)
+
             Handler(Looper.getMainLooper()).postDelayed({
                 if (findNavController().currentDestination?.id == R.id.paymentStatusFragment) {
                     findNavController().navigate(R.id.action_paymentStatusFragment_to_feedBackFragment)
                 }
             }, 10000)
         }, 5000)
+    }
+
+    private fun paymentSuccessfulSound() {
+        val soundFile = resources.openRawResourceFd(R.raw.payment_successful_audio)
+        mediaPlayer.setDataSource(soundFile.fileDescriptor, soundFile.startOffset, soundFile.length)
+        mediaPlayer.prepare()
     }
 }

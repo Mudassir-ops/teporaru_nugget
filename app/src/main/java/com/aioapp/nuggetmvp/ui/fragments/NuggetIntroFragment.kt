@@ -1,6 +1,9 @@
 package com.aioapp.nuggetmvp.ui.fragments
 
+import android.media.MediaPlayer
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -25,6 +28,7 @@ import kotlinx.coroutines.flow.onEach
 class NuggetIntroFragment : Fragment() {
     private var binding: FragmentNuggetIntroBinding? = null
     private val nuggetSharedViewModel: NuggetSharedViewModel by activityViewModels()
+    private val mediaPlayer = MediaPlayer()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -35,13 +39,27 @@ class NuggetIntroFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setAnimationOnTextView()
+        wakeUpSound()
+        mediaPlayer.start()
         binding?.introAnimationView?.playAnimation()
+        Handler(Looper.getMainLooper()).postDelayed({
+            binding?.tvBottomPrompt?.visibility = View.VISIBLE
+            setAnimationOnTextView()
+            if (mediaPlayer.isPlaying)
+                mediaPlayer.stop()
+            mediaPlayer.release()
+        }, 1000)
         nuggetSharedViewModel.mState.flowWithLifecycle(
             lifecycle, Lifecycle.State.STARTED
         ).onEach { states ->
             handleState(states)
         }.launchIn(lifecycleScope)
+    }
+
+    private fun wakeUpSound() {
+        val soundFile = resources.openRawResourceFd(R.raw.nugget_wake_up)
+        mediaPlayer.setDataSource(soundFile.fileDescriptor, soundFile.startOffset, soundFile.length)
+        mediaPlayer.prepare()
     }
 
     private fun handleState(states: NuggetProcessingStatus) {
@@ -110,5 +128,7 @@ class NuggetIntroFragment : Fragment() {
         anim.setDuration(5000)
         anim.setRepeatCount(Animation.INFINITE)
         anim.repeatMode = Animation.REVERSE
+        binding?.tvBottomPrompt?.startAnimation(anim)
     }
+
 }

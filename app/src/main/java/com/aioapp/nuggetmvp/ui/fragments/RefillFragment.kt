@@ -1,6 +1,7 @@
 package com.aioapp.nuggetmvp.ui.fragments
 
 import android.content.Intent
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -34,6 +35,7 @@ class RefillFragment : Fragment() {
     private val cartSharedViewModel: CartSharedViewModel by activityViewModels()
     private val nuggetSharedViewModel: NuggetSharedViewModel by activityViewModels()
     private var isFirstTime = true
+    private val mediaPlayer = MediaPlayer()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -46,8 +48,16 @@ class RefillFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initiateConvoSound()
+        mediaPlayer.start()
         binding?.refillAnimation?.playAnimation()
-       binding?.headerLayout?.tvCartCount?.text = SharedPreferenceUtil.savedCartItemsCount
+        Handler(Looper.getMainLooper()).postDelayed({
+            if (mediaPlayer.isPlaying)
+                mediaPlayer.stop()
+            mediaPlayer.release()
+        }, 1000)
+
+        binding?.headerLayout?.tvCartCount?.text = SharedPreferenceUtil.savedCartItemsCount
         Handler(Looper.getMainLooper()).postDelayed({
             if (findNavController().currentDestination?.id == R.id.refillFragment) {
                 findNavController().navigate(
@@ -114,5 +124,11 @@ class RefillFragment : Fragment() {
                 )
             }
         }
+    }
+
+    private fun initiateConvoSound() {
+        val soundFile = resources.openRawResourceFd(R.raw.nugget_nitiating_conversation)
+        mediaPlayer.setDataSource(soundFile.fileDescriptor, soundFile.startOffset, soundFile.length)
+        mediaPlayer.prepare()
     }
 }

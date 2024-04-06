@@ -1,7 +1,10 @@
 package com.aioapp.nuggetmvp.ui.fragments
 
 import android.content.Intent
+import android.media.MediaPlayer
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -43,6 +46,7 @@ class QuestionsFragment : Fragment() {
     private val cartSharedViewModel: CartSharedViewModel by activityViewModels()
     private var isFirstTime = true
     private var requiredIem: String? = ""
+    private val mediaPlayer = MediaPlayer()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         ContextCompat.startForegroundService(
@@ -67,6 +71,13 @@ class QuestionsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initiateConvoSound()
+        mediaPlayer.start()
+        Handler(Looper.getMainLooper()).postDelayed({
+            if (mediaPlayer.isPlaying)
+                mediaPlayer.stop()
+            mediaPlayer.release()
+        }, 1000)
         binding?.questionAnimation?.playAnimation()
         binding?.headerLayout?.tvCartCount?.text = SharedPreferenceUtil.savedCartItemsCount
         binding?.bottomEyeAnim?.playAnimation()
@@ -82,6 +93,11 @@ class QuestionsFragment : Fragment() {
                 context ?: return, R.color.white
             )
         )
+    }
+    private fun initiateConvoSound() {
+        val soundFile = resources.openRawResourceFd(R.raw.nugget_nitiating_conversation)
+        mediaPlayer.setDataSource(soundFile.fileDescriptor, soundFile.startOffset, soundFile.length)
+        mediaPlayer.prepare()
     }
 
     private fun observeRefillResponse() {
@@ -147,6 +163,7 @@ class QuestionsFragment : Fragment() {
         when (states.value?.intent) {
             IntentTypes.NEEDS_EXTRA.label -> {
                 requiredIem = states.value.parametersEntity?.requiredThing
+                binding?.servingAnimation?.playAnimation()
                 if (binding?.viewFlipper?.displayedChild == 0) {
                     binding?.viewFlipper?.showNext()
                     binding?.tvBottomText?.text =
