@@ -68,8 +68,8 @@ class DesertCarouselFragment : Fragment() {
     }
 
     private fun startAutoSwitching() {
-        val delay: Long = 3000
-        val period: Long = 3000
+        val delay: Long = 5000
+        val period: Long = 5000
         val handler = Handler(Looper.getMainLooper())
         val update = Runnable {
             if (currentPage == images.size) {
@@ -148,6 +148,7 @@ class DesertCarouselFragment : Fragment() {
                     }
                 }, 2000)
             }
+
             else -> {
                 if (findNavController().currentDestination?.id == R.id.desertCarouselFragment) {
                     findNavController().navigate(R.id.action_desertCarouselFragment_to_paymentFragment)
