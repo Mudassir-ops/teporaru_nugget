@@ -17,6 +17,7 @@ import com.aioapp.nuggetmvp.adapters.FoodAdapter
 import com.aioapp.nuggetmvp.databinding.FragmentDrinkMenuBinding
 import com.aioapp.nuggetmvp.models.Food
 import com.aioapp.nuggetmvp.models.TextToResponseIntent
+import com.aioapp.nuggetmvp.utils.appextension.colorizeWordInSentence
 import com.aioapp.nuggetmvp.utils.appextension.handleNoneState
 import com.aioapp.nuggetmvp.utils.enum.IntentTypes
 import com.aioapp.nuggetmvp.utils.enum.MenuType
@@ -50,6 +51,7 @@ class DrinkMenuFragment : Fragment() {
         val drinkList = getDrinksList()
         val foodAdapter = FoodAdapter(context ?: return, drinkList) {}
         binding?.rvDrinks?.adapter = foodAdapter
+        binding?.tvBottomPrompt?.text = getString(R.string.try_add_coke_to_my_order).colorizeWordInSentence("Coke")
         binding?.bottomEyeAnim?.playAnimation()
         observeStates()
         observeNoneState()

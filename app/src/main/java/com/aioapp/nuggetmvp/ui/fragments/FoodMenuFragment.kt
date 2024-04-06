@@ -17,6 +17,7 @@ import com.aioapp.nuggetmvp.adapters.FoodAdapter
 import com.aioapp.nuggetmvp.databinding.FragmentFoodMenuBinding
 import com.aioapp.nuggetmvp.models.Food
 import com.aioapp.nuggetmvp.models.TextToResponseIntent
+import com.aioapp.nuggetmvp.utils.appextension.colorizeWordInSentence
 import com.aioapp.nuggetmvp.utils.appextension.handleNoneState
 import com.aioapp.nuggetmvp.utils.enum.IntentTypes
 import com.aioapp.nuggetmvp.utils.enum.MenuType
@@ -60,6 +61,7 @@ class FoodMenuFragment : Fragment() {
             }
         }
         binding.rvFood.adapter = foodAdapter
+        binding.tvBottomPrompt.text = getString(R.string.try_add_coke_to_my_order).colorizeWordInSentence("Coke")
         binding.bottomEyeAnim.playAnimation()
         observeStates()
         nuggetMainViewModel.itemResponseStates.observe(viewLifecycleOwner) { txtToResponse ->

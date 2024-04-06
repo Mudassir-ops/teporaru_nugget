@@ -42,7 +42,6 @@
             android:layout_marginHorizontal="@dimen/_20sdp"
             android:gravity="center"
             android:text="@string/try_add_coke_to_my_order"
-            android:textColor="@color/white"
             android:textSize="@dimen/_12ssp"
             app:layout_constraintBottom_toTopOf="@+id/bottom_eye_anim"
             app:layout_constraintEnd_toEndOf="@+id/rv_drinks"

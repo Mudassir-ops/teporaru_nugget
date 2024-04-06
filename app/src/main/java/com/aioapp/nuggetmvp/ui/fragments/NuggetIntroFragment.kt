@@ -20,6 +20,7 @@ import androidx.navigation.fragment.findNavController
 import com.aioapp.nuggetmvp.R
 import com.aioapp.nuggetmvp.databinding.FragmentNuggetIntroBinding
 import com.aioapp.nuggetmvp.models.TextToResponseIntent
+import com.aioapp.nuggetmvp.utils.appextension.colorizeWordInSentence
 import com.aioapp.nuggetmvp.utils.appextension.handleNoneState
 import com.aioapp.nuggetmvp.utils.enum.MenuType
 import com.aioapp.nuggetmvp.viewmodels.NuggetMainViewModel
@@ -53,6 +54,7 @@ class NuggetIntroFragment : Fragment() {
         binding?.introAnimationView?.playAnimation()
         Handler(Looper.getMainLooper()).postDelayed({
             binding?.tvBottomPrompt?.visibility = View.VISIBLE
+            binding?.tvBottomPrompt?.text = getString(R.string.try_show_me_the_drinks_menu).colorizeWordInSentence("drinks menu")
             setAnimationOnTextView()
             if (mediaPlayer.isPlaying)
                 mediaPlayer.stop()

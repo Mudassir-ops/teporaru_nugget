@@ -148,7 +148,11 @@
         android:id="@+id/feedBackResponseFragment"
         android:name="com.aioapp.nuggetmvp.ui.fragments.FeedBackResponseFragment"
         android:label="FeedBackResponseFragment"
-        tools:layout="@layout/fragment_feed_back_response" />
+        tools:layout="@layout/fragment_feed_back_response" >
+        <action
+            android:id="@+id/action_feedBackResponseFragment_to_closingFragment"
+            app:destination="@id/closingFragment" />
+    </fragment>
     <fragment
         android:id="@+id/desertCarouselFragment"
         android:name="com.aioapp.nuggetmvp.ui.fragments.DesertCarouselFragment"
@@ -158,6 +162,11 @@
             android:id="@+id/action_desertCarouselFragment_to_paymentFragment"
             app:destination="@id/paymentFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/closingFragment"
+        tools:layout="@layout/fragment_closing"
+        android:name="com.aioapp.nuggetmvp.ui.fragments.ClosingFragment"
+        android:label="ClosingFragment" />
 
 
 </navigation>

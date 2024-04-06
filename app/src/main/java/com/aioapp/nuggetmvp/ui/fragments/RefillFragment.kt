@@ -75,8 +75,7 @@ class RefillFragment : Fragment() {
             when (states) {
                 NuggetProcessingStatus.Init -> Log.e("NuggetMvp", "onViewCreated: Init")
 
-                is NuggetProcessingStatus.RecordingStarted -> binding?.tvBottomPrompt?.text =
-                    getString(R.string.listening)
+                is NuggetProcessingStatus.RecordingStarted -> handleRecordingStartedState()
 
                 is NuggetProcessingStatus.RecordingEnded -> Log.e(
                     "NuggetMvp", "onViewCreated: Init${states.isEnded}"
@@ -130,5 +129,14 @@ class RefillFragment : Fragment() {
         val soundFile = resources.openRawResourceFd(R.raw.nugget_nitiating_conversation)
         mediaPlayer.setDataSource(soundFile.fileDescriptor, soundFile.startOffset, soundFile.length)
         mediaPlayer.prepare()
+    }
+
+    private fun handleRecordingStartedState() {
+        binding?.tvBottomPrompt?.text = getString(R.string.listening)
+        binding?.tvBottomPrompt?.setTextColor(
+            ContextCompat.getColor(
+                context ?: return, R.color.white
+            )
+        )
     }
 }

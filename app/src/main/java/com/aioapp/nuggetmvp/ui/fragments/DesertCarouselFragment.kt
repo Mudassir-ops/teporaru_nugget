@@ -101,8 +101,7 @@ class DesertCarouselFragment : Fragment() {
             when (states) {
                 NuggetProcessingStatus.Init -> Log.e("NuggetMvp", "onViewCreated: Init")
 
-                is NuggetProcessingStatus.RecordingStarted -> binding?.tvBottomPrompt?.text =
-                    getString(R.string.listening)
+                is NuggetProcessingStatus.RecordingStarted -> handleRecordingStartedState()
 
                 is NuggetProcessingStatus.RecordingEnded -> Log.e(
                     "NuggetMvp", "onViewCreated: Init${states.isEnded}"
@@ -120,6 +119,15 @@ class DesertCarouselFragment : Fragment() {
                 }
             }
         }.launchIn(lifecycleScope)
+    }
+
+    private fun handleRecordingStartedState() {
+        binding?.tvBottomPrompt?.text = getString(R.string.listening)
+        binding?.tvBottomPrompt?.setTextColor(
+            ContextCompat.getColor(
+                context ?: return, R.color.white
+            )
+        )
     }
 
     private fun handleTextToResponseEndedState(states: NuggetProcessingStatus.TextToResponseEnded) {

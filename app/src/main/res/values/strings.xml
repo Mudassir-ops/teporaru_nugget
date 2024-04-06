@@ -1,14 +1,10 @@
 <resources>
     <string name="app_name">Nugget MVP</string>
-    <string name="hey_nugget_text"><font color="#FFFFFFFF">Say “</font> <font color="#EF8549">Hey Nugget</font><font color="#FFFFFFFF">
-        ” to wake me up
-    </font></string>
+    <string name="hey_nugget_text">Say “Hey Nugget” to wake me up</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="your_server_for_the_day">Your server for the day</string>
-    <string name="try_show_me_the_drinks_menu"><font color="#FFFFFFFF">Try “Nugget, Show me the</font> <font color="#EF8549">&#160;drinks menu</font><font color="#FFFFFFFF">
-        ”
-    </font></string>
+    <string name="try_show_me_the_drinks_menu">Try “Nugget, Show me the drinks menu”</string>
     <string name="try_add_martini_to_my_order"><font color="#FFFFFFFF">Try “Nugget, add</font> <font color="#EF8549">&#160;Martini</font><font color="#FFFFFFFF">
         &#160;to my order”
     </font></string>
@@ -16,9 +12,7 @@
     <string name="added_to_your_order">&#160;added to your order</string>
     <string name="your_order">Your Order</string>
     <string name="say_nugget_confirm_my_order">Say “Nugget, confirm my order”</string>
-    <string name="try_add_coke_to_my_order"><font color="#FFFFFFFF">Try “Nugget, Add</font> <font color="#EF8549">&#160;Coke</font><font color="#FFFFFFFF">
-        &#160;to my order”
-    </font></string>
+    <string name="try_add_coke_to_my_order">Try “Nugget, Add Coke to my order”</string>
     <string name="try_add_mojito_to_my_order"><font color="#FFFFFFFF">Try “Nugget, add</font> <font color="#EF8549">&#160;Mojito</font><font color="#FFFFFFFF">
         &#160;to my order”
     </font></string>
@@ -43,7 +37,7 @@
     <string name="meh">Meh</string>
     <string name="hated_it">Hated it</string>
     <string name="transcripitng">Transcripitng...</string>
-    <string name="listening">Listening</string>
+    <string name="listening">Listening...</string>
     <string name="tap_to_pay">Tap to pay</string>
     <string name="processing">Processing</string>
     <string name="payment_successful">Payment Successful</string>
