@@ -44,6 +44,7 @@ class NuggetSharedViewModel @Inject constructor(
         state.value = NuggetProcessingStatus.TextToResponseEnded(intentEntity)
     }
 
+
     init {
         getAllMenuData()
     }
@@ -77,6 +78,5 @@ sealed class NuggetProcessingStatus {
     data class RecordingEnded(val isEnded: String) : NuggetProcessingStatus()
     data class TranscriptStarted(val isStarted: Boolean) : NuggetProcessingStatus()
     data class ParitialTranscriptionState(val value: String) : NuggetProcessingStatus()
-    data class TextToResponseEnded(val value: TextToResponseIntent?) :
-        NuggetProcessingStatus()
+    data class TextToResponseEnded(val value: TextToResponseIntent?) : NuggetProcessingStatus()
 }

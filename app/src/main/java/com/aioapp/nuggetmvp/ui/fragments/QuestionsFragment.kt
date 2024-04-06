@@ -15,16 +15,17 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.aioapp.nuggetmvp.R
 import com.aioapp.nuggetmvp.databinding.FragmentQuestionsBinding
+import com.aioapp.nuggetmvp.models.TextToResponseIntent
 import com.aioapp.nuggetmvp.service.NuggetCameraService
-import com.aioapp.nuggetmvp.service.NuggetRecorderService
+import com.aioapp.nuggetmvp.utils.appextension.handleNoneState
 import com.aioapp.nuggetmvp.utils.appextension.isServiceRunning
 import com.aioapp.nuggetmvp.utils.enum.IntentTypes
 import com.aioapp.nuggetmvp.utils.imageSavedToGalleryCallBack
-import com.aioapp.nuggetmvp.utils.wakeupCallBack
 import com.aioapp.nuggetmvp.viewmodels.CartSharedViewModel
 import com.aioapp.nuggetmvp.viewmodels.NuggetMainViewModel
 import com.aioapp.nuggetmvp.viewmodels.NuggetProcessingStatus
 import com.aioapp.nuggetmvp.viewmodels.NuggetSharedViewModel
+import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -44,8 +45,7 @@ class QuestionsFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         ContextCompat.startForegroundService(
-            context ?: return,
-            Intent(context ?: return, NuggetCameraService::class.java)
+            context ?: return, Intent(context ?: return, NuggetCameraService::class.java)
         )
         imageSavedToGalleryCallBack = {
             val file = File(it)
@@ -58,8 +58,7 @@ class QuestionsFragment : Fragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         binding = FragmentQuestionsBinding.inflate(layoutInflater, container, false)
         return binding?.root
@@ -72,24 +71,35 @@ class QuestionsFragment : Fragment() {
             cartSharedViewModel.itemList.value?.size.toString()
         binding?.bottomEyeAnim?.playAnimation()
         observeState()
+        observeNoneState()
         observeRefillResponse()
     }
 
+    private fun handleRecordingStartedState() {
+        binding?.tvBottomPrompt?.text = getString(R.string.listening)
+        binding?.tvBottomPrompt?.setTextColor(
+            ContextCompat.getColor(
+                context ?: return, R.color.white
+            )
+        )
+    }
+
     private fun observeRefillResponse() {
-        Log.e("ObserverWorkingHere--->", "observeRefillResponse: $" )
+        Log.e("ObserverWorkingHere--->", "observeRefillResponse: $")
         nuggetMainViewModel.refillResponse.flowWithLifecycle(
             lifecycle, Lifecycle.State.STARTED
         ).onEach { states ->
-            if (states?.prediction?.lowercase() == "Refill".lowercase()) {
-                if (findNavController().currentDestination?.id == R.id.questionsFragment) {
-                    context?.stopService(
-                        Intent(
-                            context ?: return@onEach,
-                            NuggetCameraService::class.java
+            when {
+                states?.prediction?.lowercase() == "Refill".lowercase() -> {
+                    if (findNavController().currentDestination?.id == R.id.questionsFragment) {
+                        context?.stopService(
+                            Intent(
+                                context ?: return@onEach, NuggetCameraService::class.java
+                            )
                         )
-                    )
-                    if (isAdded && !isDetached) {
-                        findNavController().navigate(R.id.action_questionsFragment_to_refillFragment)
+                        if (isAdded && !isDetached) {
+                            findNavController().navigate(R.id.action_questionsFragment_to_refillFragment)
+                        }
                     }
                 }
             }
@@ -103,8 +113,7 @@ class QuestionsFragment : Fragment() {
             when (states) {
                 NuggetProcessingStatus.Init -> Log.e("NuggetMvp", "onViewCreated: Init")
 
-                is NuggetProcessingStatus.RecordingStarted -> binding?.tvBottomPrompt?.text =
-                    getString(R.string.listening)
+                is NuggetProcessingStatus.RecordingStarted -> handleRecordingStartedState()
 
                 is NuggetProcessingStatus.RecordingEnded -> Log.e(
                     "NuggetMvp", "onViewCreated: Init${states.isEnded}"
@@ -115,11 +124,17 @@ class QuestionsFragment : Fragment() {
 
                 is NuggetProcessingStatus.ParitialTranscriptionState -> {
                     binding?.tvBottomPrompt?.text = states.value
+                    binding?.tvBottomPrompt?.setTextColor(
+                        ContextCompat.getColor(
+                            context ?: return@onEach, R.color.white
+                        )
+                    )
                 }
 
                 is NuggetProcessingStatus.TextToResponseEnded -> {
                     handleTextToResponseEndedState(states)
                 }
+
             }
         }.launchIn(lifecycleScope)
     }
@@ -150,8 +165,10 @@ class QuestionsFragment : Fragment() {
                     )
                 }
             }
+
             IntentTypes.PAYMENT.label -> {
                 if (findNavController().currentDestination?.id == R.id.questionsFragment) {
+                    context?.stopService(Intent(context ?: return, NuggetCameraService::class.java))
                     findNavController().navigate(R.id.action_questionsFragment_to_desertCarouselFragment)
                 }
 
@@ -159,4 +176,15 @@ class QuestionsFragment : Fragment() {
         }
     }
 
+    private fun observeNoneState() {
+        nuggetMainViewModel.itemResponseStates.observe(viewLifecycleOwner) { txtToResponse ->
+            if (txtToResponse?.isNotEmpty() == true) {
+                val myData: TextToResponseIntent =
+                    Gson().fromJson(txtToResponse, TextToResponseIntent::class.java)
+                if (myData.intent?.contains("none", ignoreCase = true) == true) {
+                    binding?.tvBottomPrompt?.handleNoneState(context ?: return@observe)
+                }
+            }
+        }
+    }
 }

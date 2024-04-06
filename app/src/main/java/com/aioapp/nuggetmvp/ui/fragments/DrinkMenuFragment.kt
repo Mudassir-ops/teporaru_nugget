@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
@@ -16,11 +17,14 @@ import com.aioapp.nuggetmvp.adapters.FoodAdapter
 import com.aioapp.nuggetmvp.databinding.FragmentDrinkMenuBinding
 import com.aioapp.nuggetmvp.models.Food
 import com.aioapp.nuggetmvp.models.TextToResponseIntent
+import com.aioapp.nuggetmvp.utils.appextension.handleNoneState
 import com.aioapp.nuggetmvp.utils.enum.IntentTypes
 import com.aioapp.nuggetmvp.utils.enum.MenuType
 import com.aioapp.nuggetmvp.viewmodels.CartSharedViewModel
+import com.aioapp.nuggetmvp.viewmodels.NuggetMainViewModel
 import com.aioapp.nuggetmvp.viewmodels.NuggetProcessingStatus
 import com.aioapp.nuggetmvp.viewmodels.NuggetSharedViewModel
+import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -30,6 +34,7 @@ class DrinkMenuFragment : Fragment() {
 
     private var binding: FragmentDrinkMenuBinding? = null
     private val nuggetSharedViewModel: NuggetSharedViewModel by activityViewModels()
+    private val nuggetMainViewModel: NuggetMainViewModel by activityViewModels()
     private val cartSharedViewModel: CartSharedViewModel by activityViewModels()
     private var isFirstTime = true
     private var checkTotalItemCount = 0
@@ -43,18 +48,11 @@ class DrinkMenuFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val drinkList = getDrinksList()
-        val foodAdapter = FoodAdapter(activity ?: return, drinkList) {
-            val bundle = Bundle()
-            bundle.putParcelable("FoodItem", it)
-            if (findNavController().currentDestination?.id == R.id.drinkMenuFragment) {
-                findNavController().navigate(
-                    R.id.action_drinkMenuFragment_to_itemFullViewFragment, bundle
-                )
-            }
-        }
+        val foodAdapter = FoodAdapter(context ?: return, drinkList) {}
         binding?.rvDrinks?.adapter = foodAdapter
         binding?.bottomEyeAnim?.playAnimation()
         observeStates()
+        observeNoneState()
     }
 
     private fun observeStates() {
@@ -87,6 +85,7 @@ class DrinkMenuFragment : Fragment() {
             is NuggetProcessingStatus.TranscriptStarted -> handleTranscriptStartedState()
             is NuggetProcessingStatus.ParitialTranscriptionState -> handleTranscriptEndState(states)
             is NuggetProcessingStatus.TextToResponseEnded -> handleTextToResponseEndedState(states)
+
         }
     }
 
@@ -96,6 +95,11 @@ class DrinkMenuFragment : Fragment() {
 
     private fun handleRecordingStartedState() {
         binding?.tvBottomPrompt?.text = getString(R.string.listening)
+        binding?.tvBottomPrompt?.setTextColor(
+            ContextCompat.getColor(
+                context ?: return, R.color.white
+            )
+        )
     }
 
     private fun handleRecordingEndedState(states: NuggetProcessingStatus.RecordingEnded) {
@@ -108,6 +112,11 @@ class DrinkMenuFragment : Fragment() {
 
     private fun handleTranscriptEndState(states: NuggetProcessingStatus.ParitialTranscriptionState) {
         binding?.tvBottomPrompt?.text = states.value
+        binding?.tvBottomPrompt?.setTextColor(
+            ContextCompat.getColor(
+                context ?: return, R.color.white
+            )
+        )
     }
 
     private fun handleTextToResponseEndedState(states: NuggetProcessingStatus.TextToResponseEnded) {
@@ -138,6 +147,8 @@ class DrinkMenuFragment : Fragment() {
                     }
                 }
             }
+        } else {
+            binding?.tvBottomPrompt?.handleNoneState(context ?: return)
         }
     }
 
@@ -182,4 +193,15 @@ class DrinkMenuFragment : Fragment() {
         }
     }
 
+    private fun observeNoneState() {
+        nuggetMainViewModel.itemResponseStates.observe(viewLifecycleOwner) { txtToResponse ->
+            if (txtToResponse?.isNotEmpty() == true) {
+                val myData: TextToResponseIntent =
+                    Gson().fromJson(txtToResponse, TextToResponseIntent::class.java)
+                if (myData.intent?.contains("none", ignoreCase = true) == true) {
+                    binding?.tvBottomPrompt?.handleNoneState(context ?: return@observe)
+                }
+            }
+        }
+    }
 }

@@ -3,7 +3,12 @@ package com.aioapp.nuggetmvp.utils.appextension
 import android.graphics.Color
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
+import android.content.Context
 import android.view.View
+import android.widget.TextView
+import androidx.core.content.ContextCompat
+import com.aioapp.nuggetmvp.R
+import kotlin.random.Random
 
 fun View.gone() {
     visibility = View.GONE
@@ -15,6 +20,18 @@ fun View.visible() {
 
 fun View.invisible() {
     visibility = View.INVISIBLE
+}
+
+fun TextView.handleNoneState(context: Context) {
+    this@handleNoneState.text = ""
+    this@handleNoneState.text = resources.getString(R.string.none_statement)
+    this@handleNoneState.setTextColor(ContextCompat.getColor(context, R.color.orange))
+}
+
+fun getRandomAlphabet(): Char {
+    val alphabet = "abcdefghijklmnopqrstuvwxyz"
+    val randomIndex = Random.nextInt(0, alphabet.length)
+    return alphabet[randomIndex]
 }
 
 fun String.colorizeWordInSentence(wordToColor: String): CharSequence {
