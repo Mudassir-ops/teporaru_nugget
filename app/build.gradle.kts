@@ -90,4 +90,6 @@ dependencies {
     implementation(libs.lottie)
 
     implementation(libs.assemblyai.java)
+
+    implementation(libs.androidx.datastore.preferences.core)
 }

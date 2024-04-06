@@ -11,6 +11,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.aioapp.nuggetmvp.R
 import com.aioapp.nuggetmvp.databinding.FragmentFoodOnTheWayBinding
+import com.aioapp.nuggetmvp.di.datastore.SharedPreferenceUtil
 import com.aioapp.nuggetmvp.viewmodels.CartSharedViewModel
 
 
@@ -29,8 +30,7 @@ class FoodOnTheWayFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding?.orderIsOnTheWayAnim?.playAnimation()
-        binding?.headerLayout?.tvCartCount?.text =
-            cartSharedViewModel.itemList.value?.size.toString()
+       binding?.headerLayout?.tvCartCount?.text = SharedPreferenceUtil.savedCartItemsCount
         binding?.bottomEyeAnim?.playAnimation()
         Handler(Looper.getMainLooper()).postDelayed({
             if (findNavController().currentDestination?.id == R.id.foodOnTheWayFragment) {

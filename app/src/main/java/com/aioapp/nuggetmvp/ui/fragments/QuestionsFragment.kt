@@ -15,6 +15,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.aioapp.nuggetmvp.R
 import com.aioapp.nuggetmvp.databinding.FragmentQuestionsBinding
+import com.aioapp.nuggetmvp.di.datastore.SharedPreferenceUtil
 import com.aioapp.nuggetmvp.models.TextToResponseIntent
 import com.aioapp.nuggetmvp.service.NuggetCameraService
 import com.aioapp.nuggetmvp.utils.appextension.handleNoneState
@@ -67,8 +68,7 @@ class QuestionsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding?.questionAnimation?.playAnimation()
-        binding?.headerLayout?.tvCartCount?.text =
-            cartSharedViewModel.itemList.value?.size.toString()
+        binding?.headerLayout?.tvCartCount?.text = SharedPreferenceUtil.savedCartItemsCount
         binding?.bottomEyeAnim?.playAnimation()
         observeState()
         observeNoneState()

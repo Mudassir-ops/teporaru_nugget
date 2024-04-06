@@ -17,6 +17,7 @@ import androidx.navigation.fragment.findNavController
 import com.aioapp.nuggetmvp.R
 import com.aioapp.nuggetmvp.adapters.DesertViewPagerAdapter
 import com.aioapp.nuggetmvp.databinding.FragmentDesertCarouselBinding
+import com.aioapp.nuggetmvp.di.datastore.SharedPreferenceUtil
 import com.aioapp.nuggetmvp.models.Food
 import com.aioapp.nuggetmvp.utils.appextension.colorizeTwoWordsInSentence
 import com.aioapp.nuggetmvp.utils.enum.IntentTypes
@@ -56,8 +57,7 @@ class DesertCarouselFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding?.headerLayout?.tvCartCount?.text =
-            cartSharedViewModel.itemList.value?.size.toString()
+        binding?.headerLayout?.tvCartCount?.text = SharedPreferenceUtil.savedCartItemsCount
         binding?.viewPager?.adapter = adapter
         binding?.tvBottomPrompt?.text =
             getString(R.string.try_i_want_a_fudge_brownie).colorizeTwoWordsInSentence(

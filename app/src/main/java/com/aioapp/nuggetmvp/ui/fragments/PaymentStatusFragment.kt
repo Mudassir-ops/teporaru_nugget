@@ -11,6 +11,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.aioapp.nuggetmvp.R
 import com.aioapp.nuggetmvp.databinding.FragmentPaymentStatusBinding
+import com.aioapp.nuggetmvp.di.datastore.SharedPreferenceUtil
 import com.aioapp.nuggetmvp.viewmodels.CartSharedViewModel
 
 
@@ -29,6 +30,7 @@ class PaymentStatusFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding?.headerLayout?.tvCartCount?.text = SharedPreferenceUtil.savedCartItemsCount
         binding?.headerLayout?.tvCartCount?.visibility = View.GONE
         binding?.headerLayout?.ivCart?.visibility = View.GONE
         Handler(Looper.getMainLooper()).postDelayed({

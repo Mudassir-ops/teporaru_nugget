@@ -17,6 +17,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.aioapp.nuggetmvp.R
 import com.aioapp.nuggetmvp.databinding.FragmentRefillBinding
+import com.aioapp.nuggetmvp.di.datastore.SharedPreferenceUtil
 import com.aioapp.nuggetmvp.service.NuggetCameraService
 import com.aioapp.nuggetmvp.utils.appextension.isServiceRunning
 import com.aioapp.nuggetmvp.utils.enum.IntentTypes
@@ -46,8 +47,7 @@ class RefillFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding?.refillAnimation?.playAnimation()
-        binding?.headerLayout?.tvCartCount?.text =
-            cartSharedViewModel.itemList.value?.size.toString()
+       binding?.headerLayout?.tvCartCount?.text = SharedPreferenceUtil.savedCartItemsCount
         Handler(Looper.getMainLooper()).postDelayed({
             if (findNavController().currentDestination?.id == R.id.refillFragment) {
                 findNavController().navigate(

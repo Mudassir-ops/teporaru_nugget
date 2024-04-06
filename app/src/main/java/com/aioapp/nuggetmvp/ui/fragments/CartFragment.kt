@@ -16,6 +16,7 @@ import androidx.navigation.fragment.findNavController
 import com.aioapp.nuggetmvp.R
 import com.aioapp.nuggetmvp.adapters.CartAdapter
 import com.aioapp.nuggetmvp.databinding.FragmentCartBinding
+import com.aioapp.nuggetmvp.di.datastore.SharedPreferenceUtil
 import com.aioapp.nuggetmvp.models.Food
 import com.aioapp.nuggetmvp.models.ParametersEntity
 import com.aioapp.nuggetmvp.models.TextToResponseIntent
@@ -83,6 +84,7 @@ class CartFragment : Fragment() {
             }
             Log.e("Observer_Remove--->", "observeState:$cartItemList ")
             binding?.headerLayout?.tvCartCount?.text = totalCartItemCount.toString()
+            SharedPreferenceUtil.savedCartItemsCount = totalCartItemCount.toString()
             cartAdapter?.updateCartItem(cartItemList = cartItemList)
             setPrices()
             if (cartItemList.isEmpty()) {
