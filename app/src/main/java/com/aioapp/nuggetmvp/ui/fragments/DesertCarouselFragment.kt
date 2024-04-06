@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
@@ -133,8 +134,19 @@ class DesertCarouselFragment : Fragment() {
                     findNavController().navigate(R.id.action_desertCarouselFragment_to_paymentFragment)
                 }
             }
-            IntentTypes.ADD.label ->{
-                handleGotoCartState(states)
+            IntentTypes.ADD.label -> {
+                binding?.tvBottomPrompt?.text = getString(R.string.hope_you_will_enjoy_our_desert)
+                binding?.tvBottomPrompt?.setTextColor(
+                    ContextCompat.getColor(
+                        context ?: return,
+                        R.color.orange
+                    )
+                )
+                Handler(Looper.getMainLooper()).postDelayed({
+                    if (findNavController().currentDestination?.id == R.id.desertCarouselFragment) {
+                        findNavController().navigate(R.id.action_desertCarouselFragment_to_paymentFragment)
+                    }
+                }, 2000)
             }
         }
     }
@@ -145,22 +157,5 @@ class DesertCarouselFragment : Fragment() {
         timer = null
     }
 
-    private fun handleGotoCartState(states: NuggetProcessingStatus.TextToResponseEnded) {
-        val allMenuItems: List<Food?> = nuggetSharedViewModel.allMenuItemsResponse.value
-        val foodItems =
-            allMenuItems.find { it?.logicalName == states.value?.parametersEntity?.name }
-                ?.apply {
-                    val newQuantity = states.value?.parametersEntity?.quantity ?: 0
-                    this@apply.itemQuantity = newQuantity
-                }
-        if (foodItems != null) {
-            if (states.value?.last != true) {
-                cartSharedViewModel.addItemIntoCart(foodItems)
-            } else {
-                cartSharedViewModel.addItemIntoCart(foodItems)
-
-            }
-        }
-    }
 
 }

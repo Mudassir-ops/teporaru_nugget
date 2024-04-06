@@ -30,8 +30,8 @@ class PaymentFragment : Fragment() {
     @SuppressLint("ClickableViewAccessibility")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding?.headerLayout?.tvCartCount?.text =
-            cartSharedViewModel.itemList.value?.size.toString()
+        binding?.headerLayout?.tvCartCount?.visibility = View.GONE
+        binding?.headerLayout?.ivCart?.visibility = View.GONE
         setPrices()
         binding?.clCard?.setOnTouchListener { _, _ ->
             if (findNavController().currentDestination?.id == R.id.paymentFragment) {

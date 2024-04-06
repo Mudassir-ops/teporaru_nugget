@@ -29,8 +29,8 @@ class PaymentStatusFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding?.headerLayout?.tvCartCount?.text =
-            cartSharedViewModel.itemList.value?.size.toString()
+        binding?.headerLayout?.tvCartCount?.visibility = View.GONE
+        binding?.headerLayout?.ivCart?.visibility = View.GONE
         Handler(Looper.getMainLooper()).postDelayed({
             binding?.tvStatusOfOrder?.text = getString(R.string.payment_successful)
             binding?.paymentSuccessfulAnim?.visibility = View.VISIBLE
