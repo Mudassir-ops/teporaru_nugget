@@ -1,5 +1,7 @@
 package com.aioapp.nuggetmvp.viewmodels
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aioapp.nuggetmvp.di.usecase.RefillUseCase
@@ -43,6 +45,9 @@ class NuggetMainViewModel @Inject constructor(
 
     private val state = MutableStateFlow<AudioTranscriptionState>(AudioTranscriptionState.Init)
     val mState: StateFlow<AudioTranscriptionState> get() = state
+
+    private val _itemResponseStates = MutableLiveData<String?>(null)
+    val itemResponseStates: LiveData<String?> get() = _itemResponseStates
 
     private fun setLoading() {
         state.value = AudioTranscriptionState.IsLoading(true)
@@ -107,15 +112,7 @@ class NuggetMainViewModel @Inject constructor(
             }.collect { result ->
                 hideLoading()
                 _textToResponseStream.value = result
-//                when (result) {
-//                    is Result.Success -> {
-//                        _textToResponse.value = result.data
-//                    }
-//
-//                    else -> {
-//                        showToast("result.Some thing went Wrong")
-//                    }
-//                }
+                _itemResponseStates.value = result
             }
         }
 

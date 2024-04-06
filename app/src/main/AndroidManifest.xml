@@ -42,11 +42,6 @@
         <activity android:name=".ui.MainActivity" />
 
         <service
-            android:name=".service.NuggetRecorderService"
-            android:exported="false"
-            android:foregroundServiceType="microphone" />
-
-        <service
             android:name=".service.NuggetCameraService"
             android:exported="false"
             android:foregroundServiceType="camera" />
