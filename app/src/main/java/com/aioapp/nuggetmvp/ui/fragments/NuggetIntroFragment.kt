@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AlphaAnimation
 import android.view.animation.Animation
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
@@ -16,16 +17,21 @@ import androidx.navigation.fragment.findNavController
 import com.aioapp.nuggetmvp.R
 import com.aioapp.nuggetmvp.databinding.FragmentNuggetIntroBinding
 import com.aioapp.nuggetmvp.models.TextToResponseIntent
+import com.aioapp.nuggetmvp.utils.appextension.handleNoneState
 import com.aioapp.nuggetmvp.utils.enum.MenuType
+import com.aioapp.nuggetmvp.viewmodels.NuggetMainViewModel
 import com.aioapp.nuggetmvp.viewmodels.NuggetProcessingStatus
 import com.aioapp.nuggetmvp.viewmodels.NuggetSharedViewModel
+import com.google.gson.Gson
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
+@AndroidEntryPoint
 class NuggetIntroFragment : Fragment() {
     private var binding: FragmentNuggetIntroBinding? = null
     private val nuggetSharedViewModel: NuggetSharedViewModel by activityViewModels()
-
+    private val nuggetMainViewModel: NuggetMainViewModel by activityViewModels()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
@@ -36,6 +42,7 @@ class NuggetIntroFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setAnimationOnTextView()
+        observeNonStates()
         binding?.introAnimationView?.playAnimation()
         nuggetSharedViewModel.mState.flowWithLifecycle(
             lifecycle, Lifecycle.State.STARTED
@@ -60,8 +67,12 @@ class NuggetIntroFragment : Fragment() {
     }
 
     private fun handleRecordingStartedState() {
-        binding?.tvBottomPrompt?.visibility = View.VISIBLE
         binding?.tvBottomPrompt?.text = getString(R.string.listening)
+        binding?.tvBottomPrompt?.setTextColor(
+            ContextCompat.getColor(
+                context ?: return, R.color.white
+            )
+        )
     }
 
 
@@ -102,7 +113,7 @@ class NuggetIntroFragment : Fragment() {
     }
 
     private fun navigateToDefaultMenuFragment() {
-        navigateToFoodMenuFragment() // Default navigation
+        //    navigateToFoodMenuFragment()
     }
 
     private fun setAnimationOnTextView() {
@@ -110,5 +121,17 @@ class NuggetIntroFragment : Fragment() {
         anim.setDuration(5000)
         anim.setRepeatCount(Animation.INFINITE)
         anim.repeatMode = Animation.REVERSE
+    }
+
+    private fun observeNonStates() {
+        nuggetMainViewModel.itemResponseStates.observe(viewLifecycleOwner) { txtToResponse ->
+            if (txtToResponse?.isNotEmpty() == true) {
+                val myData: TextToResponseIntent =
+                    Gson().fromJson(txtToResponse, TextToResponseIntent::class.java)
+                if (myData.intent?.contains("none", ignoreCase = true) == true) {
+                    binding?.tvBottomPrompt?.handleNoneState(context ?: return@observe)
+                }
+            }
+        }
     }
 }

@@ -44,4 +44,6 @@ class PaymentStatusFragment : Fragment() {
             }, 10000)
         }, 5000)
     }
+
+
 }

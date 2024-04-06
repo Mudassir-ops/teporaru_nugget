@@ -18,7 +18,6 @@ import com.aioapp.nuggetmvp.R
 import com.aioapp.nuggetmvp.adapters.DesertViewPagerAdapter
 import com.aioapp.nuggetmvp.databinding.FragmentDesertCarouselBinding
 import com.aioapp.nuggetmvp.di.datastore.SharedPreferenceUtil
-import com.aioapp.nuggetmvp.models.Food
 import com.aioapp.nuggetmvp.utils.appextension.colorizeTwoWordsInSentence
 import com.aioapp.nuggetmvp.utils.enum.IntentTypes
 import com.aioapp.nuggetmvp.viewmodels.CartSharedViewModel
@@ -69,8 +68,8 @@ class DesertCarouselFragment : Fragment() {
     }
 
     private fun startAutoSwitching() {
-        val delay: Long = 3000 // 3 seconds interval
-        val period: Long = 3000 // 3 seconds interval
+        val delay: Long = 3000
+        val period: Long = 3000
         val handler = Handler(Looper.getMainLooper())
         val update = Runnable {
             if (currentPage == images.size) {
@@ -134,6 +133,7 @@ class DesertCarouselFragment : Fragment() {
                     findNavController().navigate(R.id.action_desertCarouselFragment_to_paymentFragment)
                 }
             }
+
             IntentTypes.ADD.label -> {
                 binding?.tvBottomPrompt?.text = getString(R.string.hope_you_will_enjoy_our_desert)
                 binding?.tvBottomPrompt?.setTextColor(
@@ -147,6 +147,11 @@ class DesertCarouselFragment : Fragment() {
                         findNavController().navigate(R.id.action_desertCarouselFragment_to_paymentFragment)
                     }
                 }, 2000)
+            }
+            else -> {
+                if (findNavController().currentDestination?.id == R.id.desertCarouselFragment) {
+                    findNavController().navigate(R.id.action_desertCarouselFragment_to_paymentFragment)
+                }
             }
         }
     }
