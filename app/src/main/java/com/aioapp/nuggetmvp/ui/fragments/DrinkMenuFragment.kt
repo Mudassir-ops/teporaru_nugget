@@ -27,8 +27,11 @@ import com.aioapp.nuggetmvp.viewmodels.NuggetProcessingStatus
 import com.aioapp.nuggetmvp.viewmodels.NuggetSharedViewModel
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class DrinkMenuFragment : Fragment() {
@@ -38,6 +41,7 @@ class DrinkMenuFragment : Fragment() {
     private val nuggetMainViewModel: NuggetMainViewModel by activityViewModels()
     private val cartSharedViewModel: CartSharedViewModel by activityViewModels()
     private var isFirstTime = true
+    private var isUserListening = false
     private var checkTotalItemCount = 0
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -51,7 +55,7 @@ class DrinkMenuFragment : Fragment() {
         val drinkList = getDrinksList()
         val foodAdapter = FoodAdapter(context ?: return, drinkList) {}
         binding?.rvDrinks?.adapter = foodAdapter
-        binding?.tvBottomPrompt?.text = getString(R.string.try_add_coke_to_my_order).colorizeWordInSentence("Coke")
+        setInterChangeableText()
         binding?.bottomEyeAnim?.playAnimation()
         observeStates()
         observeNoneState()
@@ -96,6 +100,7 @@ class DrinkMenuFragment : Fragment() {
     }
 
     private fun handleRecordingStartedState() {
+        isUserListening = true
         binding?.tvBottomPrompt?.text = getString(R.string.listening)
         binding?.tvBottomPrompt?.setTextColor(
             ContextCompat.getColor(
@@ -149,6 +154,14 @@ class DrinkMenuFragment : Fragment() {
                     }
                 }
             }
+            if (states.value.last == true) {
+                if(cartSharedViewModel.itemList.value?.size!! >0){
+                    navToCart()
+                }
+            }
+
+        } else if (states.value?.intent == IntentTypes.SHOW_CART.label) {
+            navToCart()
         } else {
             binding?.tvBottomPrompt?.handleNoneState(context ?: return)
         }
@@ -184,6 +197,7 @@ class DrinkMenuFragment : Fragment() {
                     if (findNavController().currentDestination?.id == R.id.drinkMenuFragment) {
                         return
                     }
+
                 }
 
                 else -> {
@@ -202,8 +216,42 @@ class DrinkMenuFragment : Fragment() {
                     Gson().fromJson(txtToResponse, TextToResponseIntent::class.java)
                 if (myData.intent?.contains("none", ignoreCase = true) == true) {
                     binding?.tvBottomPrompt?.handleNoneState(context ?: return@observe)
+                    isUserListening = true
+                    lifecycleScope.launch {
+                        delay(4000)
+                        isUserListening = false
+                    }
                 }
             }
         }
     }
+
+    private fun setInterChangeableText() {
+        val listOfItemName = getDrinksList().map { foodItem ->
+            foodItem?.logicalName
+        }
+        val baseString = "“Nugget, Add %s to my order”"
+        var currentItemIndex = 0
+        val textFlow = flow {
+            while (true) {
+                if (!isUserListening) {
+                    val currentItem = listOfItemName[currentItemIndex]
+                    emit(currentItem?.let {
+                        baseString.format(currentItem).colorizeWordInSentence(it)
+                    })
+                    delay(5000)
+                    currentItemIndex =
+                        (currentItemIndex + 1) % listOfItemName.size
+                } else {
+                    delay(100)
+                }
+            }
+        }
+        lifecycleScope.launch {
+            textFlow.collect { text ->
+                binding?.tvBottomPrompt?.text = text
+            }
+        }
+    }
+
 }

@@ -4,7 +4,9 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="your_server_for_the_day">Your server for the day</string>
+
     <string name="try_show_me_the_drinks_menu">Try “Nugget, Show me the drinks menu”</string>
+
     <string name="try_add_martini_to_my_order"><font color="#FFFFFFFF">Try “Nugget, add</font> <font color="#EF8549">&#160;Martini</font><font color="#FFFFFFFF">
         &#160;to my order”
     </font></string>

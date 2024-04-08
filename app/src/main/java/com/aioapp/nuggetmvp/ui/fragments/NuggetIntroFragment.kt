@@ -28,16 +28,19 @@ import com.aioapp.nuggetmvp.viewmodels.NuggetProcessingStatus
 import com.aioapp.nuggetmvp.viewmodels.NuggetSharedViewModel
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class NuggetIntroFragment : Fragment() {
     private var binding: FragmentNuggetIntroBinding? = null
     private val nuggetSharedViewModel: NuggetSharedViewModel by activityViewModels()
     private val mediaPlayer = MediaPlayer()
-
     private val nuggetMainViewModel: NuggetMainViewModel by activityViewModels()
+    private var isUserListening = false
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
@@ -51,11 +54,12 @@ class NuggetIntroFragment : Fragment() {
         binding?.introAnimationView?.playAnimation()
         wakeUpSound()
         mediaPlayer.start()
+
         binding?.introAnimationView?.playAnimation()
         Handler(Looper.getMainLooper()).postDelayed({
             binding?.tvBottomPrompt?.visibility = View.VISIBLE
-            binding?.tvBottomPrompt?.text = getString(R.string.try_show_me_the_drinks_menu).colorizeWordInSentence("drinks menu")
-            setAnimationOnTextView()
+            setInterChangeableText()
+
             if (mediaPlayer.isPlaying)
                 mediaPlayer.stop()
             mediaPlayer.release()
@@ -89,6 +93,7 @@ class NuggetIntroFragment : Fragment() {
     }
 
     private fun handleRecordingStartedState() {
+        isUserListening = true
         binding?.tvBottomPrompt?.text = getString(R.string.listening)
         binding?.tvBottomPrompt?.setTextColor(
             ContextCompat.getColor(
@@ -96,7 +101,6 @@ class NuggetIntroFragment : Fragment() {
             )
         )
     }
-
 
     private fun handleTranscriptStartedState() {
         binding?.tvBottomPrompt?.text = getString(R.string.transcripitng)
@@ -107,18 +111,20 @@ class NuggetIntroFragment : Fragment() {
     }
 
     private fun handleTextToResponseEndedState(value: TextToResponseIntent?) {
+        Log.e("TextToResponseEndedState-->", "handleTextToResponseEndedState: $value")
         value?.let {
             if (it.last == true) {
-                navigateBasedOnMenuType(it.parametersEntity?.menuType)
+                if (it.intent != "none") {
+                    navigateBasedOnMenuType(it.parametersEntity?.menuType)
+                }
             }
         }
     }
 
     private fun navigateBasedOnMenuType(menuType: String?) {
         when (menuType?.lowercase()) {
-            MenuType.FOOD.name.lowercase() -> navigateToFoodMenuFragment()
             MenuType.DRINKS.name.lowercase() -> navigateToDrinkMenuFragment()
-            else -> navigateToDefaultMenuFragment()
+            else -> navigateToFoodMenuFragment()
         }
     }
 
@@ -134,18 +140,6 @@ class NuggetIntroFragment : Fragment() {
         }
     }
 
-    private fun navigateToDefaultMenuFragment() {
-        navigateToFoodMenuFragment() // Default navigation
-    }
-
-    private fun setAnimationOnTextView() {
-        val anim = AlphaAnimation(0f, 1f)
-        anim.setDuration(5000)
-        anim.setRepeatCount(Animation.INFINITE)
-        anim.repeatMode = Animation.REVERSE
-        binding?.tvBottomPrompt?.startAnimation(anim)
-    }
-
     private fun observeNonStates() {
         nuggetMainViewModel.itemResponseStates.observe(viewLifecycleOwner) { txtToResponse ->
             if (txtToResponse?.isNotEmpty() == true) {
@@ -153,9 +147,41 @@ class NuggetIntroFragment : Fragment() {
                     Gson().fromJson(txtToResponse, TextToResponseIntent::class.java)
                 if (myData.intent?.contains("none", ignoreCase = true) == true) {
                     binding?.tvBottomPrompt?.handleNoneState(context ?: return@observe)
+                    isUserListening = true
+                    lifecycleScope.launch {
+                        delay(6000)
+                        isUserListening = false
+                    }
                 }
             }
         }
     }
 
+    private fun setInterChangeableText() {
+        val baseString = "Try “Nugget, Show me the %s menu”"
+        val anim = AlphaAnimation(0f, 1f).apply {
+            duration = 4000
+            repeatCount = Animation.INFINITE
+            repeatMode = Animation.REVERSE
+        }
+        var isDrinksMenu = true
+        val textFlow = flow {
+            while (true) {
+                if (!isUserListening) {
+                    val variable = if (isDrinksMenu) "drinks" else "food"
+                    emit(baseString.format(variable).colorizeWordInSentence(variable))
+                    delay(8000)
+                    isDrinksMenu = !isDrinksMenu
+                } else {
+                    delay(100)
+                }
+            }
+        }
+        lifecycleScope.launch {
+            textFlow.collect { text ->
+                binding?.tvBottomPrompt?.text = text
+                binding?.tvBottomPrompt?.startAnimation(anim)
+            }
+        }
+    }
 }

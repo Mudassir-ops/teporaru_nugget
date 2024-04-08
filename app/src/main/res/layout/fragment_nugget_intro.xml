@@ -18,6 +18,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:lottie_autoPlay="false"
             app:lottie_loop="false"
+            android:visibility="visible"
             app:lottie_rawRes="@raw/intro_animation" />
 
         <ImageView
@@ -104,7 +105,7 @@
             android:layout_marginHorizontal="@dimen/_20sdp"
             android:layout_marginBottom="@dimen/_50sdp"
             android:gravity="center"
-            android:text="@string/try_show_me_the_drinks_menu"
+
             android:textSize="@dimen/_12ssp"
             android:textStyle="italic"
             android:visibility="gone"

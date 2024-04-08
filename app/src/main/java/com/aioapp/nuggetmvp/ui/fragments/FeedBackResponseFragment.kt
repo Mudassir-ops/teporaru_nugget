@@ -30,7 +30,7 @@ class FeedBackResponseFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-       binding?.headerLayout?.tvCartCount?.text = SharedPreferenceUtil.savedCartItemsCount
+        binding?.headerLayout?.tvCartCount?.text = SharedPreferenceUtil.savedCartItemsCount
         binding?.headerLayout?.tvCartCount?.visibility = View.GONE
         binding?.headerLayout?.ivCart?.visibility = View.GONE
         reviewSound()
@@ -43,9 +43,15 @@ class FeedBackResponseFragment : Fragment() {
             }
         }, 3000)
     }
+
     private fun reviewSound() {
-        val soundFile = resources.openRawResourceFd(R.raw.review_audio)
-        mediaPlayer.setDataSource(soundFile.fileDescriptor, soundFile.startOffset, soundFile.length)
-        mediaPlayer.prepare()
+       try {
+           val soundFile = resources.openRawResourceFd(R.raw.review_audio)
+           mediaPlayer.setDataSource(soundFile.fileDescriptor, soundFile.startOffset, soundFile.length)
+           mediaPlayer.prepare()
+       }catch (e:Exception){
+           e.printStackTrace()
+       }
     }
+
 }

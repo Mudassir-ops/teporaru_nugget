@@ -52,12 +52,19 @@
         android:name="com.aioapp.nuggetmvp.ui.fragments.ItemFullViewFragment"
         android:label="ItemFullViewFragment"
         tools:layout="@layout/fragment_item_full_view">
-        <action
-            android:id="@+id/action_itemFullViewFragment_to_cartFragment"
-            app:destination="@id/cartFragment" />
         <argument
             android:name="FoodItem"
             app:argType="com.aioapp.nuggetmvp.models.Food" />
+        <action
+            android:id="@+id/action_itemFullViewFragment_to_drinkMenuFragment"
+            app:destination="@id/drinkMenuFragment" />
+        <action
+            android:id="@+id/action_itemFullViewFragment_to_foodMenuFragment"
+            app:destination="@id/foodMenuFragment" />
+        <action
+            android:id="@+id/action_itemFullViewFragment_to_cartFragment"
+            app:destination="@id/cartFragment" />
+
     </fragment>
     <fragment
         android:id="@+id/cartFragment"
@@ -130,7 +137,7 @@
         android:id="@+id/refillFragment"
         android:name="com.aioapp.nuggetmvp.ui.fragments.RefillFragment"
         android:label="RefillFragment"
-        tools:layout="@layout/fragment_refill" >
+        tools:layout="@layout/fragment_refill">
         <action
             android:id="@+id/action_refillFragment_to_desertCarouselFragment"
             app:destination="@id/desertCarouselFragment" />
@@ -148,25 +155,26 @@
         android:id="@+id/feedBackResponseFragment"
         android:name="com.aioapp.nuggetmvp.ui.fragments.FeedBackResponseFragment"
         android:label="FeedBackResponseFragment"
-        tools:layout="@layout/fragment_feed_back_response" >
+        tools:layout="@layout/fragment_feed_back_response">
         <action
             android:id="@+id/action_feedBackResponseFragment_to_closingFragment"
             app:destination="@id/closingFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/desertCarouselFragment"
         android:name="com.aioapp.nuggetmvp.ui.fragments.DesertCarouselFragment"
-        tools:layout="@layout/fragment_desert_carousel"
-        android:label="DesertCarouselFragment" >
+        android:label="DesertCarouselFragment"
+        tools:layout="@layout/fragment_desert_carousel">
         <action
             android:id="@+id/action_desertCarouselFragment_to_paymentFragment"
             app:destination="@id/paymentFragment" />
     </fragment>
     <fragment
         android:id="@+id/closingFragment"
-        tools:layout="@layout/fragment_closing"
         android:name="com.aioapp.nuggetmvp.ui.fragments.ClosingFragment"
-        android:label="ClosingFragment" />
+        android:label="ClosingFragment"
+        tools:layout="@layout/fragment_closing" />
 
 
 </navigation>

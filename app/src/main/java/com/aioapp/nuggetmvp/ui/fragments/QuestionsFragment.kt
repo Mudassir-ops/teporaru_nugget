@@ -60,6 +60,9 @@ class QuestionsFragment : Fragment() {
                 image = imagePart
             )
         }
+        /**
+         * Timeout ---> Automatically Navigate to CarousalView if not refill response
+         **/
     }
 
     override fun onCreateView(
@@ -94,6 +97,7 @@ class QuestionsFragment : Fragment() {
             )
         )
     }
+
     private fun initiateConvoSound() {
         val soundFile = resources.openRawResourceFd(R.raw.nugget_nitiating_conversation)
         mediaPlayer.setDataSource(soundFile.fileDescriptor, soundFile.startOffset, soundFile.length)
@@ -162,6 +166,9 @@ class QuestionsFragment : Fragment() {
         }
         when (states.value?.intent) {
             IntentTypes.NEEDS_EXTRA.label -> {
+                /**
+                 *Napkins  none case All Right enjoy your food both case refill and Question TODO()
+                 **/
                 requiredIem = states.value.parametersEntity?.requiredThing
                 binding?.servingAnimation?.playAnimation()
                 if (binding?.viewFlipper?.displayedChild == 0) {

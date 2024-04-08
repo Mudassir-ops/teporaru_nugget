@@ -1,15 +1,20 @@
 package com.aioapp.nuggetmvp.utils.appextension
 
+import android.content.Context
 import android.graphics.Color
+import android.graphics.Typeface
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
-import android.content.Context
-import android.graphics.Typeface
 import android.text.style.StyleSpan
+import android.util.Log
 import android.view.View
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import com.aioapp.nuggetmvp.R
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import kotlin.random.Random
 
 fun View.gone() {
@@ -65,7 +70,12 @@ fun String.colorizeWordInSentence(wordToColor: String): CharSequence {
     return spannableString
 }
 
-fun String.colorizeTwoWordsInSentence(wordToColor: String,secondWordToColor: String): CharSequence {
+
+
+fun String.colorizeTwoWordsInSentence(
+    wordToColor: String,
+    secondWordToColor: String
+): CharSequence {
     val spannableString = SpannableString(this)
     val colorOrange = Color.parseColor("#EF8549")
     val colorWhite = Color.parseColor("#FFFFFFFF")

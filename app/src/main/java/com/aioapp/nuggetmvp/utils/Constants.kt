@@ -5,9 +5,7 @@ object Constants {
     var BASE_URL = "https://api.deepgram.com/"
     var BASE_URL_TEXT_TO_RESPONSE = "http://44.231.228.32:8005/"
     var BASE_URL_Refill = "http://44.231.228.32:8006/"
-    var ACCESS_KEY_PORCUPINE = "exgjlYWGmV/vEJWOs1dQkWwZl6LDkO1bv1KxX1rY6DVSoYKJoTJLrA=="
-
-    //var ACCESS_KEY_PORCUPINE = "Nzl5XWEJ5qEujIIqKoAe2hGYasmKCnNK8MAP7waibWoywEzTh5gp+g=="
+    var ACCESS_KEY_PORCUPINE = "RjO+8yAqA59uGhu5ssh5B0I9P87Sx817pEljeGqnpmoCL0+BGohuUg=="
     const val CHANNEL_ID = "screen_shoot_11"
     const val CHANNEL_NAME = "screen_shoot"
     const val TAG_NUGET_MVP = "TAG_NUGET_MVP"
