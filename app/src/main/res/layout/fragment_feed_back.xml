@@ -196,7 +196,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/tv_bottom_prompt"
             app:layout_constraintStart_toStartOf="@+id/tv_bottom_prompt"
-            app:lottie_autoPlay="true"
+            app:lottie_autoPlay="false"
             app:lottie_loop="true"
             app:lottie_rawRes="@raw/eye_blinking" />
     </androidx.constraintlayout.widget.ConstraintLayout>

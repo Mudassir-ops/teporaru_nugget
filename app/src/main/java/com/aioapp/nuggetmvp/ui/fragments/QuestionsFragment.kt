@@ -83,7 +83,6 @@ class QuestionsFragment : Fragment() {
         }, 1000)
         binding?.questionAnimation?.playAnimation()
         binding?.headerLayout?.tvCartCount?.text = SharedPreferenceUtil.savedCartItemsCount
-        binding?.bottomEyeAnim?.playAnimation()
         observeState()
         observeNoneState()
         observeRefillResponse()
@@ -96,6 +95,9 @@ class QuestionsFragment : Fragment() {
                 context ?: return, R.color.white
             )
         )
+        binding?.bottomEyeAnim?.playAnimation()
+        if (binding?.viewFlipper?.displayedChild == 1)
+            binding?.bottomEyeAnim2?.playAnimation()
     }
 
     private fun initiateConvoSound() {
@@ -176,7 +178,6 @@ class QuestionsFragment : Fragment() {
                     binding?.tvBottomText?.text =
                         getString(R.string.sure_your).plus(" ").plus(requiredIem)
                             .plus(" will be here shortly")
-                    binding?.bottomEyeAnim2?.playAnimation()
                 } else {
                     binding?.tvBottomText?.text =
                         getString(R.string.sure_your).plus(" ").plus(requiredIem)

@@ -128,6 +128,7 @@ class DesertCarouselFragment : Fragment() {
                 context ?: return, R.color.white
             )
         )
+        binding?.bottomEyeAnim?.playAnimation()
     }
 
     private fun handleTextToResponseEndedState(states: NuggetProcessingStatus.TextToResponseEnded) {

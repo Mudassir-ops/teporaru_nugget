@@ -62,7 +62,6 @@ class CartFragment : Fragment() {
         observeState()
         observeNoneState()
         setUpAdapter()
-        binding?.bottomEyeAnim?.playAnimation()
     }
 
     private fun setPrices() {
@@ -141,6 +140,7 @@ class CartFragment : Fragment() {
                 context ?: return, R.color.white
             )
         )
+        binding?.bottomEyeAnim?.playAnimation()
     }
 
     private fun handleTextToResponseEndedState(states: NuggetProcessingStatus.TextToResponseEnded) {

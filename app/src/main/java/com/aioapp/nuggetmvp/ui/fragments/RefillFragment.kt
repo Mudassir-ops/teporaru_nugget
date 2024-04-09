@@ -50,7 +50,6 @@ class RefillFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initiateConvoSound()
         mediaPlayer.start()
-        binding?.refillAnimation?.playAnimation()
         Handler(Looper.getMainLooper()).postDelayed({
             if (mediaPlayer.isPlaying)
                 mediaPlayer.stop()
@@ -138,5 +137,6 @@ class RefillFragment : Fragment() {
                 context ?: return, R.color.white
             )
         )
+        binding?.refillAnimation?.playAnimation()
     }
 }

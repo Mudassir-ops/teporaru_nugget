@@ -80,6 +80,7 @@ class FeedBackFragment : Fragment() {
                 context ?: return, R.color.white
             )
         )
+        binding?.bottomEyeAnim?.playAnimation()
     }
 
     private fun handleRecordingEndedState(states: NuggetProcessingStatus.RecordingEnded) {

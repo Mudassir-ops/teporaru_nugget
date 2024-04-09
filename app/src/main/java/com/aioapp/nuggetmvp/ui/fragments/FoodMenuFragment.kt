@@ -67,7 +67,7 @@ class FoodMenuFragment : Fragment() {
         }
         binding.rvFood.adapter = foodAdapter
         setInterChangeableText()
-        binding.bottomEyeAnim.playAnimation()
+
 
         observeStates()
         observeNonState()
@@ -118,6 +118,7 @@ class FoodMenuFragment : Fragment() {
                 context ?: return, R.color.white
             )
         )
+        binding.bottomEyeAnim.playAnimation()
     }
 
     private fun handleRecordingEndedState(states: NuggetProcessingStatus.RecordingEnded) {

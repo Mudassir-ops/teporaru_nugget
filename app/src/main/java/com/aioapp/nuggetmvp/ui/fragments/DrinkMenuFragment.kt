@@ -56,7 +56,6 @@ class DrinkMenuFragment : Fragment() {
         val foodAdapter = FoodAdapter(context ?: return, drinkList) {}
         binding?.rvDrinks?.adapter = foodAdapter
         setInterChangeableText()
-        binding?.bottomEyeAnim?.playAnimation()
         observeStates()
         observeNoneState()
     }
@@ -107,6 +106,7 @@ class DrinkMenuFragment : Fragment() {
                 context ?: return, R.color.white
             )
         )
+        binding?.bottomEyeAnim?.playAnimation()
     }
 
     private fun handleRecordingEndedState(states: NuggetProcessingStatus.RecordingEnded) {
