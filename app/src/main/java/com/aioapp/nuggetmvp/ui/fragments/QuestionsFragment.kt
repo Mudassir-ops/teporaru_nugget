@@ -86,6 +86,21 @@ class QuestionsFragment : Fragment() {
         observeState()
         observeNoneState()
         observeRefillResponse()
+        navigateToPaymentAfter30Sec()
+    }
+
+    private fun navigateToPaymentAfter30Sec() {
+        Handler(Looper.getMainLooper()).postDelayed({
+            if (findNavController().currentDestination?.id == R.id.questionsFragment) {
+                context?.stopService(
+                    Intent(
+                        context ?: return@postDelayed,
+                        NuggetCameraService::class.java
+                    )
+                )
+                findNavController().navigate(R.id.action_questionsFragment_to_desertCarouselFragment)
+            }
+        }, 30000)
     }
 
     private fun handleRecordingStartedState() {
