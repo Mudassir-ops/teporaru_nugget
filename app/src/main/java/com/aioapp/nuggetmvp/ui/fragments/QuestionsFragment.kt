@@ -31,8 +31,12 @@ import com.aioapp.nuggetmvp.viewmodels.NuggetProcessingStatus
 import com.aioapp.nuggetmvp.viewmodels.NuggetSharedViewModel
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
@@ -48,18 +52,29 @@ class QuestionsFragment : Fragment() {
     private var isApiCalled = false
     private var requiredIem: String? = ""
     private val mediaPlayer = MediaPlayer()
+    private var ifApiCallSuccess = true
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         ContextCompat.startForegroundService(
             context ?: return, Intent(context ?: return, NuggetCameraService::class.java)
         )
         imageSavedToGalleryCallBack = {
+            Log.e("NuggetMvpMudassir--->", "Failed to delete previous file$it")
             val file = File(it)
             val requestFile = file.asRequestBody("image/jpeg".toMediaTypeOrNull())
             val imagePart = MultipartBody.Part.createFormData("files", file.name, requestFile)
             nuggetMainViewModel.refill(
                 image = imagePart
             )
+            lifecycleScope.launch {
+                withContext(Main) {
+                    delay(100)
+                    if (!ifApiCallSuccess) {
+                        ifApiCallSuccess = true
+                        actionCallBack?.invoke(file.path)
+                    }
+                }
+            }
         }
         /**
          * Timeout ---> Automatically Navigate to CarousalView if not refill response
@@ -78,8 +93,7 @@ class QuestionsFragment : Fragment() {
         initiateConvoSound()
         mediaPlayer.start()
         Handler(Looper.getMainLooper()).postDelayed({
-            if (mediaPlayer.isPlaying)
-                mediaPlayer.stop()
+            if (mediaPlayer.isPlaying) mediaPlayer.stop()
             mediaPlayer.release()
         }, 1000)
         binding?.questionAnimation?.playAnimation()
@@ -87,7 +101,7 @@ class QuestionsFragment : Fragment() {
         observeState()
         observeNoneState()
         observeRefillResponse()
-        navigateToPaymentAfter30Sec()
+        //   navigateToPaymentAfter30Sec()
     }
 
     private fun navigateToPaymentAfter30Sec() {
@@ -129,18 +143,25 @@ class QuestionsFragment : Fragment() {
         nuggetMainViewModel.refillResponse.flowWithLifecycle(
             lifecycle, Lifecycle.State.STARTED
         ).onEach { states ->
-            when {
-                states?.prediction?.lowercase() == "Refill".lowercase() -> {
+            Log.e("States--->", "observeRefillResponse: $states")
+            ifApiCallSuccess = false
+            when (states?.prediction?.lowercase()) {
+                "Refill".lowercase() -> {
                     if (findNavController().currentDestination?.id == R.id.questionsFragment) {
-                        context?.stopService(
-                            Intent(
-                                context ?: return@onEach, NuggetCameraService::class.java
-                            )
-                        )
-                        if (isAdded && !isDetached) {
-                            findNavController().navigate(R.id.action_questionsFragment_to_refillFragment)
-                        }
+//                        context?.stopService(
+//                            Intent(
+//                                context ?: return@onEach, NuggetCameraService::class.java
+//                            )
+//                        )
+//                        if (isAdded && !isDetached) {
+//                            findNavController().navigate(R.id.action_questionsFragment_to_refillFragment)
+//                        }
                     }
+                }
+
+                else -> {
+                    ifApiCallSuccess = true
+                    Log.e("States--->", "observeRefillResponse--Else: $states")
                 }
             }
         }.launchIn(lifecycleScope)

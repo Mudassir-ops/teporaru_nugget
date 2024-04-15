@@ -16,12 +16,12 @@ import android.hardware.camera2.TotalCaptureResult
 import android.media.Image
 import android.media.ImageReader
 import android.media.ImageReader.OnImageAvailableListener
-import android.os.Environment
 import android.os.Handler
 import android.os.HandlerThread
 import android.util.Log
 import android.util.Size
 import androidx.core.content.ContextCompat
+import com.aioapp.nuggetmvp.service.constants.createFilePathInCacheDirectoryForCameraDeletedFolder
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -262,19 +262,20 @@ class CameraControllerWithoutPreview(var context: Context) {
 
     private val outputMediaFile: File?
         get() {
-            val mediaStorageDir = File(
-                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM),
-                "Camera2Test"
-            )
-            if (!mediaStorageDir.exists()) {
-                if (!mediaStorageDir.mkdirs()) {
-                    return null
-                }
-            } else {
-                Log.e(TAG, ": ")
-            }
             val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(Date())
-            return File(mediaStorageDir.path + File.separator + "IMG_refill.jpg")
+            val cachePath =
+                context.createFilePathInCacheDirectoryForCameraDeletedFolder("${timeStamp}.png")
+//            val mediaStorageDir = File(
+//                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM),
+//                "Camera2Test"
+//            )
+//            if (!mediaStorageDir.exists()) {
+//                if (!mediaStorageDir.mkdirs()) {
+//                    return null
+//                }
+//            }
+//            val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(Date())
+            return cachePath?.let { File(it) }
         }
 
     companion object {

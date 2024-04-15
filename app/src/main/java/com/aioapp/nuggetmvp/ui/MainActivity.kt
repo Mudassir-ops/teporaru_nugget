@@ -13,6 +13,7 @@ import com.aioapp.nuggetmvp.models.TextToResponseIntent
 import com.aioapp.nuggetmvp.models.TextToResponseRequestBody
 import com.aioapp.nuggetmvp.service.recorder.RealtimeTranscriberManager
 import com.aioapp.nuggetmvp.utils.Constants
+import com.aioapp.nuggetmvp.utils.appextension.showToast
 import com.aioapp.nuggetmvp.utils.wakeupCallBack
 import com.aioapp.nuggetmvp.viewmodels.NuggetMainViewModel
 import com.aioapp.nuggetmvp.viewmodels.NuggetSharedViewModel
@@ -37,10 +38,8 @@ class MainActivity : AppCompatActivity() {
 
         wakeupCallBack = {
             nuggetSharedViewModel.setRecordingStarted()
-            RealtimeTranscriberManager.startTranscription(
-                Constants.assmeblyAiApiKey,
-                onSessionStarted = {
-                },
+            RealtimeTranscriberManager.startTranscription(Constants.assmeblyAiApiKey,
+                onSessionStarted = {},
                 onPartialTranscript = { partialTranscript ->
                     lifecycleScope.launch {
                         nuggetSharedViewModel.setTranscriptionEnded(partialTranscript)
@@ -56,10 +55,18 @@ class MainActivity : AppCompatActivity() {
         viewModel.textToResponseStream.flowWithLifecycle(
             lifecycle, Lifecycle.State.STARTED
         ).onEach { txtToResponse ->
-            if (txtToResponse != null) {
-                val myData: TextToResponseIntent =
-                    Gson().fromJson(txtToResponse, TextToResponseIntent::class.java)
-                nuggetSharedViewModel.setTextToResponseEnded(myData)
+            txtToResponse?.let {
+                if (txtToResponse != "null") {
+                    try {
+                        val myData: TextToResponseIntent =
+                            Gson().fromJson(txtToResponse, TextToResponseIntent::class.java)
+                        nuggetSharedViewModel.setTextToResponseEnded(myData)
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
+                } else {
+                    showToast("Api Expired")
+                }
             }
         }.launchIn(lifecycleScope)
     }
