@@ -6,6 +6,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AlphaAnimation
+import android.view.animation.Animation
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -30,8 +32,11 @@ import com.aioapp.nuggetmvp.viewmodels.NuggetProcessingStatus
 import com.aioapp.nuggetmvp.viewmodels.NuggetSharedViewModel
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 
 
 @AndroidEntryPoint
@@ -43,6 +48,8 @@ class CartFragment : Fragment() {
     private val nuggetMainViewModel: NuggetMainViewModel by activityViewModels()
     private var cartAdapter: CartAdapter? = null
     private var isFirstTime = true
+    private var isUserListening = false
+    private val cartItemListHere = ArrayList<Food>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         cartAdapter = CartAdapter(context = context ?: return, cartItemList = arrayListOf())
@@ -58,6 +65,8 @@ class CartFragment : Fragment() {
     @SuppressLint("SuspiciousIndentation")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setInterChangeableText()
+
         observeCartItems()
         observeState()
         observeNoneState()
@@ -77,6 +86,8 @@ class CartFragment : Fragment() {
 
     private fun observeCartItems() {
         cartSharedViewModel.itemList.observe(viewLifecycleOwner) { cartItemList ->
+            cartItemListHere.clear()
+            cartItemListHere.addAll(cartItemList)
             var totalCartItemCount = 0
             cartItemList.forEach { item ->
                 totalCartItemCount += item.count
@@ -134,6 +145,7 @@ class CartFragment : Fragment() {
     }
 
     private fun handleRecordingStartedState() {
+        isUserListening = true
         binding?.tvBottomPrompt?.text = getString(R.string.listening)
         binding?.tvBottomPrompt?.setTextColor(
             ContextCompat.getColor(
@@ -144,6 +156,7 @@ class CartFragment : Fragment() {
     }
 
     private fun handleTextToResponseEndedState(states: NuggetProcessingStatus.TextToResponseEnded) {
+        stopBottomEyeAnim()
         if (isFirstTime) {
             isFirstTime = false
             return
@@ -255,8 +268,70 @@ class CartFragment : Fragment() {
                     Gson().fromJson(txtToResponse, TextToResponseIntent::class.java)
                 if (myData.intent?.contains("none", ignoreCase = true) == true) {
                     binding?.tvBottomPrompt?.handleNoneState(context ?: return@observe)
+                    stopBottomEyeAnim()
+                    isUserListening = true
+                    lifecycleScope.launch {
+                        delay(6000)
+                        isUserListening = false
+                    }
                 }
             }
         }
+    }
+
+    private fun setInterChangeableText() {
+        val promptList = listOf(
+            "Confirm",
+            "Coke",
+            "Coke"
+        )
+        var currentItemIndex = 0
+        val textFlow = flow {
+            while (true) {
+                if (!isUserListening) {
+                    stopBottomEyeAnim()
+                    val currentItem = promptList[currentItemIndex]
+                    emit(currentItem.let {
+                        when (currentItemIndex) {
+                            0 -> {
+                                "“Nugget, %s my order”".format(currentItem)
+                                    .colorizeWordInSentence(it)
+                            }
+
+                            1 -> {
+                                cartItemListHere.random().displayName?.let { it1 ->
+                                    "“Nugget, Add %s to my order”".format(it1)
+                                        .colorizeWordInSentence(it1)
+                                }
+                            }
+
+                            else -> {
+                                cartItemListHere.random().displayName?.let { it1 ->
+                                    "“Nugget, Remove %s from my order”".format(it1)
+                                        .colorizeWordInSentence(it1)
+                                }
+                            }
+                        }
+                    })
+                    delay(5000)
+                    currentItemIndex =
+                        (currentItemIndex + 1) % promptList.size
+                } else {
+                    delay(100)
+                }
+            }
+        }
+        lifecycleScope.launch {
+            textFlow.collect { text ->
+                binding?.tvBottomPrompt?.text = text
+            }
+        }
+    }
+
+    private fun stopBottomEyeAnim() {
+        binding?.bottomEyeAnim?.cancelAnimation()
+        binding?.bottomEyeAnim?.progress = 0F
+        binding?.bottomEyeAnim?.setAnimation(R.raw.eye_blinking)
+
     }
 }

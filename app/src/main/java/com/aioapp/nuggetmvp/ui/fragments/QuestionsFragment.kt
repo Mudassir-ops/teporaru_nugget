@@ -9,6 +9,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AlphaAnimation
+import android.view.animation.Animation
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -21,6 +23,8 @@ import com.aioapp.nuggetmvp.databinding.FragmentQuestionsBinding
 import com.aioapp.nuggetmvp.di.datastore.SharedPreferenceUtil
 import com.aioapp.nuggetmvp.models.TextToResponseIntent
 import com.aioapp.nuggetmvp.service.NuggetCameraService
+import com.aioapp.nuggetmvp.utils.actionCallBack
+import com.aioapp.nuggetmvp.utils.appextension.colorizeWordInSentence
 import com.aioapp.nuggetmvp.utils.appextension.handleNoneState
 import com.aioapp.nuggetmvp.utils.appextension.isServiceRunning
 import com.aioapp.nuggetmvp.utils.enum.IntentTypes
@@ -33,6 +37,7 @@ import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -53,6 +58,7 @@ class QuestionsFragment : Fragment() {
     private var requiredIem: String? = ""
     private val mediaPlayer = MediaPlayer()
     private var ifApiCallSuccess = true
+    private var isUserListening = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         ContextCompat.startForegroundService(
@@ -66,15 +72,15 @@ class QuestionsFragment : Fragment() {
             nuggetMainViewModel.refill(
                 image = imagePart
             )
-            lifecycleScope.launch {
-                withContext(Main) {
-                    delay(100)
-                    if (!ifApiCallSuccess) {
-                        ifApiCallSuccess = true
-                        actionCallBack?.invoke(file.path)
-                    }
-                }
-            }
+//            lifecycleScope.launch {
+//                withContext(Main) {
+//                    delay(100)
+//                    if (!ifApiCallSuccess) {
+//                        ifApiCallSuccess = true
+//                        actionCallBack?.invoke(file.path)
+//                    }
+//                }
+//            }
         }
         /**
          * Timeout ---> Automatically Navigate to CarousalView if not refill response
@@ -91,6 +97,7 @@ class QuestionsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initiateConvoSound()
+        setInterChangeableText()
         mediaPlayer.start()
         Handler(Looper.getMainLooper()).postDelayed({
             if (mediaPlayer.isPlaying) mediaPlayer.stop()
@@ -121,6 +128,7 @@ class QuestionsFragment : Fragment() {
     }
 
     private fun handleRecordingStartedState() {
+        isUserListening = true
         binding?.tvBottomPrompt?.text = getString(R.string.listening)
         binding?.tvBottomPrompt?.setTextColor(
             ContextCompat.getColor(
@@ -148,14 +156,14 @@ class QuestionsFragment : Fragment() {
             when (states?.prediction?.lowercase()) {
                 "Refill".lowercase() -> {
                     if (findNavController().currentDestination?.id == R.id.questionsFragment) {
-//                        context?.stopService(
-//                            Intent(
-//                                context ?: return@onEach, NuggetCameraService::class.java
-//                            )
-//                        )
-//                        if (isAdded && !isDetached) {
-//                            findNavController().navigate(R.id.action_questionsFragment_to_refillFragment)
-//                        }
+                        context?.stopService(
+                            Intent(
+                                context ?: return@onEach, NuggetCameraService::class.java
+                            )
+                        )
+                        if (isAdded && !isDetached) {
+                            findNavController().navigate(R.id.action_questionsFragment_to_refillFragment)
+                        }
                     }
                 }
 
@@ -202,6 +210,7 @@ class QuestionsFragment : Fragment() {
     }
 
     private fun handleTextToResponseEndedState(states: NuggetProcessingStatus.TextToResponseEnded) {
+        stopBottomEyeAnim()
         if (isFirstTime) {
             isFirstTime = false
             return
@@ -278,8 +287,47 @@ class QuestionsFragment : Fragment() {
                     Gson().fromJson(txtToResponse, TextToResponseIntent::class.java)
                 if (myData.intent?.contains("none", ignoreCase = true) == true) {
                     binding?.tvBottomPrompt?.handleNoneState(context ?: return@observe)
+                    stopBottomEyeAnim()
+                    isUserListening = true
+                    lifecycleScope.launch {
+                        delay(6000)
+                        isUserListening = false
+                    }
                 }
             }
         }
+    }
+
+    private fun setInterChangeableText() {
+        val baseString = "Try “Nugget, I need %s”"
+        val anim = AlphaAnimation(0f, 1f).apply {
+            duration = 4000
+            repeatCount = Animation.INFINITE
+            repeatMode = Animation.REVERSE
+        }
+        val textFlow = flow {
+            while (true) {
+                if (!isUserListening) {
+                    stopBottomEyeAnim()
+                    emit(baseString.format("napkins").colorizeWordInSentence("napkins"))
+                    delay(8000)
+                } else {
+                    delay(100)
+                }
+            }
+        }
+        lifecycleScope.launch {
+            textFlow.collect { text ->
+                binding?.tvBottomPrompt?.text = text
+                binding?.tvBottomPrompt?.startAnimation(anim)
+            }
+        }
+    }
+
+    private fun stopBottomEyeAnim() {
+        binding?.bottomEyeAnim?.cancelAnimation()
+        binding?.bottomEyeAnim?.progress = 0F
+        binding?.bottomEyeAnim?.setAnimation(R.raw.eye_blinking)
+
     }
 }

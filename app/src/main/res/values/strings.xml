@@ -35,6 +35,7 @@
     <string name="rate_your_experience_with_nugget">Rate your experience\nwith Nugget</string>
     <string name="loved_it">Loved it</string>
     <string name="liked_it">Liked it</string>
+    <string name="liked_it_ex">Liked it!</string>
     <string name="okay">Okay</string>
     <string name="meh">Meh</string>
     <string name="hated_it">Hated it</string>
@@ -60,5 +61,10 @@
     <string name="tax">Tax $</string>
     <string name="hope_you_will_enjoy_our_desert">Hope you will enjoy our desert!</string>
     <string name="none_statement">hmm.. not sure I understand that.\nCan you say that again?</string>
+    <string name="loved_it_ex">Loved It!</string>
+    <string name="glad_you_enjoyed_this_experience">Glad you enjoyed this experience</string>
+    <string name="happy_to_serve">Happy to serve!</string>
+    <string name="oh_no_i_m_still_a_work_in_progress_i_ll_learn_to_serve_better_next_time">Oh no, I\'m still a work in progress. I\'ll learn to serve better next time</string>
+    <string name="thanks_for_your_feedback_i_ll_do_better_next_time">Thanks for your feedback. I\'ll do better next time</string>
 
 </resources>

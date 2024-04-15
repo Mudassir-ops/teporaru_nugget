@@ -12,6 +12,12 @@ import com.aioapp.nuggetmvp.service.constants.RECORDER_RUNNING_NOT_IF_ID
 import com.aioapp.nuggetmvp.utils.actionCallBack
 import com.aioapp.nuggetmvp.utils.imageSavedToGalleryCallBack
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -63,13 +69,15 @@ class NuggetCameraService : Service(), IFrontCaptureCallback {
 
     override fun onPhotoCaptured(filePath: String?) {
         filePath?.let { imageSavedToGalleryCallBack?.invoke(it) }
+
+
 //        //  sendRefillApiCall(filePath)
-//        CoroutineScope(IO).launch {
-//            delay(12000)
-//            withContext(Main) {
-//                capturePhoto()
-//            }
-//        }
+        CoroutineScope(IO).launch {
+            delay(3000)
+            withContext(Main) {
+                capturePhoto()
+            }
+        }
     }
 
 }

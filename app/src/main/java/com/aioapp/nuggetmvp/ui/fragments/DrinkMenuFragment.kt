@@ -127,6 +127,7 @@ class DrinkMenuFragment : Fragment() {
     }
 
     private fun handleTextToResponseEndedState(states: NuggetProcessingStatus.TextToResponseEnded) {
+        stopBottomEyeAnim()
         if (isFirstTime) {
             isFirstTime = false
             return
@@ -216,6 +217,7 @@ class DrinkMenuFragment : Fragment() {
                     Gson().fromJson(txtToResponse, TextToResponseIntent::class.java)
                 if (myData.intent?.contains("none", ignoreCase = true) == true) {
                     binding?.tvBottomPrompt?.handleNoneState(context ?: return@observe)
+                    stopBottomEyeAnim()
                     isUserListening = true
                     lifecycleScope.launch {
                         delay(4000)
@@ -235,6 +237,7 @@ class DrinkMenuFragment : Fragment() {
         val textFlow = flow {
             while (true) {
                 if (!isUserListening) {
+                    stopBottomEyeAnim()
                     val currentItem = listOfItemName[currentItemIndex]
                     emit(currentItem?.let {
                         baseString.format(currentItem).colorizeWordInSentence(it)
@@ -252,6 +255,13 @@ class DrinkMenuFragment : Fragment() {
                 binding?.tvBottomPrompt?.text = text
             }
         }
+    }
+
+    private fun stopBottomEyeAnim() {
+        binding?.bottomEyeAnim?.cancelAnimation()
+        binding?.bottomEyeAnim?.progress = 0F
+        binding?.bottomEyeAnim?.setAnimation(R.raw.eye_blinking)
+
     }
 
 }

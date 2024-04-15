@@ -21,6 +21,7 @@ import android.os.HandlerThread
 import android.util.Log
 import android.util.Size
 import androidx.core.content.ContextCompat
+import com.aioapp.nuggetmvp.service.constants.createFilePathInCacheDirectoryForCamera
 import com.aioapp.nuggetmvp.service.constants.createFilePathInCacheDirectoryForCameraDeletedFolder
 import java.io.File
 import java.io.FileOutputStream
@@ -264,7 +265,7 @@ class CameraControllerWithoutPreview(var context: Context) {
         get() {
             val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(Date())
             val cachePath =
-                context.createFilePathInCacheDirectoryForCameraDeletedFolder("${timeStamp}.png")
+                context.createFilePathInCacheDirectoryForCamera("${timeStamp}.png")
 //            val mediaStorageDir = File(
 //                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM),
 //                "Camera2Test"

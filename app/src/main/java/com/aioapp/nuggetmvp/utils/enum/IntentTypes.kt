@@ -11,5 +11,6 @@ enum class IntentTypes(val label: String) {
     PAYMENT("payment"),
     INVALID("invalid"),
     AFFIRM("affirm"),
-    DENY("deny")
+    DENY("deny"),
+    RATING("rating")
 }

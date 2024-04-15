@@ -143,7 +143,7 @@ class RefillFragment : Fragment() {
                 context ?: return, R.color.white
             )
         )
-        binding?.refillAnimation?.playAnimation()
+        binding?.bottomEyeAnim?.playAnimation()
     }
 
     private fun navigateToPaymentAfter30Sec() {

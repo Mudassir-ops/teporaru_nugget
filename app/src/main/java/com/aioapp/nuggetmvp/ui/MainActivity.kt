@@ -7,6 +7,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.NavHostFragment
+import com.aioapp.nuggetmvp.R
 import com.aioapp.nuggetmvp.databinding.ActivityMainBinding
 import com.aioapp.nuggetmvp.models.OrderEntity
 import com.aioapp.nuggetmvp.models.TextToResponseIntent
@@ -49,6 +51,8 @@ class MainActivity : AppCompatActivity() {
                     sendTextToIntent(finalTranscript)
                 })
         }
+
+        //nagraph ----
     }
 
     private fun observeTextToResponseStream() {
@@ -72,13 +76,45 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun sendTextToIntent(transcript: String) {
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.my_nav_host_fragment) as NavHostFragment
+        val navController = navHostFragment.navController
+        val currentDestination = navController.currentDestination
+
         val orderEntity = OrderEntity(name = "Beef Burger", quantity = 1)
         val orderList = arrayListOf(orderEntity)
-        val textToResponseRequestBody = TextToResponseRequestBody(
-            userPrompt = transcript, orderEntity = orderList, screenState = 3
-        )
-        viewModel.textToResponse(
-            body = textToResponseRequestBody
-        )
+        currentDestination?.let { destination ->
+            // Get the ID of the current destination
+            val destinationId = destination.id
+            // You can use destinationId to determine the current destination
+            when (destinationId) {
+                R.id.feedBackFragment -> {
+                    // Handle destination 1
+                    val textToResponseRequestBody =
+                        TextToResponseRequestBody(
+                            userPrompt = transcript,
+                            orderEntity = orderList,
+                            screenState = 11,
+                            orderStatus = 3
+                        )
+                    viewModel.textToResponse(
+                        body = textToResponseRequestBody
+                    )
+                }
+
+                else -> {
+                    val textToResponseRequestBody =
+                        TextToResponseRequestBody(
+                            userPrompt = transcript,
+                            orderEntity = orderList,
+                            screenState = 3
+                        )
+                    viewModel.textToResponse(
+                        body = textToResponseRequestBody
+                    )
+                }
+            }
+        }
+
     }
 }
