@@ -9,8 +9,10 @@ import android.util.Log
 import android.view.animation.AlphaAnimation
 import android.view.animation.Animation
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import com.aioapp.nuggetmvp.R
 import com.aioapp.nuggetmvp.databinding.ActivitySplashBinding
+import com.aioapp.nuggetmvp.service.NuggetCameraService
 import com.aioapp.nuggetmvp.utils.Constants
 import com.aioapp.nuggetmvp.utils.appextension.assetsFile
 import com.aioapp.nuggetmvp.utils.appextension.colorizeWordInSentence
@@ -46,6 +48,9 @@ class SplashActivity : AppCompatActivity() {
             tvHeyNugget.text =
                 getString(R.string.hey_nugget_text).colorizeWordInSentence("Hey Nugget")
         }
+
+
+
         setAnimationOnTextView()
 
         /**

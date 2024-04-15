@@ -9,18 +9,9 @@ import com.aioapp.nuggetmvp.di.usecase.RefillUseCase
 import com.aioapp.nuggetmvp.service.camera.CameraControllerWithoutPreview
 import com.aioapp.nuggetmvp.service.camera.IFrontCaptureCallback
 import com.aioapp.nuggetmvp.service.constants.RECORDER_RUNNING_NOT_IF_ID
+import com.aioapp.nuggetmvp.utils.actionCallBack
 import com.aioapp.nuggetmvp.utils.imageSavedToGalleryCallBack
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers.IO
-import kotlinx.coroutines.Dispatchers.Main
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.MultipartBody
-import okhttp3.RequestBody.Companion.asRequestBody
-import java.io.File
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -45,6 +36,10 @@ class NuggetCameraService : Service(), IFrontCaptureCallback {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         Log.e("onStartCommand", "onStartCommand: ")
         capturePhoto()
+        actionCallBack = {
+            Log.e("onStartCommand", "onStartCommand:--->ActionCallBackHere ")
+            capturePhoto()
+        }
         return START_STICKY
     }
 
@@ -68,28 +63,13 @@ class NuggetCameraService : Service(), IFrontCaptureCallback {
 
     override fun onPhotoCaptured(filePath: String?) {
         filePath?.let { imageSavedToGalleryCallBack?.invoke(it) }
-        //  sendRefillApiCall(filePath)
-        CoroutineScope(IO).launch {
-            delay(12000)
-            withContext(Main) {
-                capturePhoto()
-            }
-        }
+//        //  sendRefillApiCall(filePath)
+//        CoroutineScope(IO).launch {
+//            delay(12000)
+//            withContext(Main) {
+//                capturePhoto()
+//            }
+//        }
     }
 
-    private fun sendRefillApiCall(path: String?) {
-        val file = path?.let { File(it) }
-        val requestFile = file?.asRequestBody("image/jpeg".toMediaTypeOrNull())
-        val imagePart = requestFile?.let {
-            MultipartBody.Part.createFormData(
-                "files", file.name,
-                it
-            )
-        }
-        imagePart?.let {
-            refillUseCase.invokeTRefillUseCase(
-                image = it
-            )
-        }
-    }
 }

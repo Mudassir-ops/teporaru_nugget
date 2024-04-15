@@ -183,6 +183,7 @@ class FoodMenuFragment : Fragment() {
                         return
                     }
                 }
+
                 MenuType.DRINKS.name.lowercase() -> {
                     if (findNavController().currentDestination?.id == R.id.foodMenuFragment) {
                         findNavController().navigate(R.id.action_foodMenuFragment_to_drinkMenuFragment)
