@@ -166,6 +166,12 @@ class CartFragment : Fragment() {
                     findNavController().navigate(R.id.action_cartFragment_to_orderConfirmationFragment)
                 }
             }
+
+            IntentTypes.AFFIRM.label -> {
+                if (findNavController().currentDestination?.id == R.id.cartFragment) {
+                    findNavController().navigate(R.id.action_cartFragment_to_orderConfirmationFragment)
+                }
+            }
         }
     }
 

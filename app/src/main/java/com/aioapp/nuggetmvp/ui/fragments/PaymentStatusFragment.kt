@@ -37,7 +37,7 @@ class PaymentStatusFragment : Fragment() {
         binding?.headerLayout?.ivCart?.visibility = View.GONE
         Handler(Looper.getMainLooper()).postDelayed({
             binding?.tvStatusOfOrder?.text = getString(R.string.payment_successful)
-            binding?.paymentSuccessfulAnim?.visibility = View.VISIBLE
+            binding?.paymentSuccessfulAnim?.setAnimation(R.raw.payment_successful)
             paymentSuccessfulSound()
             mediaPlayer.start()
             binding?.paymentSuccessfulAnim?.playAnimation()

@@ -45,6 +45,7 @@ class QuestionsFragment : Fragment() {
     private val nuggetSharedViewModel: NuggetSharedViewModel by activityViewModels()
     private val cartSharedViewModel: CartSharedViewModel by activityViewModels()
     private var isFirstTime = true
+    private var isApiCalled = false
     private var requiredIem: String? = ""
     private val mediaPlayer = MediaPlayer()
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -91,14 +92,16 @@ class QuestionsFragment : Fragment() {
 
     private fun navigateToPaymentAfter30Sec() {
         Handler(Looper.getMainLooper()).postDelayed({
-            if (findNavController().currentDestination?.id == R.id.questionsFragment) {
-                context?.stopService(
-                    Intent(
-                        context ?: return@postDelayed,
-                        NuggetCameraService::class.java
+            if (!isApiCalled) {
+                if (findNavController().currentDestination?.id == R.id.questionsFragment) {
+                    context?.stopService(
+                        Intent(
+                            context ?: return@postDelayed,
+                            NuggetCameraService::class.java
+                        )
                     )
-                )
-                findNavController().navigate(R.id.action_questionsFragment_to_desertCarouselFragment)
+                    findNavController().navigate(R.id.action_questionsFragment_to_desertCarouselFragment)
+                }
             }
         }, 30000)
     }
@@ -169,6 +172,7 @@ class QuestionsFragment : Fragment() {
                 }
 
                 is NuggetProcessingStatus.TextToResponseEnded -> {
+                    isApiCalled = true
                     handleTextToResponseEndedState(states)
                 }
 
@@ -183,9 +187,6 @@ class QuestionsFragment : Fragment() {
         }
         when (states.value?.intent) {
             IntentTypes.NEEDS_EXTRA.label -> {
-                /**
-                 *Napkins  none case All Right enjoy your food both case refill and Question TODO()
-                 **/
                 requiredIem = states.value.parametersEntity?.requiredThing
                 binding?.servingAnimation?.playAnimation()
                 if (binding?.viewFlipper?.displayedChild == 0) {
@@ -204,6 +205,25 @@ class QuestionsFragment : Fragment() {
                         Intent(context ?: return, NuggetCameraService::class.java)
                     )
                 }
+                navigationToPaymentAfterResponse()
+            }
+
+            IntentTypes.DENY.label -> {
+                binding?.tvBottomPrompt?.text =
+                    getString(R.string.enjoy_your_food)
+                binding?.tvBottomPrompt?.setTextColor(
+                    ContextCompat.getColor(
+                        context ?: return,
+                        R.color.orange
+                    )
+                )
+                if (context?.isServiceRunning(NuggetCameraService::class.java) != true) {
+                    ContextCompat.startForegroundService(
+                        context ?: return,
+                        Intent(context ?: return, NuggetCameraService::class.java)
+                    )
+                }
+                navigationToPaymentAfterResponse()
             }
 
             IntentTypes.PAYMENT.label -> {
@@ -214,6 +234,20 @@ class QuestionsFragment : Fragment() {
 
             }
         }
+    }
+
+    private fun navigationToPaymentAfterResponse() {
+        Handler(Looper.getMainLooper()).postDelayed({
+            if (findNavController().currentDestination?.id == R.id.questionsFragment) {
+                context?.stopService(
+                    Intent(
+                        context ?: return@postDelayed,
+                        NuggetCameraService::class.java
+                    )
+                )
+                findNavController().navigate(R.id.action_questionsFragment_to_desertCarouselFragment)
+            }
+        }, 30000)
     }
 
     private fun observeNoneState() {

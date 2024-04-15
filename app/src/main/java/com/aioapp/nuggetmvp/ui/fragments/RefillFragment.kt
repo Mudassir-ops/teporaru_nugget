@@ -35,6 +35,7 @@ class RefillFragment : Fragment() {
     private val cartSharedViewModel: CartSharedViewModel by activityViewModels()
     private val nuggetSharedViewModel: NuggetSharedViewModel by activityViewModels()
     private var isFirstTime = true
+    private var isApiCalled = false
     private val mediaPlayer = MediaPlayer()
 
     override fun onCreateView(
@@ -58,12 +59,14 @@ class RefillFragment : Fragment() {
 
         binding?.headerLayout?.tvCartCount?.text = SharedPreferenceUtil.savedCartItemsCount
         Handler(Looper.getMainLooper()).postDelayed({
-            if (findNavController().currentDestination?.id == R.id.refillFragment) {
-                findNavController().navigate(
-                    R.id.action_refillFragment_to_desertCarouselFragment
-                )
+            if (!isApiCalled) {
+                if (findNavController().currentDestination?.id == R.id.refillFragment) {
+                    findNavController().navigate(
+                        R.id.action_refillFragment_to_desertCarouselFragment
+                    )
+                }
             }
-        }, 10000)
+        }, 30000)
         observeState()
     }
 
@@ -88,6 +91,7 @@ class RefillFragment : Fragment() {
                 }
 
                 is NuggetProcessingStatus.TextToResponseEnded -> {
+                    isApiCalled = true
                     handleTextToResponseEndedState(states)
                 }
             }
@@ -109,6 +113,7 @@ class RefillFragment : Fragment() {
                         R.color.orange
                     )
                 )
+                navigateToPaymentAfter30Sec()
             }
 
             IntentTypes.DENY.label -> {
@@ -120,6 +125,7 @@ class RefillFragment : Fragment() {
                         R.color.orange
                     )
                 )
+                navigateToPaymentAfter30Sec()
             }
         }
     }
@@ -138,5 +144,17 @@ class RefillFragment : Fragment() {
             )
         )
         binding?.refillAnimation?.playAnimation()
+    }
+
+    private fun navigateToPaymentAfter30Sec() {
+        Handler(Looper.getMainLooper()).postDelayed({
+            if (isApiCalled) {
+                if (findNavController().currentDestination?.id == R.id.refillFragment) {
+                    findNavController().navigate(
+                        R.id.action_refillFragment_to_desertCarouselFragment
+                    )
+                }
+            }
+        }, 30000)
     }
 }

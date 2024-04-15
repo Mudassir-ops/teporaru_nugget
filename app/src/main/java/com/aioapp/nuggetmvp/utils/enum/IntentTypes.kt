@@ -10,5 +10,6 @@ enum class IntentTypes(val label: String) {
     REFILL_DRINK("refill drink"),
     PAYMENT("payment"),
     INVALID("invalid"),
+    AFFIRM("affirm"),
     DENY("deny")
 }
