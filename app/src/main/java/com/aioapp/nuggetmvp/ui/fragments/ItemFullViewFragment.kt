@@ -19,6 +19,7 @@ class ItemFullViewFragment : Fragment() {
 
     private var binding: FragmentItemFullViewBinding? = null
     private var foodItem: Food? = null
+    private var desertName: String? = null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -31,19 +32,42 @@ class ItemFullViewFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         if (arguments != null) {
-            foodItem = this.arguments?.get("FoodItem") as Food
+            foodItem =
+                if (this.arguments?.get("FoodItem") != null) this.arguments?.get("FoodItem") as Food else null
+            desertName =
+                if (this.arguments?.getString("DesertName") != null) this.arguments?.getString("DesertName") else null
+        }
+        if (foodItem != null) {
+            binding?.tvItemName?.text = foodItem?.logicalName
+            binding?.ivItem?.setImageDrawable(foodItem?.let {
+                ContextCompat.getDrawable(
+                    requireActivity(),
+                    it.fullImg
+                )
+            })
+        } else {
+            binding?.tvItemName?.text = desertName
+            if (desertName.equals("Cheesecake",true)) {
+                binding?.ivItem?.setImageResource(
+                    R.drawable.cheese_cake_full_item
+                )
+            } else {
+                binding?.ivItem?.setImageResource(
+                    R.drawable.fudge_brownie_full_item
+                )
+            }
+
         }
 
-        binding?.tvItemName?.text = foodItem?.logicalName
-        binding?.ivItem?.setImageDrawable(foodItem?.let {
-            ContextCompat.getDrawable(
-                requireActivity(),
-                it.fullImg
-            )
-        })
         lifecycleScope.launch {
             delay(5000)
-            findNavController().navigate(R.id.action_itemFullViewFragment_to_cartFragment)
+            if (findNavController().currentDestination?.id == R.id.itemFullViewFragment) {
+                if (desertName != null)
+                    findNavController().navigate(R.id.action_itemFullViewFragment_to_paymentFragment)
+                else
+                    findNavController().navigate(R.id.action_itemFullViewFragment_to_cartFragment)
+
+            }
         }
     }
 }

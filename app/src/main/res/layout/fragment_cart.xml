@@ -85,7 +85,7 @@
             style="@style/textPoppinsLight"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/_45sdp"
+            android:layout_marginHorizontal="@dimen/_20sdp"
             android:gravity="center"
             android:text="@string/say_nugget_confirm_my_order"
             android:textSize="@dimen/_12ssp"

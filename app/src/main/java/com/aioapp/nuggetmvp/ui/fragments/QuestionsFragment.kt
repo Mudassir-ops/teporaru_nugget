@@ -108,7 +108,7 @@ class QuestionsFragment : Fragment() {
         observeState()
         observeNoneState()
         observeRefillResponse()
-        //   navigateToPaymentAfter30Sec()
+       navigateToPaymentAfter30Sec()
     }
 
     private fun navigateToPaymentAfter30Sec() {
@@ -288,6 +288,7 @@ class QuestionsFragment : Fragment() {
                 if (myData.intent?.contains("none", ignoreCase = true) == true) {
                     binding?.tvBottomPrompt?.handleNoneState(context ?: return@observe)
                     stopBottomEyeAnim()
+//                    isApiCalled = false
                     isUserListening = true
                     lifecycleScope.launch {
                         delay(6000)

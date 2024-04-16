@@ -144,7 +144,13 @@ class DesertCarouselFragment : Fragment() {
             }
 
             IntentTypes.ADD.label -> {
-                binding?.tvBottomPrompt?.text = getString(R.string.hope_you_will_enjoy_our_desert)
+                if (findNavController().currentDestination?.id == R.id.desertCarouselFragment) {
+                    val bundle = Bundle()
+                    bundle.putString("DesertName", states.value.parametersEntity?.name)
+                    findNavController().navigate(R.id.action_desertCarouselFragment_to_itemFullViewFragment)
+                }
+
+               /* binding?.tvBottomPrompt?.text = getString(R.string.hope_you_will_enjoy_our_desert)
                 binding?.tvBottomPrompt?.setTextColor(
                     ContextCompat.getColor(
                         context ?: return,
@@ -155,7 +161,7 @@ class DesertCarouselFragment : Fragment() {
                     if (findNavController().currentDestination?.id == R.id.desertCarouselFragment) {
                         findNavController().navigate(R.id.action_desertCarouselFragment_to_paymentFragment)
                     }
-                }, 2000)
+                }, 2000)*/
             }
 
             else -> {

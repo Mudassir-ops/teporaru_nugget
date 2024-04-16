@@ -40,6 +40,7 @@ class PaymentStatusFragment : Fragment() {
             binding?.paymentSuccessfulAnim?.setAnimation(R.raw.payment_successful)
             paymentSuccessfulSound()
             mediaPlayer.start()
+            binding?.paymentSuccessfulAnim?.loop(false)
             binding?.paymentSuccessfulAnim?.playAnimation()
             Handler(Looper.getMainLooper()).postDelayed({
                 if (mediaPlayer.isPlaying)

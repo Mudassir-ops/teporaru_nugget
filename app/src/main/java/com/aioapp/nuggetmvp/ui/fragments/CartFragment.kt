@@ -299,16 +299,22 @@ class CartFragment : Fragment() {
                             }
 
                             1 -> {
-                                cartItemListHere.random().displayName?.let { it1 ->
-                                    "“Nugget, Add %s to my order”".format(it1)
-                                        .colorizeWordInSentence(it1)
+                                if (cartItemListHere.isNotEmpty()) {
+                                    cartItemListHere.random().displayName?.let { it1 ->
+                                        "“Nugget, Add %s to my order”".format(it1)
+                                            .colorizeWordInSentence(it1)
+                                    }
+                                } else {
                                 }
                             }
 
                             else -> {
-                                cartItemListHere.random().displayName?.let { it1 ->
-                                    "“Nugget, Remove %s from my order”".format(it1)
-                                        .colorizeWordInSentence(it1)
+                                if (cartItemListHere.isNotEmpty()) {
+                                    cartItemListHere.random().displayName?.let { it1 ->
+                                        "“Nugget, Remove %s from my order”".format(it1)
+                                            .colorizeWordInSentence(it1)
+                                    }
+                                } else {
                                 }
                             }
                         }
@@ -323,7 +329,7 @@ class CartFragment : Fragment() {
         }
         lifecycleScope.launch {
             textFlow.collect { text ->
-                binding?.tvBottomPrompt?.text = text
+                binding?.tvBottomPrompt?.text = text.toString()
             }
         }
     }

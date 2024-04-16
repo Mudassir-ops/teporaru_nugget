@@ -39,6 +39,9 @@ class CartSharedViewModel @Inject constructor(
                 cartItemList.remove(existingItem)
             } else {
                 existingItem.count -= food.itemQuantity ?: 0
+                if(existingItem.count == 0){
+                    cartItemList.remove(existingItem)
+                }
             }
             _itemList.value = ArrayList(cartItemList)
         }

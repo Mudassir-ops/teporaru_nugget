@@ -83,6 +83,7 @@ class FeedBackFragment : Fragment() {
     }
 
     private fun handleRecordingStartedState() {
+        isUserListening = true
         binding?.tvBottomPrompt?.text = getString(R.string.listening)
         binding?.tvBottomPrompt?.setTextColor(
             ContextCompat.getColor(

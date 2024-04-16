@@ -64,6 +64,9 @@
         <action
             android:id="@+id/action_itemFullViewFragment_to_cartFragment"
             app:destination="@id/cartFragment" />
+        <action
+            android:id="@+id/action_itemFullViewFragment_to_paymentFragment"
+            app:destination="@id/paymentFragment" />
 
     </fragment>
     <fragment
@@ -170,6 +173,9 @@
         <action
             android:id="@+id/action_desertCarouselFragment_to_paymentFragment"
             app:destination="@id/paymentFragment" />
+        <action
+            android:id="@+id/action_desertCarouselFragment_to_itemFullViewFragment"
+            app:destination="@id/itemFullViewFragment" />
     </fragment>
     <fragment
         android:id="@+id/closingFragment"
