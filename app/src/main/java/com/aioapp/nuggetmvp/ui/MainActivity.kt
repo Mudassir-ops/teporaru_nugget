@@ -3,6 +3,7 @@ package com.aioapp.nuggetmvp.ui
 import android.content.Intent
 import android.os.Bundle
 import android.os.StrictMode
+import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
@@ -20,6 +21,7 @@ import com.aioapp.nuggetmvp.service.recorder.RealtimeTranscriberManager
 import com.aioapp.nuggetmvp.utils.Constants
 import com.aioapp.nuggetmvp.utils.appextension.showToast
 import com.aioapp.nuggetmvp.utils.wakeupCallBack
+import com.aioapp.nuggetmvp.viewmodels.CartSharedViewModel
 import com.aioapp.nuggetmvp.viewmodels.NuggetMainViewModel
 import com.aioapp.nuggetmvp.viewmodels.NuggetSharedViewModel
 import com.google.gson.Gson
@@ -30,9 +32,11 @@ import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
+    private var mappedArraylist: ArrayList<OrderEntity>? = null
     private var binding: ActivityMainBinding? = null
     private val viewModel by viewModels<NuggetMainViewModel>()
     private val nuggetSharedViewModel: NuggetSharedViewModel by viewModels()
+    private val cartSharedViewModel: CartSharedViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -83,12 +87,16 @@ class MainActivity : AppCompatActivity() {
 
     private fun sendTextToIntent(transcript: String) {
         binding?.myNavHostFragment?.post {}
+        Log.wtf("listItem", cartSharedViewModel.itemList.value.toString())
+        cartSharedViewModel.itemList.value?.let {
+            mappedArraylist = it.map {
+                OrderEntity(name = it.logicalName, quantity = it.count)
+            } as ArrayList<OrderEntity>
+        }
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.my_nav_host_fragment) as? NavHostFragment
         val navController = navHostFragment?.navController
         val currentDestination = navController?.currentDestination
-        val orderEntity = OrderEntity(name = "Beef Burger", quantity = 1)
-        val orderList = arrayListOf(orderEntity)
 
         currentDestination?.let { destination ->
             // Get the ID of the current destination
@@ -97,25 +105,21 @@ class MainActivity : AppCompatActivity() {
             when (destinationId) {
                 R.id.feedBackFragment -> {
                     // Handle destination 1
-                    val textToResponseRequestBody =
-                        TextToResponseRequestBody(
-                            userPrompt = transcript,
-                            orderEntity = orderList,
-                            screenState = 11,
-                            orderStatus = 3
-                        )
+                    val textToResponseRequestBody = TextToResponseRequestBody(
+                        userPrompt = transcript,
+                        orderEntity = mappedArraylist,
+                        screenState = 11,
+                        orderStatus = 3
+                    )
                     viewModel.textToResponse(
                         body = textToResponseRequestBody
                     )
                 }
 
                 else -> {
-                    val textToResponseRequestBody =
-                        TextToResponseRequestBody(
-                            userPrompt = transcript,
-                            orderEntity = orderList,
-                            screenState = 3
-                        )
+                    val textToResponseRequestBody = TextToResponseRequestBody(
+                        userPrompt = transcript, orderEntity = mappedArraylist, screenState = 3
+                    )
                     viewModel.textToResponse(
                         body = textToResponseRequestBody
                     )
