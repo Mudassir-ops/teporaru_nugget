@@ -29,15 +29,14 @@ class ClosingFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding?.closingAnimation?.playAnimation()
-        Handler(Looper.getMainLooper()).postDelayed({
-            startActivity(
-                Intent(
-                    requireActivity(),
-                    SplashActivity::class.java
-                ).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-            )
-            requireActivity().finishAffinity()
 
+        Handler(Looper.getMainLooper()).postDelayed({
+            val intent = Intent(activity ?: return@postDelayed, SplashActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivity(intent)
+            activity?.finish()
+            activity?.finishAffinity()
         }, 1000)
+
     }
 }

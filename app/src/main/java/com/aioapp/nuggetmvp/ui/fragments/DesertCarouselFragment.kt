@@ -18,6 +18,7 @@ import com.aioapp.nuggetmvp.R
 import com.aioapp.nuggetmvp.adapters.DesertViewPagerAdapter
 import com.aioapp.nuggetmvp.databinding.FragmentDesertCarouselBinding
 import com.aioapp.nuggetmvp.di.datastore.SharedPreferenceUtil
+import com.aioapp.nuggetmvp.service.constants.isFragmentVisible
 import com.aioapp.nuggetmvp.utils.appextension.colorizeTwoWordsInSentence
 import com.aioapp.nuggetmvp.utils.enum.IntentTypes
 import com.aioapp.nuggetmvp.viewmodels.CartSharedViewModel
@@ -76,11 +77,11 @@ class DesertCarouselFragment : Fragment() {
                 currentPage = 0
             }
             if (currentPage == 0) binding?.tvBottomPrompt?.text =
-                getString(R.string.try_i_want_a_fudge_brownie).colorizeTwoWordsInSentence(
+                context?.getString(R.string.try_i_want_a_fudge_brownie)?.colorizeTwoWordsInSentence(
                     "Fudge Brownie",
                     "Pay"
                 ) else if (currentPage == 1) binding?.tvBottomPrompt?.text =
-                getString(R.string.try_i_want_a_cheese_cake).colorizeTwoWordsInSentence(
+                context?.getString(R.string.try_i_want_a_cheese_cake)?.colorizeTwoWordsInSentence(
                     "Cheesecake",
                     "Pay"
                 )
@@ -147,21 +148,24 @@ class DesertCarouselFragment : Fragment() {
                 if (findNavController().currentDestination?.id == R.id.desertCarouselFragment) {
                     val bundle = Bundle()
                     bundle.putString("DesertName", states.value.parametersEntity?.name)
-                    findNavController().navigate(R.id.action_desertCarouselFragment_to_itemFullViewFragment)
+                    findNavController().navigate(
+                        R.id.action_desertCarouselFragment_to_itemFullViewFragment,
+                        bundle
+                    )
                 }
 
-               /* binding?.tvBottomPrompt?.text = getString(R.string.hope_you_will_enjoy_our_desert)
-                binding?.tvBottomPrompt?.setTextColor(
-                    ContextCompat.getColor(
-                        context ?: return,
-                        R.color.orange
-                    )
-                )
-                Handler(Looper.getMainLooper()).postDelayed({
-                    if (findNavController().currentDestination?.id == R.id.desertCarouselFragment) {
-                        findNavController().navigate(R.id.action_desertCarouselFragment_to_paymentFragment)
-                    }
-                }, 2000)*/
+                /* binding?.tvBottomPrompt?.text = getString(R.string.hope_you_will_enjoy_our_desert)
+                 binding?.tvBottomPrompt?.setTextColor(
+                     ContextCompat.getColor(
+                         context ?: return,
+                         R.color.orange
+                     )
+                 )
+                 Handler(Looper.getMainLooper()).postDelayed({
+                     if (findNavController().currentDestination?.id == R.id.desertCarouselFragment) {
+                         findNavController().navigate(R.id.action_desertCarouselFragment_to_paymentFragment)
+                     }
+                 }, 2000)*/
             }
 
             else -> {

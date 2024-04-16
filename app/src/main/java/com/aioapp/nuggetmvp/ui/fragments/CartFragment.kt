@@ -305,6 +305,8 @@ class CartFragment : Fragment() {
                                             .colorizeWordInSentence(it1)
                                     }
                                 } else {
+                                    "“Nugget, Add %s to my order”".format(currentItem)
+                                        .colorizeWordInSentence(it)
                                 }
                             }
 
@@ -315,6 +317,8 @@ class CartFragment : Fragment() {
                                             .colorizeWordInSentence(it1)
                                     }
                                 } else {
+                                    "“Nugget, Remove %s from my order”".format(currentItem)
+                                        .colorizeWordInSentence(it)
                                 }
                             }
                         }
@@ -329,7 +333,7 @@ class CartFragment : Fragment() {
         }
         lifecycleScope.launch {
             textFlow.collect { text ->
-                binding?.tvBottomPrompt?.text = text.toString()
+                binding?.tvBottomPrompt?.text = text
             }
         }
     }

@@ -49,8 +49,6 @@ class SplashActivity : AppCompatActivity() {
                 getString(R.string.hey_nugget_text).colorizeWordInSentence("Hey Nugget")
         }
 
-
-
         setAnimationOnTextView()
 
         /**

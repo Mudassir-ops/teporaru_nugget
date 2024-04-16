@@ -3,6 +3,7 @@ package com.aioapp.nuggetmvp.ui.fragments
 import android.content.Intent
 import android.media.MediaPlayer
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
@@ -23,7 +24,6 @@ import com.aioapp.nuggetmvp.databinding.FragmentQuestionsBinding
 import com.aioapp.nuggetmvp.di.datastore.SharedPreferenceUtil
 import com.aioapp.nuggetmvp.models.TextToResponseIntent
 import com.aioapp.nuggetmvp.service.NuggetCameraService
-import com.aioapp.nuggetmvp.utils.actionCallBack
 import com.aioapp.nuggetmvp.utils.appextension.colorizeWordInSentence
 import com.aioapp.nuggetmvp.utils.appextension.handleNoneState
 import com.aioapp.nuggetmvp.utils.appextension.isServiceRunning
@@ -36,10 +36,13 @@ import com.aioapp.nuggetmvp.viewmodels.NuggetSharedViewModel
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -59,6 +62,8 @@ class QuestionsFragment : Fragment() {
     private val mediaPlayer = MediaPlayer()
     private var ifApiCallSuccess = true
     private var isUserListening = false
+    private var countDownTimer: CountDownTimer? = null
+    private var job: Job? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         ContextCompat.startForegroundService(
@@ -108,24 +113,13 @@ class QuestionsFragment : Fragment() {
         observeState()
         observeNoneState()
         observeRefillResponse()
-       navigateToPaymentAfter30Sec()
+        lifecycleScope.launch {
+            withContext(Main) {
+                startTimer()
+            }
+        }
     }
 
-    private fun navigateToPaymentAfter30Sec() {
-        Handler(Looper.getMainLooper()).postDelayed({
-            if (!isApiCalled) {
-                if (findNavController().currentDestination?.id == R.id.questionsFragment) {
-                    context?.stopService(
-                        Intent(
-                            context ?: return@postDelayed,
-                            NuggetCameraService::class.java
-                        )
-                    )
-                    findNavController().navigate(R.id.action_questionsFragment_to_desertCarouselFragment)
-                }
-            }
-        }, 30000)
-    }
 
     private fun handleRecordingStartedState() {
         isUserListening = true
@@ -201,7 +195,6 @@ class QuestionsFragment : Fragment() {
                 }
 
                 is NuggetProcessingStatus.TextToResponseEnded -> {
-                    isApiCalled = true
                     handleTextToResponseEndedState(states)
                 }
 
@@ -217,6 +210,7 @@ class QuestionsFragment : Fragment() {
         }
         when (states.value?.intent) {
             IntentTypes.NEEDS_EXTRA.label -> {
+                isApiCalled = true
                 requiredIem = states.value.parametersEntity?.requiredThing
                 binding?.servingAnimation?.playAnimation()
                 if (binding?.viewFlipper?.displayedChild == 0) {
@@ -239,6 +233,7 @@ class QuestionsFragment : Fragment() {
             }
 
             IntentTypes.DENY.label -> {
+                isApiCalled = true
                 binding?.tvBottomPrompt?.text =
                     getString(R.string.enjoy_your_food)
                 binding?.tvBottomPrompt?.setTextColor(
@@ -257,6 +252,7 @@ class QuestionsFragment : Fragment() {
             }
 
             IntentTypes.PAYMENT.label -> {
+                isApiCalled = true
                 if (findNavController().currentDestination?.id == R.id.questionsFragment) {
                     context?.stopService(Intent(context ?: return, NuggetCameraService::class.java))
                     findNavController().navigate(R.id.action_questionsFragment_to_desertCarouselFragment)
@@ -288,7 +284,7 @@ class QuestionsFragment : Fragment() {
                 if (myData.intent?.contains("none", ignoreCase = true) == true) {
                     binding?.tvBottomPrompt?.handleNoneState(context ?: return@observe)
                     stopBottomEyeAnim()
-//                    isApiCalled = false
+                    isApiCalled = false
                     isUserListening = true
                     lifecycleScope.launch {
                         delay(6000)
@@ -329,6 +325,41 @@ class QuestionsFragment : Fragment() {
         binding?.bottomEyeAnim?.cancelAnimation()
         binding?.bottomEyeAnim?.progress = 0F
         binding?.bottomEyeAnim?.setAnimation(R.raw.eye_blinking)
+    }
 
+    private fun timerFlow(): Flow<Long> = flow {
+        val timerDuration = 30000L // 30 seconds
+        var remainingTime = timerDuration
+        while (remainingTime > 0) {
+            emit(remainingTime)
+            delay(100) // Emit every second
+            remainingTime -= 1000
+        }
+    }
+
+    private suspend fun startTimer() {
+        timerFlow().onStart {
+            println("Timer started")
+        }.collect { remainingTime ->
+            Log.wtf("REmainaing--time-->", remainingTime.toString())
+            if (remainingTime.toInt() == 1000) {
+                if (!isApiCalled) {
+                    Log.wtf("REmainaing--time-->", "true")
+                    if (findNavController().currentDestination?.id == R.id.questionsFragment) {
+                        context?.stopService(
+                            Intent(
+                                context ?: return@collect,
+                                NuggetCameraService::class.java
+                            )
+                        )
+                        findNavController().navigate(R.id.action_questionsFragment_to_desertCarouselFragment)
+                    }
+                }else{
+                    Log.wtf("REmainaing--time-->", "false")
+
+                }
+            }
+
+        }
     }
 }

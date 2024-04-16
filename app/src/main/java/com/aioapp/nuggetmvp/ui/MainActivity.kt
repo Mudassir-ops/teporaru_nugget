@@ -1,5 +1,6 @@
 package com.aioapp.nuggetmvp.ui
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.StrictMode
 import androidx.activity.viewModels
@@ -13,6 +14,7 @@ import com.aioapp.nuggetmvp.databinding.ActivityMainBinding
 import com.aioapp.nuggetmvp.models.OrderEntity
 import com.aioapp.nuggetmvp.models.TextToResponseIntent
 import com.aioapp.nuggetmvp.models.TextToResponseRequestBody
+import com.aioapp.nuggetmvp.service.NuggetCameraService
 import com.aioapp.nuggetmvp.service.recorder.RealtimeTranscriberManager
 import com.aioapp.nuggetmvp.utils.Constants
 import com.aioapp.nuggetmvp.utils.appextension.showToast
@@ -48,7 +50,9 @@ class MainActivity : AppCompatActivity() {
                     }
                 },
                 onFinalTranscript = { finalTranscript ->
-                    sendTextToIntent(finalTranscript)
+                    lifecycleScope.launch {
+                        sendTextToIntent(finalTranscript)
+                    }
                 })
         }
 
@@ -76,13 +80,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun sendTextToIntent(transcript: String) {
+        binding?.myNavHostFragment?.post {}
         val navHostFragment =
-            supportFragmentManager.findFragmentById(R.id.my_nav_host_fragment) as NavHostFragment
-        val navController = navHostFragment.navController
-        val currentDestination = navController.currentDestination
-
+            supportFragmentManager.findFragmentById(R.id.my_nav_host_fragment) as? NavHostFragment
+        val navController = navHostFragment?.navController
+        val currentDestination = navController?.currentDestination
         val orderEntity = OrderEntity(name = "Beef Burger", quantity = 1)
         val orderList = arrayListOf(orderEntity)
+
         currentDestination?.let { destination ->
             // Get the ID of the current destination
             val destinationId = destination.id
@@ -116,5 +121,14 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        stopService(
+            Intent(
+                this@MainActivity, NuggetCameraService::class.java
+            )
+        )
     }
 }

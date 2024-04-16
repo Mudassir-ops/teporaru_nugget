@@ -2,6 +2,7 @@ package com.aioapp.nuggetmvp.service.constants
 
 import android.content.Context
 import android.util.Log
+import androidx.fragment.app.Fragment
 import java.io.File
 import java.io.IOException
 
@@ -73,4 +74,8 @@ fun Context.createFilePathInCacheDirectoryForCameraDeletedFolder(fileName: Strin
     }
 
     return outputFile.absolutePath
+}
+
+fun Fragment?.isFragmentVisible(): Boolean {
+    return this@isFragmentVisible != null && this@isFragmentVisible.isAdded && !this@isFragmentVisible.isDetached
 }

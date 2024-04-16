@@ -9,12 +9,18 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.aioapp.nuggetmvp.R
 import com.aioapp.nuggetmvp.databinding.FragmentFeedBackResponseBinding
 import com.aioapp.nuggetmvp.di.datastore.SharedPreferenceUtil
 import com.aioapp.nuggetmvp.models.ParametersEntity
 import com.aioapp.nuggetmvp.viewmodels.CartSharedViewModel
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class FeedBackResponseFragment : Fragment() {
     private var binding: FragmentFeedBackResponseBinding? = null
@@ -40,14 +46,19 @@ class FeedBackResponseFragment : Fragment() {
         binding?.headerLayout?.ivCart?.visibility = View.GONE
         reviewSound()
         setViews()
-        Handler(Looper.getMainLooper()).postDelayed({
-            if (mediaPlayer.isPlaying)
-                mediaPlayer.stop()
-            mediaPlayer.release()
-            if (findNavController().currentDestination?.id == R.id.feedBackResponseFragment) {
-                findNavController().navigate(R.id.action_feedBackResponseFragment_to_closingFragment)
+        lifecycleScope.launch {
+            withContext(IO) {
+                delay(4000)
+                withContext(Main) {
+                    if (mediaPlayer.isPlaying)
+                        mediaPlayer.stop()
+                    mediaPlayer.release()
+                    if (findNavController().currentDestination?.id == R.id.feedBackResponseFragment) {
+                        findNavController().navigate(R.id.action_feedBackResponseFragment_to_closingFragment)
+                    }
+                }
             }
-        }, 4000)
+        }
     }
 
     private fun setViews() {

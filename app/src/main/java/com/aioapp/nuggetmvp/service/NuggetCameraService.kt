@@ -70,10 +70,9 @@ class NuggetCameraService : Service(), IFrontCaptureCallback {
     override fun onPhotoCaptured(filePath: String?) {
         filePath?.let { imageSavedToGalleryCallBack?.invoke(it) }
 
-
 //        //  sendRefillApiCall(filePath)
         CoroutineScope(IO).launch {
-            delay(3000)
+            delay(5000)
             withContext(Main) {
                 capturePhoto()
             }

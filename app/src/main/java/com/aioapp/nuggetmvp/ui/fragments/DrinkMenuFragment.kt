@@ -1,6 +1,9 @@
 package com.aioapp.nuggetmvp.ui.fragments
 
+import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -17,6 +20,7 @@ import com.aioapp.nuggetmvp.adapters.FoodAdapter
 import com.aioapp.nuggetmvp.databinding.FragmentDrinkMenuBinding
 import com.aioapp.nuggetmvp.models.Food
 import com.aioapp.nuggetmvp.models.TextToResponseIntent
+import com.aioapp.nuggetmvp.ui.SplashActivity
 import com.aioapp.nuggetmvp.utils.appextension.colorizeWordInSentence
 import com.aioapp.nuggetmvp.utils.appextension.handleNoneState
 import com.aioapp.nuggetmvp.utils.enum.IntentTypes
@@ -156,7 +160,7 @@ class DrinkMenuFragment : Fragment() {
                 }
             }
             if (states.value.last == true) {
-                if(cartSharedViewModel.itemList.value?.size!! >0){
+                if (cartSharedViewModel.itemList.value?.size!! > 0) {
                     navToCart()
                 }
             }

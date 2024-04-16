@@ -3,6 +3,7 @@ package com.aioapp.nuggetmvp.ui.fragments
 import android.content.Intent
 import android.media.MediaPlayer
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
@@ -32,11 +33,15 @@ import com.aioapp.nuggetmvp.viewmodels.NuggetMainViewModel
 import com.aioapp.nuggetmvp.viewmodels.NuggetProcessingStatus
 import com.aioapp.nuggetmvp.viewmodels.NuggetSharedViewModel
 import com.google.gson.Gson
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
 class RefillFragment : Fragment() {
@@ -49,6 +54,7 @@ class RefillFragment : Fragment() {
     private var isApiCalled = false
     private val mediaPlayer = MediaPlayer()
     private var isUserListening = false
+    private var countDownTimer: CountDownTimer? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -71,17 +77,13 @@ class RefillFragment : Fragment() {
         }, 1000)
 
         binding?.headerLayout?.tvCartCount?.text = SharedPreferenceUtil.savedCartItemsCount
-        Handler(Looper.getMainLooper()).postDelayed({
-            if (!isApiCalled) {
-                if (findNavController().currentDestination?.id == R.id.refillFragment) {
-                    findNavController().navigate(
-                        R.id.action_refillFragment_to_desertCarouselFragment
-                    )
-                }
-            }
-        }, 30000)
         observeState()
         observeNoneState()
+        lifecycleScope.launch {
+            withContext(Dispatchers.Main) {
+                startTimer()
+            }
+        }
     }
 
     private fun observeState() {
@@ -105,7 +107,6 @@ class RefillFragment : Fragment() {
                 }
 
                 is NuggetProcessingStatus.TextToResponseEnded -> {
-                    isApiCalled = true
                     handleTextToResponseEndedState(states)
                 }
             }
@@ -120,6 +121,7 @@ class RefillFragment : Fragment() {
         }
         when (states.value?.intent) {
             IntentTypes.REFILL_DRINK.label -> {
+                isApiCalled = true
                 binding?.tvBottomPrompt?.text =
                     getString(R.string.your_drink_will_be_served_at_the_table)
                 binding?.tvBottomPrompt?.setTextColor(
@@ -132,6 +134,7 @@ class RefillFragment : Fragment() {
             }
 
             IntentTypes.DENY.label -> {
+                isApiCalled = true
                 binding?.tvBottomPrompt?.text =
                     getString(R.string.enjoy_your_food)
                 binding?.tvBottomPrompt?.setTextColor(
@@ -182,7 +185,7 @@ class RefillFragment : Fragment() {
                 if (myData.intent?.contains("none", ignoreCase = true) == true) {
                     binding?.tvBottomPrompt?.handleNoneState(context ?: return@observe)
                     stopBottomEyeAnim()
-//                    isApiCalled = false
+                    isApiCalled = false
                     isUserListening = true
                     lifecycleScope.launch {
                         delay(6000)
@@ -224,5 +227,37 @@ class RefillFragment : Fragment() {
         binding?.bottomEyeAnim?.progress = 0F
         binding?.bottomEyeAnim?.setAnimation(R.raw.eye_blinking)
 
+    }
+
+    private fun timerFlow(): Flow<Long> = flow {
+        val timerDuration = 30000L // 30 seconds
+        var remainingTime = timerDuration
+        while (remainingTime > 0) {
+            emit(remainingTime)
+            delay(100) // Emit every second
+            remainingTime -= 1000
+        }
+    }
+
+    private suspend fun startTimer() {
+        timerFlow().onStart {
+            println("Timer started")
+        }.collect { remainingTime ->
+            Log.wtf("REmainaing--time-->", remainingTime.toString())
+            if (remainingTime.toInt() == 1000) {
+                if (!isApiCalled) {
+                    Log.wtf("REmainaing--time-->", "true")
+                    if (findNavController().currentDestination?.id == R.id.refillFragment) {
+                        findNavController().navigate(
+                            R.id.action_refillFragment_to_desertCarouselFragment
+                        )
+                    }
+                } else {
+                    Log.wtf("REmainaing--time-->", "false")
+
+                }
+            }
+
+        }
     }
 }
