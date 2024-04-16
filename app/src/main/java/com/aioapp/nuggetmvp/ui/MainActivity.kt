@@ -11,6 +11,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.NavHostFragment
 import com.aioapp.nuggetmvp.R
 import com.aioapp.nuggetmvp.databinding.ActivityMainBinding
+import com.aioapp.nuggetmvp.di.datastore.SharedPreferenceUtil
 import com.aioapp.nuggetmvp.models.OrderEntity
 import com.aioapp.nuggetmvp.models.TextToResponseIntent
 import com.aioapp.nuggetmvp.models.TextToResponseRequestBody
@@ -39,6 +40,7 @@ class MainActivity : AppCompatActivity() {
         val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
         StrictMode.setThreadPolicy(policy)
         observeTextToResponseStream()
+        SharedPreferenceUtil.savedCartItemsCount = "0"
 
         wakeupCallBack = {
             nuggetSharedViewModel.setRecordingStarted()

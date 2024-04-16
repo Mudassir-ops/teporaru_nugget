@@ -9,7 +9,7 @@ object SharedPreferenceUtil {
     private const val MODE = Context.MODE_PRIVATE
     private lateinit var preferences: SharedPreferences
 
-    private val CART_ITEM_COUNT = Pair("CART_ITEM_COUNT", "2")
+    private val CART_ITEM_COUNT = Pair("CART_ITEM_COUNT", "0")
 
     fun init(context: Application) {
         preferences = context.getSharedPreferences(NAME, MODE)

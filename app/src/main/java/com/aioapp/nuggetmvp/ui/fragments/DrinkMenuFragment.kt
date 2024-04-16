@@ -18,6 +18,7 @@ import androidx.navigation.fragment.findNavController
 import com.aioapp.nuggetmvp.R
 import com.aioapp.nuggetmvp.adapters.FoodAdapter
 import com.aioapp.nuggetmvp.databinding.FragmentDrinkMenuBinding
+import com.aioapp.nuggetmvp.di.datastore.SharedPreferenceUtil
 import com.aioapp.nuggetmvp.models.Food
 import com.aioapp.nuggetmvp.models.TextToResponseIntent
 import com.aioapp.nuggetmvp.ui.SplashActivity
@@ -57,6 +58,9 @@ class DrinkMenuFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val drinkList = getDrinksList()
+        if (SharedPreferenceUtil.savedCartItemsCount != "0") {
+            binding?.headerLayout?.tvCartCount?.text = SharedPreferenceUtil.savedCartItemsCount
+        }
         val foodAdapter = FoodAdapter(context ?: return, drinkList) {}
         binding?.rvDrinks?.adapter = foodAdapter
         setInterChangeableText()

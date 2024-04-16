@@ -24,6 +24,7 @@ import com.aioapp.nuggetmvp.databinding.FragmentRefillBinding
 import com.aioapp.nuggetmvp.di.datastore.SharedPreferenceUtil
 import com.aioapp.nuggetmvp.models.TextToResponseIntent
 import com.aioapp.nuggetmvp.service.NuggetCameraService
+import com.aioapp.nuggetmvp.service.constants.isFragmentVisible
 import com.aioapp.nuggetmvp.utils.appextension.colorizeWordInSentence
 import com.aioapp.nuggetmvp.utils.appextension.handleNoneState
 import com.aioapp.nuggetmvp.utils.appextension.isServiceRunning
@@ -52,7 +53,7 @@ class RefillFragment : Fragment() {
     private val nuggetSharedViewModel: NuggetSharedViewModel by activityViewModels()
     private var isFirstTime = true
     private var isApiCalled = false
-    private val mediaPlayer = MediaPlayer()
+    private var mediaPlayer : MediaPlayer?= null
     private var isUserListening = false
     private var countDownTimer: CountDownTimer? = null
 
@@ -65,15 +66,16 @@ class RefillFragment : Fragment() {
         return binding?.root
     }
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setInterChangeableText()
         initiateConvoSound()
-        mediaPlayer.start()
+        mediaPlayer?.start()
         Handler(Looper.getMainLooper()).postDelayed({
-            if (mediaPlayer.isPlaying)
-                mediaPlayer.stop()
-            mediaPlayer.release()
+            if (mediaPlayer?.isPlaying == true)
+                mediaPlayer?.stop()
+            mediaPlayer?.release()
         }, 1000)
 
         binding?.headerLayout?.tvCartCount?.text = SharedPreferenceUtil.savedCartItemsCount
@@ -149,9 +151,18 @@ class RefillFragment : Fragment() {
     }
 
     private fun initiateConvoSound() {
-        val soundFile = resources.openRawResourceFd(R.raw.nugget_nitiating_conversation)
-        mediaPlayer.setDataSource(soundFile.fileDescriptor, soundFile.startOffset, soundFile.length)
-        mediaPlayer.prepare()
+        if (isFragmentVisible()) {
+            mediaPlayer = MediaPlayer()
+            val soundFile =
+                context?.resources?.openRawResourceFd(R.raw.nugget_nitiating_conversation)
+            soundFile?.startOffset?.let {
+                mediaPlayer?.setDataSource(
+                    soundFile.fileDescriptor,
+                    it, soundFile.length
+                )
+            }
+            mediaPlayer?.prepare()
+        }
     }
 
     private fun handleRecordingStartedState() {
@@ -234,7 +245,7 @@ class RefillFragment : Fragment() {
         var remainingTime = timerDuration
         while (remainingTime > 0) {
             emit(remainingTime)
-            delay(100) // Emit every second
+            delay(1000) // Emit every second
             remainingTime -= 1000
         }
     }
@@ -259,5 +270,16 @@ class RefillFragment : Fragment() {
             }
 
         }
+    }
+    private fun stopPlayer() {
+        if (mediaPlayer != null) {
+            mediaPlayer?.release()
+            mediaPlayer = null
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        stopPlayer()
     }
 }

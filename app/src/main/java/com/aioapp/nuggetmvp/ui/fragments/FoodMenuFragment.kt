@@ -15,6 +15,7 @@ import androidx.navigation.fragment.findNavController
 import com.aioapp.nuggetmvp.R
 import com.aioapp.nuggetmvp.adapters.FoodAdapter
 import com.aioapp.nuggetmvp.databinding.FragmentFoodMenuBinding
+import com.aioapp.nuggetmvp.di.datastore.SharedPreferenceUtil
 import com.aioapp.nuggetmvp.models.Food
 import com.aioapp.nuggetmvp.models.TextToResponseIntent
 import com.aioapp.nuggetmvp.utils.appextension.colorizeWordInSentence
@@ -52,9 +53,11 @@ class FoodMenuFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        if (cartSharedViewModel.itemList.value?.isNotEmpty() == true) binding.headerLayout.tvCartCount.text =
-            cartSharedViewModel.itemList.value?.size.toString()
+        /*if (cartSharedViewModel.itemList.value?.isNotEmpty() == true) binding.headerLayout.tvCartCount.text =
+            cartSharedViewModel.itemList.value?.size.toString()*/
+        if (SharedPreferenceUtil.savedCartItemsCount != "0") {
+            binding.headerLayout.tvCartCount.text = SharedPreferenceUtil.savedCartItemsCount
+        }
         val foodList = getFoodList()
         val foodAdapter = FoodAdapter(context ?: return, foodList) {
             val bundle = Bundle()
