@@ -31,7 +31,7 @@ class OrderConfirmationFragment : Fragment() {
         binding?.orderPreparationAnimView?.playAnimation()
         Handler(Looper.getMainLooper()).postDelayed({
             if (findNavController().currentDestination?.id == R.id.orderConfirmationFragment) {
-                findNavController().navigate(R.id.action_orderConfirmationFragment_to_foodOnTheWayFragment)
+                findNavController().navigate(R.id.action_orderConfirmationFragment_to_marketingFragment)
             }
         }, 10000)
 

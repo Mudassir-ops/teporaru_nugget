@@ -90,8 +90,8 @@
         android:label="OrderConfirmationFragment"
         tools:layout="@layout/fragment_order_confirmation">
         <action
-            android:id="@+id/action_orderConfirmationFragment_to_foodOnTheWayFragment"
-            app:destination="@id/foodOnTheWayFragment" />
+            android:id="@+id/action_orderConfirmationFragment_to_marketingFragment"
+            app:destination="@id/marketingFragment" />
     </fragment>
     <fragment
         android:id="@+id/foodOnTheWayFragment"
@@ -182,6 +182,15 @@
         android:name="com.aioapp.nuggetmvp.ui.fragments.ClosingFragment"
         android:label="ClosingFragment"
         tools:layout="@layout/fragment_closing" />
+    <fragment
+        android:id="@+id/marketingFragment"
+        android:name="com.aioapp.nuggetmvp.ui.fragments.MarketingFragment"
+        tools:layout="@layout/fragment_marketing"
+        android:label="MarketingFragment" >
+        <action
+            android:id="@+id/action_marketingFragment_to_foodOnTheWayFragment"
+            app:destination="@id/foodOnTheWayFragment" />
+    </fragment>
 
 
 </navigation>
