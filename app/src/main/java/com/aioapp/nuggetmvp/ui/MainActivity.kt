@@ -46,23 +46,14 @@ class MainActivity : AppCompatActivity() {
         observeTextToResponseStream()
         SharedPreferenceUtil.savedCartItemsCount = "0"
 
-        wakeupCallBack = {
-            nuggetSharedViewModel.setRecordingStarted()
-            RealtimeTranscriberManager.startTranscription(Constants.assmeblyAiApiKey,
-                onSessionStarted = {},
-                onPartialTranscript = { partialTranscript ->
-                    lifecycleScope.launch {
-                        nuggetSharedViewModel.setTranscriptionEnded(partialTranscript)
-                    }
-                },
-                onFinalTranscript = { finalTranscript ->
-                    lifecycleScope.launch {
-                        sendTextToIntent(finalTranscript)
-                    }
-                })
-        }
+        startRecordingStates()
 
-        //nagraph ----
+        wakeupCallBack = {
+            if (nuggetSharedViewModel.isInQuestioningState) {
+                nuggetSharedViewModel.isInQuestioningState = false
+                startRecordingStates()
+            }
+        }
     }
 
     private fun observeTextToResponseStream() {
@@ -136,5 +127,22 @@ class MainActivity : AppCompatActivity() {
                 this@MainActivity, NuggetCameraService::class.java
             )
         )
+        RealtimeTranscriberManager.stopTranscription()
+    }
+
+    fun startRecordingStates() {
+        nuggetSharedViewModel.setRecordingStarted()
+        RealtimeTranscriberManager.startTranscription(Constants.assmeblyAiApiKey,
+            onSessionStarted = {},
+            onPartialTranscript = { partialTranscript ->
+                lifecycleScope.launch {
+                    nuggetSharedViewModel.setTranscriptionEnded(partialTranscript)
+                }
+            },
+            onFinalTranscript = { finalTranscript ->
+                lifecycleScope.launch {
+                    sendTextToIntent(finalTranscript)
+                }
+            })
     }
 }

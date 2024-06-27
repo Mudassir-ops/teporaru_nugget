@@ -222,7 +222,7 @@ class QuestionsFragment : Fragment() {
     }
 
     private fun handleTextToResponseEndedState(states: NuggetProcessingStatus.TextToResponseEnded) {
-        stopBottomEyeAnim()
+//        stopBottomEyeAnim()
         if (isFirstTime) {
             isFirstTime = false
             return
@@ -302,7 +302,7 @@ class QuestionsFragment : Fragment() {
                     Gson().fromJson(txtToResponse, TextToResponseIntent::class.java)
                 if (myData.intent?.contains("none", ignoreCase = true) == true) {
                     binding?.tvBottomPrompt?.handleNoneState(context ?: return@observe)
-                    stopBottomEyeAnim()
+//                    stopBottomEyeAnim()
                     isApiCalled = false
                     isUserListening = true
                     lifecycleScope.launch {
@@ -324,7 +324,7 @@ class QuestionsFragment : Fragment() {
         val textFlow = flow {
             while (true) {
                 if (!isUserListening) {
-                    stopBottomEyeAnim()
+//                    stopBottomEyeAnim()
                     emit(baseString.format("napkins").colorizeWordInSentence("napkins"))
                     delay(8000)
                 } else {

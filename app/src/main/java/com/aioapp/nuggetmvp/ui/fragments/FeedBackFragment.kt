@@ -106,7 +106,7 @@ class FeedBackFragment : Fragment() {
     }
 
     private fun handleTextToResponseEndedState(states: NuggetProcessingStatus.TextToResponseEnded) {
-        stopBottomEyeAnim()
+//        stopBottomEyeAnim()
         if (isFirstTime) {
             isFirstTime = false
             return
@@ -142,7 +142,7 @@ class FeedBackFragment : Fragment() {
                     ) == true || myData.intent?.contains("invalid", ignoreCase = true) == true
                 ) {
                     binding?.tvBottomPrompt?.handleNoneState(context ?: return@observe)
-                    stopBottomEyeAnim()
+//                    stopBottomEyeAnim()
                     isUserListening = true
                     lifecycleScope.launch {
                         delay(6000)
@@ -163,7 +163,7 @@ class FeedBackFragment : Fragment() {
         val textFlow = flow {
             while (true) {
                 if (!isUserListening) {
-                    stopBottomEyeAnim()
+//                    stopBottomEyeAnim()
                     emit(baseString.format("Liked it").colorizeWordInSentence("Liked it"))
                     delay(8000)
                 } else {

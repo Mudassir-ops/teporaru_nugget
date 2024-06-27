@@ -1,9 +1,7 @@
 package com.aioapp.nuggetmvp.ui.fragments
 
-import android.content.Intent
+import android.media.MediaPlayer
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -21,7 +19,7 @@ import com.aioapp.nuggetmvp.databinding.FragmentDrinkMenuBinding
 import com.aioapp.nuggetmvp.di.datastore.SharedPreferenceUtil
 import com.aioapp.nuggetmvp.models.Food
 import com.aioapp.nuggetmvp.models.TextToResponseIntent
-import com.aioapp.nuggetmvp.ui.SplashActivity
+import com.aioapp.nuggetmvp.service.recorder.RealtimeTranscriberManager
 import com.aioapp.nuggetmvp.utils.appextension.colorizeWordInSentence
 import com.aioapp.nuggetmvp.utils.appextension.handleNoneState
 import com.aioapp.nuggetmvp.utils.enum.IntentTypes
@@ -32,11 +30,14 @@ import com.aioapp.nuggetmvp.viewmodels.NuggetProcessingStatus
 import com.aioapp.nuggetmvp.viewmodels.NuggetSharedViewModel
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 @AndroidEntryPoint
 class DrinkMenuFragment : Fragment() {
@@ -48,6 +49,9 @@ class DrinkMenuFragment : Fragment() {
     private var isFirstTime = true
     private var isUserListening = false
     private var checkTotalItemCount = 0
+    private var messageJob: Job? = null
+    private lateinit var mediaPlayer: MediaPlayer
+    private lateinit var mediaPlayer2: MediaPlayer
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
@@ -57,16 +61,38 @@ class DrinkMenuFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        questionsFromNuggetAfterSeconds()
         val drinkList = getDrinksList()
         if (SharedPreferenceUtil.savedCartItemsCount != "0") {
             binding?.headerLayout?.tvCartCount?.text = SharedPreferenceUtil.savedCartItemsCount
         }
         val foodAdapter = FoodAdapter(context ?: return, drinkList) {}
         binding?.rvDrinks?.adapter = foodAdapter
-        setInterChangeableText()
+        mediaPlayer2 = MediaPlayer.create(context ?: return, R.raw.nugget_nitiating_conversation)
+        mediaPlayer = MediaPlayer.create(context ?: return, R.raw.nugget_nitiating_conversation)
+        lifecycleScope.launch {
+            delay(2000)
+            mediaPlayer.start()
+            binding?.tvBottomPrompt?.visibility = View.VISIBLE
+            binding?.bottomEyeAnim?.visibility = View.VISIBLE
+            binding?.bottomEyeAnim?.playAnimation()
+            binding?.tvBottomPrompt?.setTextColor(
+                ContextCompat.getColor(
+                    context ?: return@launch, R.color.white
+                )
+            )
+        }
+        lifecycleScope.launch {
+            delay(3000)
+            if (mediaPlayer.isPlaying)
+                mediaPlayer.stop()
+            mediaPlayer.release()
+        }
+//        setInterChangeableText()
         observeStates()
         observeNoneState()
     }
+
 
     private fun observeStates() {
         nuggetSharedViewModel.mState.flowWithLifecycle(
@@ -135,14 +161,16 @@ class DrinkMenuFragment : Fragment() {
     }
 
     private fun handleTextToResponseEndedState(states: NuggetProcessingStatus.TextToResponseEnded) {
-        stopBottomEyeAnim()
+//        stopBottomEyeAnim()
         if (isFirstTime) {
             isFirstTime = false
             return
         }
         if (states.value?.intent == IntentTypes.SHOW_MENU.label) {
+            messageJob?.cancel()
             handleShowMenuIntent(states.value)
         } else if (states.value?.intent == IntentTypes.ADD.label) {
+            messageJob?.cancel()
             val allMenuItems: List<Food?> = nuggetSharedViewModel.allMenuItemsResponse.value
             val foodItems =
                 allMenuItems.find { it?.logicalName == states.value.parametersEntity?.name }
@@ -171,6 +199,7 @@ class DrinkMenuFragment : Fragment() {
 
         } else if (states.value?.intent == IntentTypes.SHOW_CART.label) {
             navToCart()
+            messageJob?.cancel()
         } else {
             binding?.tvBottomPrompt?.handleNoneState(context ?: return)
         }
@@ -225,7 +254,7 @@ class DrinkMenuFragment : Fragment() {
                     Gson().fromJson(txtToResponse, TextToResponseIntent::class.java)
                 if (myData.intent?.contains("none", ignoreCase = true) == true) {
                     binding?.tvBottomPrompt?.handleNoneState(context ?: return@observe)
-                    stopBottomEyeAnim()
+//                    stopBottomEyeAnim()
                     isUserListening = true
                     lifecycleScope.launch {
                         delay(4000)
@@ -270,6 +299,34 @@ class DrinkMenuFragment : Fragment() {
         binding?.bottomEyeAnim?.progress = 0F
         binding?.bottomEyeAnim?.setAnimation(R.raw.eye_blinking)
 
+    }
+
+    private fun questionsFromNuggetAfterSeconds() {
+        messageJob = lifecycleScope.launch {
+            delay(10000)
+            withContext(Dispatchers.Main) {
+                binding?.bottomEyeAnim?.playAnimation()
+                mediaPlayer2.start()
+                binding?.tvBottomPrompt?.text = getString(R.string.what_would_you_like_to_order)
+                binding?.tvBottomPrompt?.setTextColor(
+                    ContextCompat.getColor(
+                        requireContext(), R.color.white
+                    )
+                )
+            }
+            delay(15000)
+            binding?.tvBottomPrompt?.text = getString(R.string.say_nugget_to_wake_me_up)
+            stopBottomEyeAnim()
+            binding?.tvBottomPrompt?.setTextColor(
+                ContextCompat.getColor(
+                    requireContext(), R.color.white
+                )
+            )
+//            setInterChangeableText()
+            RealtimeTranscriberManager.stopTranscription()
+            nuggetSharedViewModel.isInQuestioningState = true
+            isUserListening = true
+        }
     }
 
 }

@@ -6,7 +6,9 @@ object Constants {
     var BASE_URL_TEXT_TO_RESPONSE = "http://44.231.228.32:8005/"
     var BASE_URL_Refill = "http://44.231.228.32:8006/"
 //    var ACCESS_KEY_PORCUPINE = "wbY3zsAJP9AcYpSUsX9kR12QKHmKrvD+c4+CZ08ZX+o0SONvgSOTHw=="
-    var ACCESS_KEY_PORCUPINE = "hrj+4m71rdDnHyuh7vaUPK7HdfAO6pkLv0ZaRpMqkBKimjCeHAHmlA=="
+//    var ACCESS_KEY_PORCUPINE = "hrj+4m71rdDnHyuh7vaUPK7HdfAO6pkLv0ZaRpMqkBKimjCeHAHmlA=="
+    var ACCESS_KEY_PORCUPINE = "DrPrZuajCnXrvahBWe9pt+jCyuLlMwnNP3mupUr6hl0qgPT+FdwDbw=="
+//    var ACCESS_KEY_PORCUPINE = "+HNTGs5jgOJ5xrac5vEiq/AvwOSeaFVk28w+FPcyNVWj6lko1ECMRQ==" //Not Used Yet
     const val CHANNEL_ID = "screen_shoot_11"
     const val CHANNEL_NAME = "screen_shoot"
     const val TAG_NUGET_MVP = "TAG_NUGET_MVP"

@@ -34,7 +34,7 @@ object RealtimeTranscriberManager {
                         }
                     }.onFinalTranscript { transcript: FinalTranscript ->
                         onFinalTranscript(transcript.text)
-                        stopTranscription()
+//                        stopTranscription()
                     }.onError { exp: Throwable ->
                         exp.printStackTrace()
                     }.wordBoost(
@@ -96,7 +96,7 @@ object RealtimeTranscriberManager {
         thread?.start()
     }
 
-    private fun stopTranscription() {
+     fun stopTranscription() {
         realtimeTranscriber?.close()
         thread?.interrupt()
         realtimeTranscriber = null

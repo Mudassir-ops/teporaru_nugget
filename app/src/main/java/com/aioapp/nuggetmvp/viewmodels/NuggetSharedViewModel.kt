@@ -18,6 +18,9 @@ import javax.inject.Inject
 class NuggetSharedViewModel @Inject constructor(
     private var getAllMenuUseCase: GetAllMenuUseCase
 ) : ViewModel() {
+
+     var isInQuestioningState = false
+
     private val state = MutableStateFlow<NuggetProcessingStatus>(NuggetProcessingStatus.Init)
     val mState: StateFlow<NuggetProcessingStatus> get() = state
 
@@ -79,4 +82,5 @@ sealed class NuggetProcessingStatus {
     data class TranscriptStarted(val isStarted: Boolean) : NuggetProcessingStatus()
     data class ParitialTranscriptionState(val value: String) : NuggetProcessingStatus()
     data class TextToResponseEnded(val value: TextToResponseIntent?) : NuggetProcessingStatus()
+   // data class AskQuestionState(val value: TextToResponseIntent?) : NuggetProcessingStatus()
 }

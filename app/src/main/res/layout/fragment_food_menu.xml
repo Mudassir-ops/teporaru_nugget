@@ -41,8 +41,9 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/_20sdp"
             android:gravity="center"
-            android:text="@string/try_add_coke_to_my_order"
+            android:text="@string/what_would_you_like_to_order_say_the_item_name_with_quantity"
             android:textSize="@dimen/_12ssp"
+            android:visibility="gone"
             app:layout_constraintBottom_toTopOf="@+id/bottom_eye_anim"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
@@ -57,6 +58,7 @@
             app:layout_constraintStart_toStartOf="@+id/tv_bottom_prompt"
             app:lottie_autoPlay="false"
             app:lottie_loop="true"
+            android:visibility="gone"
             app:lottie_rawRes="@raw/eye_blinking" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

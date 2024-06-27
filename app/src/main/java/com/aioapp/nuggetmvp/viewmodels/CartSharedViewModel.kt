@@ -1,5 +1,6 @@
 package com.aioapp.nuggetmvp.viewmodels
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -24,8 +25,9 @@ class CartSharedViewModel @Inject constructor(
         val existingItem = cartItemList.find { it.logicalName == food.logicalName }
         if (existingItem != null) {
             existingItem.count += food.itemQuantity
+            existingItem.itemQuantity += food.itemQuantity
         } else {
-            val foodCopy = food.copy(count = food.itemQuantity)
+            val foodCopy = food.copy(count = food.itemQuantity, itemQuantity = food.itemQuantity)
             cartItemList.add(foodCopy)
         }
         _itemList.value = ArrayList(cartItemList)

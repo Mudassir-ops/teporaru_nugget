@@ -1,13 +1,12 @@
 package com.aioapp.nuggetmvp.ui.fragments
 
 import android.annotation.SuppressLint
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.AlphaAnimation
-import android.view.animation.Animation
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -22,6 +21,7 @@ import com.aioapp.nuggetmvp.di.datastore.SharedPreferenceUtil
 import com.aioapp.nuggetmvp.models.Food
 import com.aioapp.nuggetmvp.models.ParametersEntity
 import com.aioapp.nuggetmvp.models.TextToResponseIntent
+import com.aioapp.nuggetmvp.service.recorder.RealtimeTranscriberManager
 import com.aioapp.nuggetmvp.utils.appextension.colorizeWordInSentence
 import com.aioapp.nuggetmvp.utils.appextension.handleNoneState
 import com.aioapp.nuggetmvp.utils.enum.IntentTypes
@@ -32,11 +32,14 @@ import com.aioapp.nuggetmvp.viewmodels.NuggetProcessingStatus
 import com.aioapp.nuggetmvp.viewmodels.NuggetSharedViewModel
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
 @AndroidEntryPoint
@@ -50,6 +53,8 @@ class CartFragment : Fragment() {
     private var isFirstTime = true
     private var isUserListening = false
     private val cartItemListHere = ArrayList<Food>()
+    private lateinit var mediaPlayer2: MediaPlayer
+    private var messageJob: Job? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         cartAdapter = CartAdapter(context = context ?: return, cartItemList = arrayListOf())
@@ -65,8 +70,10 @@ class CartFragment : Fragment() {
     @SuppressLint("SuspiciousIndentation")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setInterChangeableText()
-
+        questionsFromNuggetAfterSeconds()
+//        setInterChangeableText()
+        mediaPlayer2 = MediaPlayer.create(context ?: return, R.raw.nugget_nitiating_conversation)
+        binding?.bottomEyeAnim?.playAnimation()
         observeCartItems()
         observeState()
         observeNoneState()
@@ -156,31 +163,42 @@ class CartFragment : Fragment() {
     }
 
     private fun handleTextToResponseEndedState(states: NuggetProcessingStatus.TextToResponseEnded) {
-        stopBottomEyeAnim()
+//        stopBottomEyeAnim()
         if (isFirstTime) {
             isFirstTime = false
             return
         }
         when (states.value?.intent) {
             IntentTypes.SHOW_MENU.label -> {
+                messageJob?.cancel()
                 handleShowMenuIntent(states.value)
             }
 
             IntentTypes.ADD.label -> {
+                messageJob?.cancel()
                 handleAddIntoCartIntent(states.value.parametersEntity)
             }
 
             IntentTypes.REMOVE.label -> {
+                messageJob?.cancel()
                 handleRemoveFromCartIntent(states.value.parametersEntity)
             }
 
+            IntentTypes.DENY.label -> {
+                messageJob?.cancel()
+                binding?.tvBottomPrompt?.text =
+                    getString(R.string.if_you_are_done_say_confirm_order)
+            }
+
             IntentTypes.PLACE_ORDER.label -> {
+                messageJob?.cancel()
                 if (findNavController().currentDestination?.id == R.id.cartFragment) {
                     findNavController().navigate(R.id.action_cartFragment_to_orderConfirmationFragment)
                 }
             }
 
             IntentTypes.AFFIRM.label -> {
+                messageJob?.cancel()
                 if (findNavController().currentDestination?.id == R.id.cartFragment) {
                     findNavController().navigate(R.id.action_cartFragment_to_orderConfirmationFragment)
                 }
@@ -268,7 +286,7 @@ class CartFragment : Fragment() {
                     Gson().fromJson(txtToResponse, TextToResponseIntent::class.java)
                 if (myData.intent?.contains("none", ignoreCase = true) == true) {
                     binding?.tvBottomPrompt?.handleNoneState(context ?: return@observe)
-                    stopBottomEyeAnim()
+//                    stopBottomEyeAnim()
                     isUserListening = true
                     lifecycleScope.launch {
                         delay(6000)
@@ -289,7 +307,7 @@ class CartFragment : Fragment() {
         val textFlow = flow {
             while (true) {
                 if (!isUserListening) {
-                    stopBottomEyeAnim()
+//                    stopBottomEyeAnim()
                     val currentItem = promptList[currentItemIndex]
                     emit(currentItem.let {
                         when (currentItemIndex) {
@@ -343,5 +361,33 @@ class CartFragment : Fragment() {
         binding?.bottomEyeAnim?.progress = 0F
         binding?.bottomEyeAnim?.setAnimation(R.raw.eye_blinking)
 
+    }
+
+    private fun questionsFromNuggetAfterSeconds() {
+        messageJob = lifecycleScope.launch {
+            delay(5000)
+            withContext(Dispatchers.Main) {
+                binding?.bottomEyeAnim?.playAnimation()
+                mediaPlayer2.start()
+                binding?.tvBottomPrompt?.text = getString(R.string.do_you_want_anything_else)
+                binding?.tvBottomPrompt?.setTextColor(
+                    ContextCompat.getColor(
+                        requireContext(), R.color.white
+                    )
+                )
+            }
+            delay(20000)
+            binding?.tvBottomPrompt?.text = getString(R.string.say_nugget_to_wake_me_up)
+            stopBottomEyeAnim()
+            binding?.tvBottomPrompt?.setTextColor(
+                ContextCompat.getColor(
+                    requireContext(), R.color.white
+                )
+            )
+//            setInterChangeableText()
+            RealtimeTranscriberManager.stopTranscription()
+            nuggetSharedViewModel.isInQuestioningState = true
+            isUserListening = true
+        }
     }
 }

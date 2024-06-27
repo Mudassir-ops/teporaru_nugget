@@ -66,5 +66,10 @@
     <string name="happy_to_serve">Happy to serve!</string>
     <string name="oh_no_i_m_still_a_work_in_progress_i_ll_learn_to_serve_better_next_time">Oh no, I\'m still a work in progress. I\'ll learn to serve better next time</string>
     <string name="thanks_for_your_feedback_i_ll_do_better_next_time">Thanks for your feedback. I\'ll do better next time</string>
+    <string name="what_would_you_like_to_order_say_the_item_name_with_quantity">What would you like to order?\nSay the item name with quantity</string>
+    <string name="what_would_you_like_to_order">What would you like to order?</string>
+    <string name="say_nugget_to_wake_me_up">Say Nugget to wake me up.</string>
+    <string name="do_you_want_anything_else">Do you want anything else?</string>
+    <string name="if_you_are_done_say_confirm_order">If you are done, Say confirm order</string>
 
 </resources>

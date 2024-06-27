@@ -49,6 +49,8 @@ class NuggetMainViewModel @Inject constructor(
     private val _itemResponseStates = MutableLiveData<String?>(null)
     val itemResponseStates: LiveData<String?> get() = _itemResponseStates
 
+
+
     private fun setLoading() {
         state.value = AudioTranscriptionState.IsLoading(true)
     }
